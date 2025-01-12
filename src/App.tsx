@@ -3,7 +3,6 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
 import { GlobalStyle } from "./styles/globalStyle";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./Fonts/Font.css";
 
 function App() {
 	return (
