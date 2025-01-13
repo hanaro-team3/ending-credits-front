@@ -8,6 +8,7 @@ import { GlobalStyle } from "./styles/globalStyle";
 
 // pages
 import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 			<Router>
 				<Routes>
 					<Route path="/" element={<Home />} />
+					<Route path="/login" element={<LoginPage />} />
 				</Routes>
 			</Router>
 		</ThemeProvider>
