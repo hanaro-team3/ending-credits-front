@@ -1,8 +1,13 @@
-import "./App.css";
 import { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// styles
+import "./App.css";
 import { theme } from "./styles/theme";
 import { GlobalStyle } from "./styles/globalStyle";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// pages
+import Home from "./pages/Home";
 
 function App() {
 	return (
@@ -10,19 +15,7 @@ function App() {
 			<GlobalStyle />
 			<Router>
 				<Routes>
-					<Route
-						path="/"
-						element={
-							<div
-								style={{
-									fontFamily: "Pretendard",
-									fontWeight: "700",
-								}}
-							>
-								홈 페이지
-							</div>
-						}
-					/>
+					<Route path="/" element={<Home />} />
 				</Routes>
 			</Router>
 		</ThemeProvider>
