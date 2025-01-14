@@ -4,7 +4,7 @@ import { ReactNode, ButtonHTMLAttributes } from "react";
 type ButtonVariant = "large" | "medium" | "small";
 
 // props 타입 정의
-interface LoginButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface BlueButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
 	variant?: ButtonVariant;
 }
@@ -33,7 +33,7 @@ const getButtonSize = (variant: ButtonVariant) => {
 	}
 };
 
-const StyledLoginButton = styled.button<StyledButtonProps>`
+const StyledBlueButton = styled.button<StyledButtonProps>`
 	width: ${({ variant }) => getButtonSize(variant).width};
 	height: ${({ variant }) => getButtonSize(variant).height};
 	background: #4792dc;
@@ -44,16 +44,16 @@ const StyledLoginButton = styled.button<StyledButtonProps>`
 	cursor: pointer;
 `;
 
-const LoginButton = ({
+const BlueButton = ({
 	children,
 	variant = "large",
 	...props
-}: LoginButtonProps) => {
+}: BlueButtonProps) => {
 	return (
-		<StyledLoginButton variant={variant} {...props}>
+		<StyledBlueButton variant={variant} {...props}>
 			<span>{children}</span>
-		</StyledLoginButton>
+		</StyledBlueButton>
 	);
 };
 
-export default LoginButton;
+export default BlueButton;
