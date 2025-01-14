@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { Link } from "react-router-dom";
 import * as styled from "./styles";
 import { EndingCreditLoginProps } from "./types";
 import backbtn from "../../images/back-icon.png";
@@ -95,9 +96,11 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 					<styled.SignupDivContent1>
 						<span>아직 회원이 아니신가요?</span>
 					</styled.SignupDivContent1>
-					<styled.SignupDivContent2>
-						<span>회원가입</span>
-					</styled.SignupDivContent2>
+					<Link to="/signup" style={{ textDecoration: "none" }}>
+						<styled.SignupDivContent2>
+							회원가입
+						</styled.SignupDivContent2>
+					</Link>
 				</styled.SignupDiv>
 			</div>
 		</styled.Container>

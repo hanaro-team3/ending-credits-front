@@ -9,6 +9,7 @@ import { GlobalStyle } from "./styles/globalStyle";
 // pages
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import SignupPage from "./pages/SignupPage/SignupPage";
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
 				</Routes>
 			</Router>
 		</ThemeProvider>
