@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div<{ isLoginPage?: boolean }>`
 	width: 100vw;
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	/* justify-content: center; */
 	align-items: center;
+	gap: ${(props) => (props.isLoginPage ? "190px" : "280px")};
 `;
 
 export const MainLogo = styled.img`
@@ -20,11 +21,11 @@ export const LoginBtn = styled.button`
 	height: 55px;
 	background: #4792dc;
 	border-radius: 12px;
-	font-family: Pretendard;
+	font-family: "Pretendard";
 	font-weight: 600;
 	color: white;
 
-	margin-top: 190px;
+	/* margin-top: 190px; */
 
 	cursor: pointer;
 `;
@@ -39,7 +40,7 @@ export const KakaoLogin = styled.button`
 	background: #fddc3f;
 	border-radius: 12px;
 
-	font-family: Pretendard;
+	font-family: "Pretendard";
 	font-weight: 600;
 	color: black;
 
@@ -171,7 +172,7 @@ export const ForgotPassword = styled.div`
 	font-size: 15px;
 	color: #7d7d7d;
 	cursor: pointer;
-	margin-bottom: 102px;
+	/* margin-bottom: 102px; */
 
 	&:hover {
 		text-decoration: underline;
