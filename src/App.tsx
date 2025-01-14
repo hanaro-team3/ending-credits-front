@@ -7,7 +7,7 @@ import { theme } from "./styles/theme";
 import { GlobalStyle } from "./styles/globalStyle";
 
 // pages
-import Home from "./pages/Home";
+import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 
@@ -17,7 +17,7 @@ function App() {
 			<GlobalStyle />
 			<Router>
 				<Routes>
-					<Route path="/" element={<Home />} />
+					<Route path="/" element={<MainPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignupPage />} />
 				</Routes>

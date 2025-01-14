@@ -17,8 +17,8 @@ export default defineConfig({
         name: "Ending Credits", // 앱의 전체 이름
         short_name: "Ending Credits", // 홈 화면에 표시될 짧은 이름
         description: "유언대용신탁 앱, 엔딩 크레딧츠", // 앱 설명
-        theme_color: "#4792DC", // 브라우저 툴바 색상
-        background_color: "#FFFFFF", // 앱 배경 색상
+        theme_color: "#F5F5F5", // 브라우저 툴바 색상
+        background_color: "#F5F5F5", // 앱 배경 색상
         display: "standalone", // 브라우저 url표시부분 안보이게
         orientation: "portrait", // 세로 모드 고정
         // scope: "/", // PWA의 범위
