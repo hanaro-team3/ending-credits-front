@@ -22,6 +22,7 @@ export const LoginBtn = styled.button`
 	border-radius: 12px;
 	font-family: Pretendard;
 	font-weight: 600;
+	color: white;
 
 	margin-top: 190px;
 
