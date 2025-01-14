@@ -208,7 +208,7 @@ const StepForm = () => {
 				<BlueButton
 					variant="large"
 					style={{
-						marginBottom: "49px",
+						marginBottom: "100px",
 						background: isStep0Complete ? "#4792DC" : "#D0D0D0",
 					}}
 					onClick={handleNext}
@@ -313,7 +313,7 @@ const StepForm = () => {
 				<BlueButton
 					variant="large"
 					style={{
-						marginBottom: "49px",
+						marginBottom: "100px",
 						background: isStep1Complete ? "#4792DC" : "#D0D0D0",
 					}}
 					onClick={handleNext}
@@ -369,7 +369,7 @@ const StepForm = () => {
 				<BlueButton
 					variant="large"
 					style={{
-						marginBottom: "49px",
+						marginBottom: "100px",
 						background: areRequiredTermsAccepted
 							? "#4792DC"
 							: "#D0D0D0",

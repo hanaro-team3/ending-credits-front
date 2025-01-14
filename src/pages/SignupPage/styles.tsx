@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const BackButton = styled.img`
 	position: absolute;
-	top: 63px;
+	top: 50px;
 	left: 21px;
 	cursor: pointer;
 	width: 15px;
@@ -26,9 +26,9 @@ export const Title = styled.h1`
 
 	font-family: "Pretendard";
 	font-weight: 800;
-	font-size: 24px;
+	font-size: 26px;
 	text-align: left;
-	margin-top: 113px;
+	margin-top: 100px;
 	line-height: 1.2;
 `;
 
@@ -48,10 +48,7 @@ export const Input = styled.input`
 	font-family: "Pretendard";
 	font-size: 15px;
 	background-color: white;
-	padding-right: ${(props) =>
-		props.type === "password"
-			? "48px"
-			: "16px"}; // 비밀번호 입력 필드일 때 우측 패딩 증가
+	padding-right: ${(props) => (props.type === "password" ? "48px" : "16px")};
 
 	&:focus {
 		outline: none;
@@ -71,7 +68,7 @@ export const Select = styled.select`
 	height: 55px;
 	border: 1.5px solid #eeeeee;
 	border-radius: 12px;
-	padding: 0 16px;
+	padding: 0 22px 0 16px;
 	margin-bottom: 20px;
 	font-family: "Pretendard";
 	font-size: 15px;
@@ -82,7 +79,6 @@ export const Select = styled.select`
 		border-color: #4792dc;
 	}
 
-	/* color: black; */
 	color: ${(props) => (props.value === "" ? "#dadada" : "black")};
 
 	option {
@@ -216,8 +212,9 @@ export const DupCheckBtn = styled.button`
 	border-radius: 12px;
 	font-family: "Pretendard";
 	font-size: 11px;
-	font-weight: 400;
+	font-weight: 500;
 	background-color: #4792dc;
+	color: white;
 
 	padding: 0;
 

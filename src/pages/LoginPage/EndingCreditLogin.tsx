@@ -42,11 +42,7 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 		<styled.Container isLoginPage={false}>
 			<styled.BackButton src={backbtn} onClick={onBack} />
 			<div>
-				<styled.Title>
-					로그인이 필요한
-					<br />
-					서비스입니다.
-				</styled.Title>
+				<styled.Title>로그인이 필요한 서비스입니다.</styled.Title>
 				<styled.Form onSubmit={handleSubmit}>
 					<styled.InputLabel htmlFor="username">
 						아이디
@@ -85,7 +81,9 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 							}
 						/>
 					</styled.PasswordInputWrapper>
-					<styled.ForgotPassword>
+					<styled.ForgotPassword
+						style={{ textDecoration: "underline" }}
+					>
 						혹시, 비밀번호를 잊으셨나요?
 					</styled.ForgotPassword>
 				</styled.Form>
