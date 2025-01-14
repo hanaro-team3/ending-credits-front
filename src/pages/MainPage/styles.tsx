@@ -38,6 +38,7 @@ export const SearchBar = styled.input`
 	font-size: 15px;
 	padding-right: 3rem;
 	font-family: "Pretendard";
+	background-color: white;
 `;
 
 export const SearchIcon = styled.img`
@@ -145,7 +146,19 @@ export const AssetCard = styled.div`
 	}
 `;
 
-export const AssetSection = styled(Section)``;
+export const AssetSection = styled(Section)`
+	position: relative;
+`;
+
+export const AssetButton = styled.button`
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+	background-color: ${props => props.theme.colors?.primary || '#4C7EA5'};
+	color: white;
+	border-radius: 1rem;
+	padding: 0.5rem 1rem;
+`;
 
 export const EndingCreditSection = styled(Section)``;
 

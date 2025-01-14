@@ -34,6 +34,7 @@ const AssetSection = () => {
                     series={chartData.series}
                     type="pie"
                 />
+                <styled.AssetButton>상세보기</styled.AssetButton>
             </styled.AssetCard>
         </styled.AssetSection>
     );
