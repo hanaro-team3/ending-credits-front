@@ -7,6 +7,8 @@ export const Container = styled.div<{ isLoginPage?: boolean }>`
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
+
+	background-color: white;
 	/* gap: ${(props) => (props.isLoginPage ? "190px" : "280px")}; */
 `;
 
