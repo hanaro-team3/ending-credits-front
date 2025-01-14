@@ -7,15 +7,16 @@ export default defineConfig({
   plugins: [
     react(),
     // PWA 설정
+    // PWA는 https에서만 독립 앱으로 작동함
     VitePWA({
       registerType: "autoUpdate", // PWA 업데이트 자동 적용
       devOptions: {
         enabled: true, // 개발 중에도 PWA 기능 활성화
       },
       manifest: {
-        name: "Ending Credit", // 앱의 전체 이름
-        short_name: "Ending Credit", // 홈 화면에 표시될 짧은 이름
-        description: "유언대용신탁 앱", // 앱 설명
+        name: "Ending Credits", // 앱의 전체 이름
+        short_name: "Ending Credits", // 홈 화면에 표시될 짧은 이름
+        description: "유언대용신탁 앱, 엔딩 크레딧츠", // 앱 설명
         theme_color: "#4792DC", // 브라우저 툴바 색상
         background_color: "#FFFFFF", // 앱 배경 색상
         display: "standalone", // 브라우저 url표시부분 안보이게
