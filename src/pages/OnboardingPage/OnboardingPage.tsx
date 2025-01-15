@@ -1,48 +1,179 @@
-import { useState } from "react";
-import image1 from "../../images/onboarding/1.png";
-import image2 from "../../images/onboarding/2.png";
-import image3 from "../../images/onboarding/3.png";
-import image4 from "../../images/onboarding/4.png";
-import BlueButton from "../../ui/BlueBtn";
-
-const OnboadingData = [
-  {
-    path: image1,
-    textTop: "",
-    textMiddle: "복잡한 상속관리 앱으로 간편하게",
-    textBottom: "당신의 가치가 당신의 뜻대로 상속되도록",
-  },
-  {
-    path: image2,
-    textTop: "100세 시대, 지금 당신에게 필요한건",
-    textMiddle: "나와 가족의 미래를 설계하는 종합 상속 솔루션",
-    textBottom: "",
-  },
-  {
-    path: image3,
-    textTop: "성향별 분산 투자와 미래 연금 계산까지",
-    textMiddle: "퇴직금 운용을 위한 맞춤형 상품들 추천",
-    textBottom: "",
-  },
-  {
-    path: image4,
-    textTop: "",
-    textMiddle: "잃어버릴 걱정 끝 NFT로 안전하게",
-    textBottom: "24시간 안전하게 관리되는 나만의 유언장",
-  },
-];
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Text,
+  SlideContainer,
+  Slide,
+  IndicatorContainer,
+  IndicatorDot,
+} from "./styles";
+import { CopyData } from "./copy";
 
 export default function OnboardingPage(): JSX.Element {
-  const [image, setImage] = useState<string>(image1);
+  const copyData = CopyData;
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [dragging, setDragging] = useState<boolean>(false); // 드래그 상태 여부
+  const [translateX, setTranslateX] = useState<number>(0); // 슬라이드 이동 거리
+  const navigate = useNavigate();
+  const startXRef = useRef<number | null>(null); // 터치 시작 위치 저장
+
+  const nextButtonHandler = () => {
+    if (currentIndex < copyData.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const startButtonHandler = () => {
+    navigate("/login");
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    setDragging(true);
+    startXRef.current = event.touches[0].clientX; // 터치 시작 위치 저장
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (!dragging || startXRef.current === null) return;
+    const currentX = event.touches[0].clientX;
+    const deltaX = currentX - startXRef.current;
+
+    // 첫 번째 인덱스에서 왼쪽으로 드래그 제한
+    if (currentIndex === 0 && deltaX > 0) {
+      return;
+    }
+
+    // 마지막 인덱스에서 오른쪽으로 드래그 제한
+    if (currentIndex === copyData.length - 1 && deltaX < 0) {
+      return;
+    }
+
+    setTranslateX(deltaX); // 이동 거리 업데이트
+  };
+
+  const handleTouchEnd = () => {
+    setDragging(false);
+    if (translateX > 50 && currentIndex > 0) {
+      // 오른쪽으로 스와이프
+      setCurrentIndex(currentIndex - 1);
+    } else if (translateX < -50 && currentIndex < copyData.length - 1) {
+      // 왼쪽으로 스와이프
+      setCurrentIndex(currentIndex + 1);
+    }
+    setTranslateX(0); // 이동 거리 초기화
+    startXRef.current = null;
+  };
+
   return (
     <div
       style={{
-        backgroundImage: `url(${image})`,
+        overflow: "hidden",
         height: "100vh",
         width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
-      <BlueButton />
+      <SlideContainer
+        $index={currentIndex}
+        style={{
+          transform: `translateX(calc(${
+            -currentIndex * 100
+          }vw + ${translateX}px))`,
+          transition: dragging ? "none" : "transform 0.5s ease-in-out",
+        }}
+      >
+        {copyData.map((slide, index) => (
+          <Slide
+            key={index}
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              backgroundImage: `url(${slide.path})`,
+              backgroundSize: "cover",
+            }}
+          >
+            <div
+              style={{
+                marginTop: "87px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {/* 상단 텍스트 */}
+              <Text>{slide.textTop}</Text>
+              <br />
+              {/* 중단 텍스트 */}
+              <div
+                style={{
+                  lineHeight: "270%",
+                }}
+              >
+                {slide.textMiddle1.textArray.map((textData, i) => (
+                  <Text
+                    key={`middle1-${i}`}
+                    style={{
+                      fontSize: slide.textMiddle1.size,
+                      fontWeight: textData.fontWeight,
+                    }}
+                  >
+                    {textData.text}
+                  </Text>
+                ))}
+                <br />
+                {slide.textMiddle2.textArray.map((textData, i) => (
+                  <Text
+                    key={`middle2-${i}`}
+                    style={{
+                      fontSize: slide.textMiddle2.size,
+                      fontWeight: textData.fontWeight,
+                    }}
+                  >
+                    {textData.text}
+                  </Text>
+                ))}
+              </div>
+              <br />
+              {/* 하단 텍스트 */}
+              <Text>{slide.textBottom}</Text>
+            </div>
+          </Slide>
+        ))}
+      </SlideContainer>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "50px",
+          width: "100vw",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <IndicatorContainer>
+          {copyData.map((_, index) => (
+            <IndicatorDot key={index} $active={currentIndex === index} />
+          ))}
+        </IndicatorContainer>
+        {currentIndex < copyData.length - 1 ? (
+          <Button
+            onClick={nextButtonHandler}
+            style={{
+              backgroundColor: "transparent",
+              color: "#E4E4E4",
+              outline: "2px solid #E4E4E4",
+            }}
+          >
+            다음
+          </Button>
+        ) : (
+          <Button onClick={startButtonHandler}>시작하기</Button>
+        )}
+      </div>
     </div>
   );
 }
