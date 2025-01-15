@@ -40,8 +40,10 @@ export const Container = styled.div<{ $isLeaving: boolean }>`
 	top: 0;
 	left: 0;
 	width: 100%;
-	background: ${props => props.theme.colors?.background || '#F2F4F5'};
+	height: 100%;
 	overflow-y: auto;
+	/* -webkit-overflow-scrolling: touch; */
+
 `;
 
 export const TitleContainer = styled.div`
@@ -83,12 +85,19 @@ export const Section = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 36px;
+	width: 100%;
 `;
 
 export const Step = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	width: 100%;
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
 `;
 
 export const StepNumber = styled.p`
@@ -103,12 +112,28 @@ export const StepTitle = styled.h4`
 `;
 
 export const ContentWrapper = styled.div`
+	flex: 1;
+	overflow-y: auto;
+	padding-bottom: 2rem;
 	position: relative;
 	width: 100%;
+	overflow-x: hidden;
+	&::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+		-webkit-appearance: none;
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: transparent;
+	}
 `;
 
 export const Content = styled.div<{ $direction: 'left' | 'right' }>`
 	position: absolute;
 	width: 100%;
+	left: 0;
 	animation: ${props => props.$direction === 'left' ? slideLeft : slideRight} 0.3s ease-in-out;
 `;

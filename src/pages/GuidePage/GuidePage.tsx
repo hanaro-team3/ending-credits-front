@@ -53,12 +53,12 @@ function GuidePage() {
             </styled.TabContainer>
 
             {/* 컨텐츠 섹션 */}
-            <div style={{ height: '1400px' }}>
+            <styled.ContentWrapper>
                 <GuideContent 
                     activeTab={activeTab} 
                     setActiveTab={setActiveTab}
                 />
-            </div>
+            </styled.ContentWrapper>
         </styled.Container>
     );
 }

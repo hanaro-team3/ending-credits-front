@@ -67,7 +67,6 @@ export function GuideContent({ activeTab }: GuideContentProps) {
     }, [activeTab, prevTab]);
 
     return (
-        <styled.ContentWrapper>
             <styled.Content $direction={direction}>
                 <styled.Section>
                     {GUIDE_DATA[activeTab].map((step, index) => (
@@ -82,6 +81,5 @@ export function GuideContent({ activeTab }: GuideContentProps) {
                     ))}
                 </styled.Section>
             </styled.Content>
-        </styled.ContentWrapper>
     );
 } 
