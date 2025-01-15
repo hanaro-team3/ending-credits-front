@@ -9,6 +9,7 @@ import { GlobalStyle } from "./styles/globalStyle";
 // pages
 import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 					<Route path="/" element={<MainPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignupPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
 				</Routes>
 			</Router>
 		</ThemeProvider>
