@@ -5,9 +5,11 @@ export const Container = styled.div<{ isLoginPage?: boolean }>`
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	/* justify-content: center; */
+	justify-content: space-between;
 	align-items: center;
-	gap: ${(props) => (props.isLoginPage ? "190px" : "280px")};
+
+	background-color: white;
+	/* gap: ${(props) => (props.isLoginPage ? "190px" : "280px")}; */
 `;
 
 export const MainLogo = styled.img`
@@ -60,6 +62,7 @@ export const SignupDiv = styled.div`
 	justify-content: center;
 
 	margin-top: 12px;
+	margin-bottom: 100px;
 `;
 
 export const SignupDivContent1 = styled.div`
@@ -86,7 +89,7 @@ export const SignupDivContent2 = styled.div`
 
 export const BackButton = styled.img`
 	position: absolute;
-	top: 63px;
+	top: 50px;
 	left: 21px;
 	cursor: pointer;
 	width: 15px;
@@ -101,9 +104,9 @@ export const Title = styled.h1`
 
 	font-family: "Pretendard";
 	font-weight: 800;
-	font-size: 24px;
+	font-size: 26px;
 	text-align: left;
-	margin-top: 113px;
+	margin-top: 100px;
 	line-height: 1.2;
 `;
 

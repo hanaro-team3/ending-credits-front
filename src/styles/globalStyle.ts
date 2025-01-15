@@ -27,7 +27,21 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   #root {
+    width: 100%;
     height: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+		-webkit-appearance: none;
+		background: transparent;
+	  }
+	
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
   }
 
   .mobile-container {

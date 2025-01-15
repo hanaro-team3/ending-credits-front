@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { Link } from "react-router-dom";
 import * as styled from "./styles";
 import { EndingCreditLoginProps } from "./types";
 import backbtn from "../../images/back-icon.png";
@@ -41,11 +42,7 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 		<styled.Container isLoginPage={false}>
 			<styled.BackButton src={backbtn} onClick={onBack} />
 			<div>
-				<styled.Title>
-					로그인이 필요한
-					<br />
-					서비스입니다.
-				</styled.Title>
+				<styled.Title>로그인이 필요한 서비스입니다.</styled.Title>
 				<styled.Form onSubmit={handleSubmit}>
 					<styled.InputLabel htmlFor="username">
 						아이디
@@ -84,7 +81,9 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 							}
 						/>
 					</styled.PasswordInputWrapper>
-					<styled.ForgotPassword>
+					<styled.ForgotPassword
+						style={{ textDecoration: "underline" }}
+					>
 						혹시, 비밀번호를 잊으셨나요?
 					</styled.ForgotPassword>
 				</styled.Form>
@@ -95,9 +94,11 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 					<styled.SignupDivContent1>
 						<span>아직 회원이 아니신가요?</span>
 					</styled.SignupDivContent1>
-					<styled.SignupDivContent2>
-						<span>회원가입</span>
-					</styled.SignupDivContent2>
+					<Link to="/signup" style={{ textDecoration: "none" }}>
+						<styled.SignupDivContent2>
+							회원가입
+						</styled.SignupDivContent2>
+					</Link>
 				</styled.SignupDiv>
 			</div>
 		</styled.Container>
