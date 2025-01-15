@@ -5,7 +5,7 @@ export const Container = styled.div`
 	flex-direction: column;
 	gap: 2rem;
 	padding: 1.5rem;
-	padding-bottom: 6rem;
+	padding-bottom: 10rem;
 `;
 
 export const Logo = styled.img`
@@ -60,7 +60,7 @@ export const Carousel = styled.div`
 	-webkit-overflow-scrolling: touch;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
-	
+
 	&::-webkit-scrollbar {
 		display: none;
 		width: 0;
@@ -68,13 +68,13 @@ export const Carousel = styled.div`
 		-webkit-appearance: none;
 		background: transparent;
 	}
-	
+
 	&::-webkit-scrollbar-thumb {
 		background: transparent;
 	}
-	
+
 	-webkit-overflow-scrolling: touch;
-	
+
 	scrollbar-gutter: stable both-edges;
 `;
 
@@ -84,7 +84,7 @@ export const CarouselItem = styled.div<{ $bgColor?: string }>`
 	flex-direction: column;
 	gap: 0.2rem;
 	padding: 1rem;
-	background-color: ${props => props.$bgColor || 'white'};
+	background-color: ${(props) => props.$bgColor || "white"};
 	width: 140px;
 	height: 140px;
 	border-radius: 1rem;
@@ -93,7 +93,7 @@ export const CarouselItem = styled.div<{ $bgColor?: string }>`
 export const CarouselDescription = styled.span`
 	font-size: 0.9rem;
 	font-weight: bold;
-	color: ${props => props.theme.colors?.gray600 || '#666'};
+	color: ${(props) => props.theme.colors?.gray600 || "#666"};
 `;
 
 export const CarouselTitle = styled.p`
@@ -128,7 +128,7 @@ export const StatusDescription = styled.p`
 	font-weight: 500;
 	line-height: 1.2rem;
 	.highlight {
-		color: ${props => props.theme.colors?.primary || '#4C7EA5'};
+		color: ${(props) => props.theme.colors?.primary || "#4C7EA5"};
 		margin-right: 0.2rem;
 		font-weight: bold;
 	}
@@ -154,7 +154,7 @@ export const AssetButton = styled.button`
 	position: absolute;
 	right: 1rem;
 	bottom: 1rem;
-	background-color: ${props => props.theme.colors?.primary || '#4C7EA5'};
+	background-color: ${(props) => props.theme.colors?.primary || "#4C7EA5"};
 	color: white;
 	border-radius: 1rem;
 	padding: 0.5rem 1rem;
@@ -182,7 +182,7 @@ export const GuideTitle = styled.h4`
 `;
 
 export const GuideDescription = styled.p`
-	color: ${props => props.theme.colors?.gray600 || '#666'};
+	color: ${(props) => props.theme.colors?.gray600 || "#666"};
 `;
 
 export const GuideIcon = styled.img`
@@ -192,7 +192,7 @@ export const GuideIcon = styled.img`
 `;
 
 export const Banner = styled.div`
-	background-color: #4C7EA5;
+	background-color: #4c7ea5;
 	border-radius: 0.5rem;
 	padding: 1rem;
 	color: white;

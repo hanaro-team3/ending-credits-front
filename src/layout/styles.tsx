@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	width: 100%;
-	height: 80px;
+	height: 140px;
 
 	position: absolute;
 	bottom: 0;
+	left: 0;
 	background-color: white;
 
 	border-radius: 17px 17px 0 0;
@@ -20,6 +21,7 @@ export const Container = styled.div`
 export const Category = styled.div`
 	width: 78px;
 	height: 100%;
+	padding-bottom: 60px;
 
 	display: flex;
 	flex-direction: column;
