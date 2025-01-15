@@ -1,6 +1,9 @@
 import ReactApexChart from "react-apexcharts";
 import * as styled from "./styles";
 import { useChartData } from "./hooks/useChartData";
+import { useNavigate } from "react-router-dom";
+
+// assets
 import logoInline from "../../assets/logo/logoInline.svg";
 import moneyBag from "../../assets/icon/moneyBag.png";
 import book from "../../assets/icon/book.png";
@@ -46,7 +49,7 @@ const AssetSection = () => {
 
 const SearchBar = () => (
 	<styled.SearchBarWrapper>
-		<styled.SearchBar placeholder="궁금한 내용을 검색해 보세요!" />
+		<styled.SearchBar name="search" placeholder="궁금한 내용을 검색해 보세요!" />
 		<styled.SearchIcon
 			src={search}
 			alt="검색"
@@ -84,24 +87,25 @@ const CarouselSection = () => (
 	</styled.Carousel>
 );
 
-const GuideSection = () => (
-	<styled.GuideContainer>
-		<styled.GuideCard>
-			<styled.GuideTitle>작성가이드</styled.GuideTitle>
-			<styled.GuideDescription>
-				사용법이 헷갈리지 않으세요?
-			</styled.GuideDescription>
-			<styled.GuideIcon src={book} width={30} alt="작성가이드" />
-		</styled.GuideCard>
-		<styled.GuideCard>
-			<styled.GuideTitle>맞춤형 상품 추천</styled.GuideTitle>
-			<styled.GuideDescription>
-				퇴직 연금 운용을 도와드릴게요.
-			</styled.GuideDescription>
-			<styled.GuideIcon src={plant} width={30} alt="상품 추천" />
-		</styled.GuideCard>
-	</styled.GuideContainer>
-);
+const GuideSection = () => {
+    const navigate = useNavigate();
+    return (
+    <styled.GuideContainer>
+        <styled.GuideCard 
+            onClick={() => navigate("/guide", { state: { fromMain: true } })}
+        >     
+            <styled.GuideTitle>작성가이드</styled.GuideTitle>
+            <styled.GuideDescription>사용법이 헷갈리지 않으세요?</styled.GuideDescription>
+            <styled.GuideIcon src={book} width={30} alt="작성가이드" />
+        </styled.GuideCard>
+        <styled.GuideCard>
+            <styled.GuideTitle>맞춤형 상품 추천</styled.GuideTitle>
+            <styled.GuideDescription>퇴직 연금 운용을 도와드릴게요.</styled.GuideDescription>
+            <styled.GuideIcon src={plant} width={30} alt="상품 추천" />
+        </styled.GuideCard>
+    </styled.GuideContainer>
+    );
+};
 
 const BannerSection = () => (
 	<styled.Banner>
