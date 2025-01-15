@@ -50,3 +50,24 @@ export const CategoryName = styled.div`
 	color: #2b2b2b;
 	margin-top: 4px;
 `;
+
+export const Header = styled.header`
+	position:relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem 0;
+`;
+
+export const HeaderTitle = styled.h1`
+	font-size: 18px;
+	font-weight: bold;
+`;
+
+export const IconButton = styled.img`
+	position: absolute;
+	right: 10px;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	padding: 8px;
+`;
