@@ -11,21 +11,23 @@ import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
+import MyPage from "./pages/MyPage/MyPage";
 
 function App() {
-	return (
-		<ThemeProvider theme={theme}>
-			<GlobalStyle />
-			<Router>
-				<Routes>
-					<Route path="/" element={<MainPage />} />
-					<Route path="/login" element={<LoginPage />} />
-					<Route path="/signup" element={<SignupPage />} />
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
-				</Routes>
-			</Router>
-		</ThemeProvider>
-	);
+          <Route path="/mypage" element={<MyPage />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
 export default App;
