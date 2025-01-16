@@ -4,7 +4,7 @@ import { ReactNode, ButtonHTMLAttributes } from "react";
 type ButtonVariant = "large" | "medium" | "small";
 
 // props 타입 정의
-interface BlueButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface WhiteButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
 	variant?: ButtonVariant;
 }
@@ -33,33 +33,33 @@ const getButtonSize = (variant: ButtonVariant) => {
 	}
 };
 
-const StyledBlueButton = styled.button<StyledButtonProps>`
+const StyledWhiteButton = styled.button<StyledButtonProps>`
 	width: ${({ variant }) => getButtonSize(variant).width};
 	height: ${({ variant }) => getButtonSize(variant).height};
-	background: #4792dc;
+	background: white;
 	border-radius: 12px;
 	font-family: "Pretendard";
 	font-weight: 600;
-	color: white;
+	color: black;
 	cursor: pointer;
 	border: none;
 
 	&:active {
-		background-color: #306394;
+		background-color: #ebebeb; // 클릭 시 더 어두운 색상
 		border: none;
 	}
 `;
 
-const BlueButton = ({
+const WhiteButton = ({
 	children,
 	variant = "large",
 	...props
-}: BlueButtonProps) => {
+}: WhiteButtonProps) => {
 	return (
-		<StyledBlueButton variant={variant} {...props}>
+		<StyledWhiteButton variant={variant} {...props}>
 			<span>{children}</span>
-		</StyledBlueButton>
+		</StyledWhiteButton>
 	);
 };
 
-export default BlueButton;
+export default WhiteButton;
