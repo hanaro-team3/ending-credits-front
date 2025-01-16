@@ -35,7 +35,7 @@ export default function MyPage() {
         <styled.Label>약관</styled.Label>
         <styled.Base>
           <styled.BaseText>이용 약관 보기</styled.BaseText>
-          <FrontButton path="/my-page/disclaimer"></FrontButton>
+          <FrontButton path="/my-page/terms-of-use"></FrontButton>
         </styled.Base>
         <styled.Base>
           <styled.BaseText>개인정보처리방침</styled.BaseText>

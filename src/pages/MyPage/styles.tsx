@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { LoginType } from "./types";
+import kakao from "../../images/loginType/kakao.svg";
+import endingCredit from "../../images/loginType/endingCredit.svg";
 
 export const Container = styled.div`
   display: flex;
@@ -69,5 +71,9 @@ export const Badge = styled.img`
 `;
 
 export const LoginTypeBadge = ({ loginType }: LoginType) => {
-  return <Badge src={`src/images/loginType/${loginType}.svg`}></Badge>;
+  const getLoginTypeImage = (loginType: "kakao" | "endingCredit") => {
+    if (loginType === "kakao") return kakao;
+    else return endingCredit;
+  };
+  return <Badge src={getLoginTypeImage(loginType)}></Badge>;
 };
