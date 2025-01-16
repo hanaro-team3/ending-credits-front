@@ -23,7 +23,12 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/mypage" element={<MyPage />} />
+
+          <Route path="/my-page" element={<MyPage />}>
+            <Route path="info"></Route>
+            <Route path="terms-of-use"></Route>
+            <Route path="privacy-policy"></Route>
+          </Route>
         </Routes>
       </Router>
     </ThemeProvider>
