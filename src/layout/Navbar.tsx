@@ -17,7 +17,7 @@ const Navbar = () => {
 				</styled.CategoryImageDiv>
 				<styled.CategoryName>홈</styled.CategoryName>
 			</styled.Category>
-			<styled.Category>
+			<styled.Category onClick={() => navigate("/inheritance")}>
 				<styled.CategoryImageDiv>
 					<styled.CategoryImage src={money} />
 				</styled.CategoryImageDiv>

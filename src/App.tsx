@@ -13,7 +13,7 @@ import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import GuidePage from "./pages/GuidePage/GuidePage";
 import AssetPage from "./pages/AssetPage/AssetPage";
-import InheritancePage from "./pages/InheritancePage/InheritancePage";
+import InheritancePage from "./pages/InheritancePage/InheritanceStartPage";
 import UploadPhotoPage from "./pages/InheritancePage/UploadPhotoPage/UploadPhotoPage";
 
 function App() {
