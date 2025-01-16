@@ -13,6 +13,8 @@ import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import GuidePage from "./pages/GuidePage/GuidePage";
 import AssetPage from "./pages/AssetPage/AssetPage";
+import InheritancePage from "./pages/InheritancePage/InheritancePage";
+import UploadPhotoPage from "./pages/InheritancePage/UploadPhotoPage/UploadPhotoPage";
 
 function App() {
 	return (
@@ -26,6 +28,11 @@ function App() {
 					<Route path="/onboarding" element={<OnboardingPage />} />
 					<Route path="/guide" element={<GuidePage />} />
 					<Route path="/asset" element={<AssetPage />} />
+					<Route path="/inheritance" element={<InheritancePage />} />
+					<Route
+						path="/inheritance-photo"
+						element={<UploadPhotoPage />}
+					/>
 				</Routes>
 			</Router>
 		</ThemeProvider>

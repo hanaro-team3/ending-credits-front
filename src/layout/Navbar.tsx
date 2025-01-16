@@ -1,5 +1,6 @@
 import * as styled from "./styles";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import home from "../images/navbar-home.png";
 import money from "../images/navbar-money.png";
 import assets from "../images/navbar-assets.png";
@@ -11,7 +12,7 @@ const Navbar = () => {
 	return (
 		<styled.Container>
 			<styled.Category onClick={() => navigate("/")}>
-				<styled.CategoryImageDiv >
+				<styled.CategoryImageDiv>
 					<styled.CategoryImage src={home} />
 				</styled.CategoryImageDiv>
 				<styled.CategoryName>홈</styled.CategoryName>
