@@ -7,7 +7,7 @@ export default function InfoPage() {
   const [birthDate, setBirthDate] = useState("1960-11-15");
   const [phoneNumber, setPhoneNumber] = useState("010-1234-5678");
   const [address, setAddress] = useState(
-    "ㅇㅇ도 ㅇㅇ시 ㅇㅇ구 ㅇㅇ동 ㅇㅇ아파트 ㅇㅇ동 ㅇㅇ호"
+    "경기도 수원시 영통구 영통동 벽산아파트 301동 301호"
   );
 
   return (

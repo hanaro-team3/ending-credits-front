@@ -2,6 +2,12 @@ import Header from "../../layout/Header";
 import Navbar from "../../layout/Navbar";
 import * as styled from "./styles";
 
+// const Modal = () => {
+//   return (
+    
+//   )
+// }
+
 export default function ProfilePage() {
   return (
     <styled.Container>

@@ -22,9 +22,9 @@ export const LabelContainer = styled.div`
   align-items: center;
 `;
 
-export const FlexContainer = styled.div<{$column?: boolean}>`
+export const FlexContainer = styled.div<{ $column?: boolean }>`
   display: flex;
-  flex-direction: ${(props) => props.$column ? "column": "row"};
+  flex-direction: ${(props) => (props.$column ? "column" : "row")};
   align-items: center;
   gap: 15px;
 `;
@@ -122,7 +122,7 @@ export const CloseButtonContainer = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  background-color: white;
+  background: linear-gradient(to top, #ffffff 70%, rgba(255, 255, 255, 0));
 
   border-radius: 17px 17px 0 0;
 
@@ -131,4 +131,12 @@ export const CloseButtonContainer = styled.div`
   justify-content: center;
 
   padding: 0 22.5px;
+`;
+
+export const ModalContainer = styled.div`
+  width: 328px;
+  height: 185px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
 `;

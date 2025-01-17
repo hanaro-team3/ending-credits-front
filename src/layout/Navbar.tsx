@@ -29,7 +29,7 @@ const Navbar = () => {
 				</styled.CategoryImageDiv>
 				<styled.CategoryName>연금</styled.CategoryName>
 			</styled.Category>
-			<styled.Category>
+			<styled.Category onClick={() => navigate("/profile")}>
 				<styled.CategoryImageDiv>
 					<styled.CategoryImage src={profile} />
 				</styled.CategoryImageDiv>

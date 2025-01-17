@@ -59,7 +59,7 @@ export default function TermsOfUsePage() {
     <styled.Container $color="white">
       <Header title="개인정보처리방침" showClose={false}></Header>
       <TermsOfUseComponent></TermsOfUseComponent>
-      <CloseButton>닫기</CloseButton>
+      <CloseButton></CloseButton>
     </styled.Container>
   );
 }
