@@ -174,3 +174,42 @@ export const InputSuffix = styled.span`
 	color: #666;
 	font-size: 15px;
 `;
+
+export const AssetList = styled.ul`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+`;
+
+export const AssetItem = styled.li`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+`;
+
+export const AssetItemLeft = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 10px;
+`;
+
+export const AssetItemRight = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 10px;
+`;
+
+export const AssetContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	background-color: white;
+	border-radius: 12px;
+	padding: 8px;
+`;
+
+export const AssetIcon = styled.img`
+	width: 40px;
+	height: 40px;
+`;

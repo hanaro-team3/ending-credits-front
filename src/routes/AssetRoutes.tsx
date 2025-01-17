@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import AssetPage from "../pages/AssetPage/AssetPage";
 import CalculatePage from "../pages/AssetPage/CalculatePage";
+import AssetDetailPage from "../pages/AssetPage/AssetDetailPage";
 
 const AssetRoutes: RouteObject[] = [
   {
@@ -10,6 +11,10 @@ const AssetRoutes: RouteObject[] = [
   {
     path: "/asset/calculate",
     element: <CalculatePage />,
+  },
+  {
+    path: "/asset/detail",
+    element: <AssetDetailPage />,
   },
 ];
 

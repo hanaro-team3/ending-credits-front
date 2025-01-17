@@ -19,7 +19,7 @@ const StatusSection = () => (
 			<styled.StatusContent>
 				<styled.StatusTitle>작성완료</styled.StatusTitle>
 				<styled.StatusDescription>
-					<span className="highlight">사망 후</span>공유대상자에 의해
+					<span className="highlight">사망 후</span>유언집행자에 의해
 					<br />
 					해당 유언장이 공유됩니다.
 				</styled.StatusDescription>
