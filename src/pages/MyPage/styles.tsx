@@ -2,10 +2,14 @@ import styled from "styled-components";
 import { LoginType } from "./types";
 import kakao from "../../images/loginType/kakao.svg";
 import endingCredit from "../../images/loginType/endingCredit.svg";
+import { useNavigate } from "react-router-dom";
+import frontIcon from "../../images/front-icon.png";
 
-export const Container = styled.div`
+export const Container = styled.div<{ $color?: string }>`
   display: flex;
   flex-direction: column;
+  background-color: ${(props) => (props.$color ? props.$color : "")};
+  min-height: 100vh;
   gap: 2rem;
   padding: 1.5rem;
   padding-bottom: 10rem;
@@ -57,6 +61,7 @@ export const Base = styled.div`
 
 export const BaseText = styled.p`
   font-size: 16px;
+  display: block;
 `;
 
 export const Button = styled.img`
@@ -77,3 +82,25 @@ export const LoginTypeBadge = ({ loginType }: LoginType) => {
   };
   return <Badge src={getLoginTypeImage(loginType)}></Badge>;
 };
+
+export const NavigateButton = ({ path }: { path: string }) => {
+  const navigate = useNavigate();
+  const clickHandler = () => {
+    navigate(path);
+  };
+  return <Button src={frontIcon} onClick={clickHandler}></Button>;
+};
+
+export const ModalOpenButton = () => {
+  return <Button src={frontIcon}></Button>;
+};
+
+// 내 정보 확인
+export const InfoRow = styled.div`
+  display: flex;
+  width: 100%;
+  height: 70px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dedfe0;
+`;

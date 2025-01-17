@@ -1,15 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import Header from "../../layout/Header";
 import * as styled from "./styles";
-import frontIcon from "../../images/front-icon.png";
-
-const FrontButton = ({ path }: { path: string }) => {
-  const navigate = useNavigate();
-  const clickHandler = () => {
-    navigate(path);
-  };
-  return <styled.Button src={frontIcon} onClick={clickHandler}></styled.Button>;
-};
+import Navbar from "../../layout/Navbar";
 
 export default function MyPage() {
   return (
@@ -26,7 +17,7 @@ export default function MyPage() {
         </styled.LabelContainer>
         <styled.Base>
           <styled.BaseText>내 정보 확인</styled.BaseText>
-          <FrontButton path="/my-page/info"></FrontButton>
+          <styled.NavigateButton path="/my-page/info"></styled.NavigateButton>
         </styled.Base>
       </styled.BaseContainer>
 
@@ -35,11 +26,11 @@ export default function MyPage() {
         <styled.Label>약관</styled.Label>
         <styled.Base>
           <styled.BaseText>이용 약관 보기</styled.BaseText>
-          <FrontButton path="/my-page/terms-of-use"></FrontButton>
+          <styled.NavigateButton path="/my-page/terms-of-use"></styled.NavigateButton>
         </styled.Base>
         <styled.Base>
           <styled.BaseText>개인정보처리방침</styled.BaseText>
-          <FrontButton path="/my-page/privacy-policy"></FrontButton>
+          <styled.NavigateButton path="/my-page/privacy-policy"></styled.NavigateButton>
         </styled.Base>
       </styled.BaseContainer>
 
@@ -48,9 +39,10 @@ export default function MyPage() {
         <styled.Label>서비스 이용</styled.Label>
         <styled.Base>
           <styled.BaseText>서비스 탈퇴하기</styled.BaseText>
-          <FrontButton path="/login"></FrontButton>
+          <styled.NavigateButton path="/login"></styled.NavigateButton>
         </styled.Base>
       </styled.BaseContainer>
+      <Navbar />
     </styled.Container>
   );
 }
