@@ -22,8 +22,9 @@ export const LabelContainer = styled.div`
   align-items: center;
 `;
 
-export const FlexContainer = styled.div`
+export const FlexContainer = styled.div<{$column?: boolean}>`
   display: flex;
+  flex-direction: ${(props) => props.$column ? "column": "row"};
   align-items: center;
   gap: 15px;
 `;
@@ -59,9 +60,10 @@ export const Base = styled.div`
   padding-right: 7%;
 `;
 
-export const BaseText = styled.p`
+export const BaseText = styled.p<{ $bold?: boolean }>`
   font-size: 16px;
   display: block;
+  font-weight: ${(props) => (props.$bold ? "bold" : "normal")};
 `;
 
 export const Button = styled.img`

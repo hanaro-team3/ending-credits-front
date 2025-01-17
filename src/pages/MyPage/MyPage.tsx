@@ -1,6 +1,6 @@
 import Header from "../../layout/Header";
-import * as styled from "./styles";
 import Navbar from "../../layout/Navbar";
+import * as styled from "./styles";
 
 export default function MyPage() {
   return (
