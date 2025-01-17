@@ -4,7 +4,7 @@ import closeicon from "../../../images/close-icon.png";
 import { useState } from "react";
 
 //pages
-import InitialPage from "../pages/InitialPage"; // 초기 페이지
+import InitialPage from "./InitialPage"; // 초기 페이지
 import ProfileViewPage from "../pages/ProfileViewPage"; //페이지 1 - 인적 정보 조회
 import UploadOrCameraPage from "../pages/UploadOrCameraPage"; //페이지 2 - 앨범 or 촬영
 import WillSamplePage from "../pages/WillSamplePage"; //페이지 3 - 유언장 예시
@@ -14,6 +14,7 @@ import SetPersonPage from "../pages/SetPersonPage"; //페이지 6 - 유언 집�
 import ShareTimePage from "../pages/ShareTimePage"; // 페이지 7 - 내용 공유 시점 설정
 import WillPage from "../pages/WillPage"; // 페이지 8 - 유언장 완성
 import CameraPage from "../pages/CameraPage"; // 페이지 10 - 사진 촬영
+import Header from "../components/Header";
 
 interface FormData {
 	// Page 1 data
@@ -35,14 +36,14 @@ interface FormData {
 	shareTimingChoice: "anytime" | "sickness" | "death" | null;
 }
 
-const Header = () => (
-	<styled.HeaderContainer>
-		<span>사진 업로드</span>
-		<Link to="/inheritance" style={{ textDecoration: "none" }}>
-			<styled.CloseButton src={closeicon} />
-		</Link>
-	</styled.HeaderContainer>
-);
+// const Header = () => (
+// 	<styled.HeaderContainer>
+// 		<span>사진 업로드</span>
+// 		<Link to="/inheritance" style={{ textDecoration: "none" }}>
+// 			<styled.CloseButton src={closeicon} />
+// 		</Link>
+// 	</styled.HeaderContainer>
+// );
 
 function UploadPhotoPage() {
 	const [currentPage, setCurrentPage] = useState(0);

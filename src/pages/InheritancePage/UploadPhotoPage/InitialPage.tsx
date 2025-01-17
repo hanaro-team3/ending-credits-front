@@ -1,6 +1,6 @@
 import React from "react";
 import BlueButton from "../../../ui/BlueBtn";
-import * as styled from "../UploadPhotoPage/styles";
+import * as styled from "./styles";
 
 interface InitialPageProps {
 	onStartUpload: () => void;

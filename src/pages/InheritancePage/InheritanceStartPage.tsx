@@ -25,19 +25,25 @@ const SelectSection = () => (
 				style={{ width: "76px", height: "76px", marginLeft: "41px" }}
 			/>
 		</styled.SelectDiv>
-		<styled.SelectDiv>
-			<styled.SelectDivLeft>
-				<styled.SelectDivTitle>녹음하기</styled.SelectDivTitle>
-				<styled.SelectDivSub>
-					준비된 프롬프트에 맞춰 <br /> 천천히 따라 읽어주세요.
-				</styled.SelectDivSub>
-			</styled.SelectDivLeft>
-			<styled.SelectDivImg
-				src={record}
-				style={{ width: "62px", height: "62px", marginLeft: "67px" }}
-			/>
-		</styled.SelectDiv>
-		<Link to="/inheritance-photo" style={{ textDecoration: "none" }}>
+		<Link to="/inheritance/record" style={{ textDecoration: "none" }}>
+			<styled.SelectDiv>
+				<styled.SelectDivLeft>
+					<styled.SelectDivTitle>녹음하기</styled.SelectDivTitle>
+					<styled.SelectDivSub>
+						준비된 프롬프트에 맞춰 <br /> 천천히 따라 읽어주세요.
+					</styled.SelectDivSub>
+				</styled.SelectDivLeft>
+				<styled.SelectDivImg
+					src={record}
+					style={{
+						width: "62px",
+						height: "62px",
+						marginLeft: "67px",
+					}}
+				/>
+			</styled.SelectDiv>
+		</Link>
+		<Link to="/inheritance/photo" style={{ textDecoration: "none" }}>
 			<styled.SelectDiv>
 				<styled.SelectDivLeft>
 					<styled.SelectDivTitle>사진 업로드</styled.SelectDivTitle>

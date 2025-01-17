@@ -15,6 +15,7 @@ import GuidePage from "./pages/GuidePage/GuidePage";
 import AssetPage from "./pages/AssetPage/AssetPage";
 import InheritancePage from "./pages/InheritancePage/InheritanceStartPage";
 import UploadPhotoPage from "./pages/InheritancePage/UploadPhotoPage/UploadPhotoPage";
+import RecordPage from "./pages/InheritancePage/RecordPage/RecordPage";
 
 function App() {
 	return (
@@ -30,8 +31,12 @@ function App() {
 					<Route path="/asset" element={<AssetPage />} />
 					<Route path="/inheritance" element={<InheritancePage />} />
 					<Route
-						path="/inheritance-photo"
+						path="/inheritance/photo"
 						element={<UploadPhotoPage />}
+					/>
+					<Route
+						path="/inheritance/record"
+						element={<RecordPage />}
 					/>
 				</Routes>
 			</Router>
