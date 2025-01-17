@@ -149,3 +149,28 @@ export const CardColumn = styled.div<{ highlight?: boolean }>`
 		font-weight: ${({ highlight }) => highlight ? 700 : 400};
 	}
 `;
+
+export const InputWrapper = styled.div`
+	position: relative;
+	width: 100%;
+`;
+
+export const Input = styled.input`
+	font-family: "Pretendard";
+	font-size: 15px;
+	border-radius: 12px;
+	border: 1px solid #4792DC;
+	padding: 10px;
+	padding-right: 50px;
+	width: 100%;
+	text-align: right;
+`;
+
+export const InputSuffix = styled.span`
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #666;
+	font-size: 15px;
+`;
