@@ -2,7 +2,7 @@ import Header from "../../layout/Header";
 import Navbar from "../../layout/Navbar";
 import * as styled from "./styles";
 
-export default function MyPage() {
+export default function ProfilePage() {
   return (
     <styled.Container>
       <Header title="내 정보 관리" showClose={true} />
@@ -17,7 +17,7 @@ export default function MyPage() {
         </styled.LabelContainer>
         <styled.Base>
           <styled.BaseText>내 정보 확인</styled.BaseText>
-          <styled.NavigateButton path="/my-page/info"></styled.NavigateButton>
+          <styled.NavigateButton path="/profile/info"></styled.NavigateButton>
         </styled.Base>
       </styled.BaseContainer>
 
@@ -26,11 +26,11 @@ export default function MyPage() {
         <styled.Label>약관</styled.Label>
         <styled.Base>
           <styled.BaseText>이용 약관 보기</styled.BaseText>
-          <styled.NavigateButton path="/my-page/terms-of-use"></styled.NavigateButton>
+          <styled.NavigateButton path="/profile/terms-of-use"></styled.NavigateButton>
         </styled.Base>
         <styled.Base>
           <styled.BaseText>개인정보처리방침</styled.BaseText>
-          <styled.NavigateButton path="/my-page/privacy-policy"></styled.NavigateButton>
+          <styled.NavigateButton path="/profile/privacy-policy"></styled.NavigateButton>
         </styled.Base>
       </styled.BaseContainer>
 

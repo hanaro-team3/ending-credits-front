@@ -11,7 +11,7 @@ export default function InfoPage() {
   );
 
   return (
-    <styled.Container $color="#FFFFFF">
+    <styled.Container $color="white">
       <Header title="내 정보 관리" showClose={true}></Header>
       {/* 약관 */}
       <styled.BaseContainer>

@@ -106,3 +106,29 @@ export const InfoRow = styled.div`
   align-items: center;
   border-bottom: 1px solid #dedfe0;
 `;
+
+// 약관 닫기 버튼
+export const CloseButton = styled.button`
+  width: 100%;
+  height: 60px;
+  background-color: #4792dc;
+  color: white;
+`;
+
+export const CloseButtonContainer = styled.div`
+  width: 100%;
+  height: 140px;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+
+  border-radius: 17px 17px 0 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 22.5px;
+`;

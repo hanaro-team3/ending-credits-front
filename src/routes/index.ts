@@ -3,8 +3,8 @@ import AssetRoutes from "./AssetRoutes";
 import AuthRoutes from "./AuthRoutes";
 import InheritanceRoutes from "./InheritanceRoutes";
 import MainRoutes from "./MainRoutes";
-import MyRoutes from "./MyRoutes";
+import ProfileRoutes from "./ProfileRoutes";
 
-const routes: RouteObject[] = [...AssetRoutes, ...AuthRoutes, ...InheritanceRoutes, ...MainRoutes, ...MyRoutes];
+const routes: RouteObject[] = [...AssetRoutes, ...AuthRoutes, ...InheritanceRoutes, ...MainRoutes, ...ProfileRoutes];
 
 export default routes;
