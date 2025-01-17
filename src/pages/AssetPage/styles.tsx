@@ -3,16 +3,16 @@ import styled from "styled-components";
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 2rem;
-	padding: 1.5rem;
-	padding-bottom: 6rem;
+	gap: 30px;
+	padding: 0 20px;
+	padding-bottom: 100px;
 	min-height: 100vh;
 `;
 
 export const TitleContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 8px;
 `;
 
 export const Title = styled.h2`
@@ -30,7 +30,7 @@ export const CoinImageWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 350px;
+	height: 400px;
 `;
 
 export const MagicButton = styled.button`
@@ -82,8 +82,8 @@ export const TabText = styled.p`
 export const Section = styled.section`
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
-	margin-bottom: 2rem;
+	gap: 15px;
+	margin-bottom: 30px;
 `;
 
 export const SectionHeader = styled.div`
@@ -126,7 +126,7 @@ export const GridItem = styled.div`
 export const RegisterContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: 15px;
 	padding-bottom: 80px;
 	position: relative;
 	min-height: 100%;
@@ -134,8 +134,18 @@ export const RegisterContainer = styled.div`
 
 export const ButtonWrapper = styled.div`
 	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	padding: 1rem 1.5rem;
+	bottom: 40px;
+	left: 20px;
+`;
+
+export const CardColumn = styled.div<{ highlight?: boolean }>`
+	background-color: ${({ highlight }) => highlight ? "rgba(246, 162, 162, 0.15)" : "white"};
+	border-radius: 12px;
+	padding: 24px 16px;
+	display: flex;
+	justify-content: space-between;
+
+	span {
+		font-weight: ${({ highlight }) => highlight ? 700 : 400};
+	}
 `;
