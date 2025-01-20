@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LoginType } from "./types";
+import { LoginType, ModalButtonProps } from "./types";
 import kakao from "../../images/loginType/kakao.svg";
 import endingCredit from "../../images/loginType/endingCredit.svg";
 import { useNavigate } from "react-router-dom";
@@ -93,8 +93,8 @@ export const NavigateButton = ({ path }: { path: string }) => {
   return <Button src={frontIcon} onClick={clickHandler}></Button>;
 };
 
-export const ModalOpenButton = () => {
-  return <Button src={frontIcon}></Button>;
+export const ModalOpenButton = ({ onClick }: ModalButtonProps) => {
+  return <Button src={frontIcon} onClick={onClick}></Button>;
 };
 
 // 내 정보 확인
@@ -133,10 +133,3 @@ export const CloseButtonContainer = styled.div`
   padding: 0 22.5px;
 `;
 
-export const ModalContainer = styled.div`
-  width: 328px;
-  height: 185px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-`;
