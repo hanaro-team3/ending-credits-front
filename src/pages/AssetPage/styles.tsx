@@ -340,6 +340,7 @@ export const AccountBank = styled.p`
 export const AccountRow = styled.div`
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 `;
 
 export const AccountName = styled.p`

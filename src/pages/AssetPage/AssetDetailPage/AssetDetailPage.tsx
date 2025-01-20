@@ -149,6 +149,13 @@ function Cash() {
                 <styled.AccountTitle>보유한 돈</styled.AccountTitle>
                 <styled.AccountList>
                     <styled.AccountItem>
+                        <styled.AccountRow>
+                            <p>50,000,000원</p>
+                            <button>수정</button>
+                        </styled.AccountRow>
+                    </styled.AccountItem>
+
+                    {/* <styled.AccountItem>
                         <styled.AccountBank></styled.AccountBank>
                         <styled.AccountRow>
                             <styled.AccountName></styled.AccountName>
@@ -158,7 +165,7 @@ function Cash() {
                             <styled.AccountNumber></styled.AccountNumber>
                             <styled.AccountReturn></styled.AccountReturn>
                         </styled.AccountRow>
-                    </styled.AccountItem>
+                    </styled.AccountItem> */}
                 </styled.AccountList>
             </styled.AccountSection>
         </>
