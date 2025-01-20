@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LoginType } from "./types";
+import { LoginType, RightArrowButtonProps } from "./types";
 import kakao from "../../images/loginType/kakao.svg";
 import endingCredit from "../../images/loginType/endingCredit.svg";
 import { useNavigate } from "react-router-dom";
@@ -22,9 +22,9 @@ export const LabelContainer = styled.div`
   align-items: center;
 `;
 
-export const FlexContainer = styled.div<{$column?: boolean}>`
+export const FlexContainer = styled.div<{ $column?: boolean }>`
   display: flex;
-  flex-direction: ${(props) => props.$column ? "column": "row"};
+  flex-direction: ${(props) => (props.$column ? "column" : "row")};
   align-items: center;
   gap: 15px;
 `;
@@ -32,6 +32,7 @@ export const FlexContainer = styled.div<{$column?: boolean}>`
 export const LogoutButton = styled.button`
   background-color: transparent;
   font-size: 1rem;
+  color: black;
 `;
 
 export const Label = styled.div<{ $myInfo?: boolean }>`
@@ -66,7 +67,7 @@ export const BaseText = styled.p<{ $bold?: boolean }>`
   font-weight: ${(props) => (props.$bold ? "bold" : "normal")};
 `;
 
-export const Button = styled.img`
+export const ImgButton = styled.img`
   cursor: pointer;
   width: 11px;
   height: 11px;
@@ -90,11 +91,11 @@ export const NavigateButton = ({ path }: { path: string }) => {
   const clickHandler = () => {
     navigate(path);
   };
-  return <Button src={frontIcon} onClick={clickHandler}></Button>;
+  return <ImgButton src={frontIcon} onClick={clickHandler}></ImgButton>;
 };
 
-export const ModalOpenButton = () => {
-  return <Button src={frontIcon}></Button>;
+export const RightArrowButton = ({ onClick }: RightArrowButtonProps) => {
+  return <ImgButton src={frontIcon} onClick={onClick}></ImgButton>;
 };
 
 // 내 정보 확인
@@ -105,4 +106,31 @@ export const InfoRow = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #dedfe0;
+`;
+
+// 큰 버튼
+export const LargeButton = styled.button`
+  width: 100%;
+  height: 60px;
+  border-radius: 12px;
+  background-color: #4792dc;
+  color: white;
+`;
+
+export const LargeButtonContainer = styled.div`
+  width: 100%;
+  height: 140px;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to top, #ffffff 70%, rgba(255, 255, 255, 0));
+
+  border-radius: 17px 17px 0 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 22.5px;
 `;

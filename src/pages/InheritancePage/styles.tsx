@@ -64,6 +64,11 @@ export const SelectDiv = styled.div`
 	justify-content: center;
 
 	margin-top: 24px;
+
+	&:active {
+		background-color: #ebebeb; // 클릭 시 더 어두운 색상
+		border: none;
+	}
 `;
 
 export const SelectDivLeft = styled.div`
