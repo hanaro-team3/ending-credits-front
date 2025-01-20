@@ -7,3 +7,11 @@ export interface BankDataType {
 
 export type BankType = typeof TAB_DATA[number];
 export type BankData = typeof BANK_DATA[number]; 
+
+export interface AssetItemType {
+    color?: string;
+    icon: string;
+    alt: string;
+    label: string;
+    amount: string;
+}

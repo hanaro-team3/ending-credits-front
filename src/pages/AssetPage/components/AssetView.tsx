@@ -20,8 +20,8 @@ export function AssetView() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 <AssetCard label="희망하는 노후 자금" value="8천 2백만원" onClick={() => {navigate("/asset/calculate")}}  />
-                <AssetCard label="보유한 자금" value="6천 2백만원" onClick={() => {navigate("/asset/detail")}} />
-                <AssetCard label="부족한 자금" value="2천만원" highlight />
+                <AssetCard label="보유한 자금" value="6천 2백만원" onClick={() => {navigate("/asset/list")}} />
+                <AssetCard label="부족한 자금" value="2천만원" highlight="red" />
                 <div>
                     <ReactApexChart
                         options={chartData.options}
