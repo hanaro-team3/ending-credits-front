@@ -32,6 +32,7 @@ export const FlexContainer = styled.div<{ $column?: boolean }>`
 export const LogoutButton = styled.button`
   background-color: transparent;
   font-size: 1rem;
+  color: black;
 `;
 
 export const Label = styled.div<{ $myInfo?: boolean }>`

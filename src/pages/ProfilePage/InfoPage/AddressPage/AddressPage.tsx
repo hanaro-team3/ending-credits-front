@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import * as styled from "../../styles";
 import { useNavigate } from "react-router-dom";
+import Header from "../../../../layout/Header";
 
 export default function AddressPage() {
   const navigate = useNavigate();
@@ -17,9 +18,9 @@ export default function AddressPage() {
 
   return (
     <styled.Container $color="white">
+      <Header title=""></Header>
       <styled.BaseText
         style={{
-          marginTop: "10vh",
           fontSize: "24px",
           fontWeight: "bold",
         }}
@@ -34,6 +35,7 @@ export default function AddressPage() {
           borderRadius: "12px",
           height: "47px",
           padding: "5%",
+          backgroundColor: "white",
         }}
         placeholder="도로명+건물번호, 건물명, 지번 입력"
         value={newAddress}

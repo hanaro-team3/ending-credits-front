@@ -53,6 +53,7 @@ const ModalButton = styled.button`
   }
   &:last-child {
     background: #f2f4f5;
+    color: black;
   }
 `;
 
