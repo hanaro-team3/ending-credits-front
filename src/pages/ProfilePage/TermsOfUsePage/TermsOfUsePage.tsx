@@ -48,9 +48,9 @@ const CloseButton = () => {
     }, 280);
   };
   return (
-    <styled.CloseButtonContainer>
-      <styled.CloseButton onClick={handleBack}>닫기</styled.CloseButton>
-    </styled.CloseButtonContainer>
+    <styled.LargeButtonContainer>
+      <styled.LargeButton onClick={handleBack}>닫기</styled.LargeButton>
+    </styled.LargeButtonContainer>
   );
 };
 

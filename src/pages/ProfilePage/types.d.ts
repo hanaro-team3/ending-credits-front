@@ -2,6 +2,6 @@ export type LoginType = {
   loginType: "kakao" | "endingCredit";
 };
 
-export type ModalButtonProps = {
+export type RightArrowButtonProps = {
   onClick: () => void;
 }

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LoginType, ModalButtonProps } from "./types";
+import { LoginType, RightArrowButtonProps } from "./types";
 import kakao from "../../images/loginType/kakao.svg";
 import endingCredit from "../../images/loginType/endingCredit.svg";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +66,7 @@ export const BaseText = styled.p<{ $bold?: boolean }>`
   font-weight: ${(props) => (props.$bold ? "bold" : "normal")};
 `;
 
-export const Button = styled.img`
+export const ImgButton = styled.img`
   cursor: pointer;
   width: 11px;
   height: 11px;
@@ -90,11 +90,11 @@ export const NavigateButton = ({ path }: { path: string }) => {
   const clickHandler = () => {
     navigate(path);
   };
-  return <Button src={frontIcon} onClick={clickHandler}></Button>;
+  return <ImgButton src={frontIcon} onClick={clickHandler}></ImgButton>;
 };
 
-export const ModalOpenButton = ({ onClick }: ModalButtonProps) => {
-  return <Button src={frontIcon} onClick={onClick}></Button>;
+export const RightArrowButton = ({ onClick }: RightArrowButtonProps) => {
+  return <ImgButton src={frontIcon} onClick={onClick}></ImgButton>;
 };
 
 // 내 정보 확인
@@ -107,15 +107,16 @@ export const InfoRow = styled.div`
   border-bottom: 1px solid #dedfe0;
 `;
 
-// 약관 닫기 버튼
-export const CloseButton = styled.button`
+// 큰 버튼
+export const LargeButton = styled.button`
   width: 100%;
   height: 60px;
+  border-radius: 12px;
   background-color: #4792dc;
   color: white;
 `;
 
-export const CloseButtonContainer = styled.div`
+export const LargeButtonContainer = styled.div`
   width: 100%;
   height: 140px;
 
@@ -132,4 +133,3 @@ export const CloseButtonContainer = styled.div`
 
   padding: 0 22.5px;
 `;
-

@@ -53,9 +53,9 @@ export default function ProfilePage() {
         <styled.Label>서비스 이용</styled.Label>
         <styled.Base>
           <styled.BaseText>서비스 탈퇴하기</styled.BaseText>
-          <styled.ModalOpenButton
+          <styled.RightArrowButton
             onClick={openDeleteAccountModal}
-          ></styled.ModalOpenButton>
+          ></styled.RightArrowButton>
         </styled.Base>
       </styled.BaseContainer>
       <Navbar />
