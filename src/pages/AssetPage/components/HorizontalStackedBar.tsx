@@ -1,5 +1,5 @@
 import React from "react";
-import { AssetItemType } from "../../type"
+import { AssetItemType } from "../type"
 
 interface HorizontalStackedBarProps {
   data: AssetItemType[]; // 데이터 배열

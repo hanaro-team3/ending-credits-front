@@ -7,7 +7,7 @@ import { AssetNone } from "./components/AssetNone";
 import { AssetView } from "./components/AssetView";
 
 function AssetPage() {
-    const [hasAssets, setHasAssets] = useState(false);
+    const [hasAssets, setHasAssets] = useState(true);
 
 
     return (

@@ -3,6 +3,7 @@ import AssetPage from "../pages/AssetPage/AssetPage";
 import AssetRegisterPage from "../pages/AssetPage/AssetRegisterPage/AssetRegisterPage";
 import AssetCalculatePage from "../pages/AssetPage/AssetCalculatePage/AssetCalculatePage";
 import AssetDetailPage from "../pages/AssetPage/AssetDetailPage/AssetDetailPage";
+import AssetListPage from "../pages/AssetPage/AssetListPage/AssetListPage";
 
 const AssetRoutes: RouteObject[] = [
   {
@@ -17,7 +18,11 @@ const AssetRoutes: RouteObject[] = [
     element: <AssetCalculatePage />,
   },
   {
-    path: "/asset/detail",
+    path: "/asset/list",
+    element: <AssetListPage />,
+  },
+  {
+    path: "/asset/detail/:label",
     element: <AssetDetailPage />,
   },
 ];

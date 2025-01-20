@@ -96,7 +96,7 @@ function AssetRegisterPage() {
 
             {hasSelectedItems && (
                 <styled.ButtonWrapper>
-                    <BlueButton variant="large" onClick={() => navigate("/asset/detail")}>연결하기</BlueButton>
+                    <BlueButton variant="large" onClick={() => navigate("/asset/list")}>연결하기</BlueButton>
                 </styled.ButtonWrapper>
             )}
         </styled.Container>

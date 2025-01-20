@@ -138,8 +138,8 @@ export const ButtonWrapper = styled.div`
 	left: 20px;
 `;
 
-export const CardColumn = styled.div<{ highlight?: boolean }>`
-	background-color: ${({ highlight }) => highlight ? "rgba(246, 162, 162, 0.15)" : "white"};
+export const CardColumn = styled.div<{ highlight?: string }>`
+	background-color: ${({ highlight }) => highlight=='blue' ? "#4792dc31" : highlight=='red' ? "rgba(246, 162, 162, 0.15)" : "white"};
 	border-radius: 12px;
 	padding: 24px 16px;
 	display: flex;
@@ -212,4 +212,146 @@ export const AssetContainer = styled.div`
 export const AssetIcon = styled.img`
 	width: 30px;
 	height: 30px;
+`;
+
+// AssetDetailPage 스타일
+export const DetailContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 20px;
+	padding-bottom: 100px;
+`;
+
+export const DetailTitle = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 16px;
+
+	h2 {
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	p {
+		font-size: 24px;
+		font-weight: bold;
+		color: ${props => props.theme.colors.primary};
+	}
+`;
+
+export const DetailSection = styled.section`
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+`;
+
+export const DetailCard = styled.div`
+	background-color: white;
+	border-radius: 12px;
+	padding: 16px;
+`;
+
+export const DetailList = styled.ul`
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+`;
+
+export const DetailItem = styled.li`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 0;
+`;
+
+export const DetailItemLeft = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 12px;
+
+	img {
+		width: 32px;
+		height: 32px;
+	}
+
+	p {
+		font-size: 15px;
+	}
+`;
+
+export const DetailItemRight = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	p {
+		font-size: 15px;
+		font-weight: 500;
+	}
+`;
+
+export const ChartContainer = styled.div`
+	margin: 16px 0;
+	
+	.apexcharts-canvas {
+		margin: 0 auto;
+	}
+`;
+
+export const IconWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+export const AccountSection = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+`;
+
+export const AccountTitle = styled.h3`
+	font-size: 16px;
+	font-weight: bold;
+`;
+
+export const AccountList = styled.ul`
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	background-color: white;
+	padding: 16px;
+	border-radius: 12px;
+`;
+
+export const AccountItem = styled.li`
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+`;
+
+export const AccountBank = styled.p`
+	font-size: 13px;
+	color: ${props => props.theme.colors.primary};
+`;
+
+export const AccountRow = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+export const AccountName = styled.p`
+	font-weight: bold;
+`;
+
+export const AccountNumber = styled.p`
+	font-size: 12px;
+	color: #888888;
+`;
+
+export const AccountReturn = styled.p`
+	font-size: 12px;
+	color: #ff4848;
 `;
