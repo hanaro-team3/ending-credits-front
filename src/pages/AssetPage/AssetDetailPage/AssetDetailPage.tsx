@@ -1,64 +1,64 @@
 import * as styled from "../styles";
 import { useNavigate } from "react-router-dom";
-// [import { useChartData } from "./hooks/useBarChartData";
-// import ReactApexChart from "react-apexcharts";
+import { AssetItemType } from "../type";
 
 // components
 import Header from "../../../layout/Header";
 import BlueButton from "../../../ui/BlueBtn";
+import HorizontalStackedBar from "./components/HorizontalStackedBar";
 
 // assets
 import arrow from "../../../assets/icon/arrow.png";
 
-interface AssetItemType {
-    icon: string;
-    alt: string;
-    label: string;
-    amount: string;
-}
-
 const ASSET_DATA: AssetItemType[] = [
     {
+        color: "#c5e2ff",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Classical%20Building.png",
         alt: "Classical Building",
         label: "은행",
-        amount: "100,000,000원"
+        amount: "100000000"
     },
     {
+        color: "#ffa4a4",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Chart%20Increasing.png",
         alt: "Chart Increasing",
         label: "증권",
-        amount: "100,000,000원"
+        amount: "50000000"
     },
     {
+        color: "#fff27f",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png",
         alt: "Coin",
         label: "가상자산",
-        amount: "100,000,000원"
+        amount: "50000000"
     },
     {
+        color: "#9effb8",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Dollar%20Banknote.png",
         alt: "Dollar Banknote",
         label: "현금",
-        amount: "100,000,000원"
+        amount: "50000000"
     },
     {
+        color: "#a5d2ff",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/House%20with%20Garden.png",
         alt: "House with Garden",
         label: "부동산",
-        amount: "100,000,000원"
+        amount: "50000000"
     },
     {
+        color: "#FFCAD4",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Automobile.png",
         alt: "Automobile",
         label: "자동차",
-        amount: "100,000,000원"
+        amount: "50000000"
     },
     {
+        color: "#fadab5",
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Briefcase.png",
         alt: "Briefcase",
         label: "연금",
-        amount: "100,000,000원"
+        amount: "50000000"
     }
 ];
 
@@ -67,7 +67,7 @@ const LOAN_DATA: AssetItemType[] = [
         icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Bank.png",
         alt: "Bank",
         label: "달달대출",
-        amount: "잔액 100,000,000원"
+        amount: "100000000"
     }
 ];
 
@@ -77,11 +77,13 @@ function AssetList({ items, showArrow }: { items: AssetItemType[], showArrow: bo
             {items.map((item, index) => (
                 <styled.AssetItem key={index}>
                     <styled.AssetItemLeft>
-                        <styled.AssetIcon src={item.icon} alt={item.alt} />
+                        <div style={{ backgroundColor: item.color, borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", width: "40px", height: "40px" }}>
+                            <styled.AssetIcon src={item.icon} alt={item.alt} />
+                        </div>
                         <p>{item.label}</p>
                     </styled.AssetItemLeft>
                     <styled.AssetItemRight>
-                        <p>{item.amount}</p>
+                        <p>{Number(item.amount).toLocaleString()}원</p>
                         {showArrow && <img src={arrow} alt="arrow" />}
                     </styled.AssetItemRight>
                 </styled.AssetItem>
@@ -91,7 +93,6 @@ function AssetList({ items, showArrow }: { items: AssetItemType[], showArrow: bo
 }
 
 function AssetDetailPage() {
-    // const { chartData } = useChartData();
     const navigate = useNavigate();
 
     return (
@@ -101,13 +102,7 @@ function AssetDetailPage() {
             <styled.TitleContainer>
                 <styled.SubTitle>총 자산</styled.SubTitle>
                 <styled.Title>100,000,000원</styled.Title>
-                {/* <div>
-                    <ReactApexChart
-                        options={chartData.options}
-                        series={chartData.series}
-                        type="bar"
-                    />
-                </div> */}
+                <HorizontalStackedBar data={ASSET_DATA} width={350} height={25} />
             </styled.TitleContainer>
             
             <styled.AssetContainer>
