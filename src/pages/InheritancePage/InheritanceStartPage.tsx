@@ -13,18 +13,24 @@ const Header = () => (
 
 const SelectSection = () => (
 	<>
-		<styled.SelectDiv>
-			<styled.SelectDivLeft>
-				<styled.SelectDivTitle>클릭하기</styled.SelectDivTitle>
-				<styled.SelectDivSub>
-					준비된 단계에 따라 <br /> 클릭이나 입력을 해주세요.
-				</styled.SelectDivSub>
-			</styled.SelectDivLeft>
-			<styled.SelectDivImg
-				src={click}
-				style={{ width: "76px", height: "76px", marginLeft: "41px" }}
-			/>
-		</styled.SelectDiv>
+		<Link to="/inheritance/click" style={{ textDecoration: "none" }}>
+			<styled.SelectDiv>
+				<styled.SelectDivLeft>
+					<styled.SelectDivTitle>클릭하기</styled.SelectDivTitle>
+					<styled.SelectDivSub>
+						준비된 단계에 따라 <br /> 클릭이나 입력을 해주세요.
+					</styled.SelectDivSub>
+				</styled.SelectDivLeft>
+				<styled.SelectDivImg
+					src={click}
+					style={{
+						width: "76px",
+						height: "76px",
+						marginLeft: "41px",
+					}}
+				/>
+			</styled.SelectDiv>
+		</Link>
 		<Link to="/inheritance/record" style={{ textDecoration: "none" }}>
 			<styled.SelectDiv>
 				<styled.SelectDivLeft>
