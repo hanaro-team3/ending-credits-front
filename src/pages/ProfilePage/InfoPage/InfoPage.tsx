@@ -1,17 +1,17 @@
 import { useState } from "react";
 import Header from "../../../layout/Header";
 import * as styled from "../styles";
+import { useNavigate } from "react-router-dom";
 
 export default function InfoPage() {
+  const navigate = useNavigate();
   const [name, setName] = useState("홍길동");
   const [birthDate, setBirthDate] = useState("1960-11-15");
   const [phoneNumber, setPhoneNumber] = useState("010-1234-5678");
-  const [address, setAddress] = useState(
-    "ㅇㅇ도 ㅇㅇ시 ㅇㅇ구 ㅇㅇ동 ㅇㅇ아파트 ㅇㅇ동 ㅇㅇ호"
-  );
+  const [address, setAddress] = useState("서울 성동구 아차산로 111 2층");
 
   return (
-    <styled.Container $color="#FFFFFF">
+    <styled.Container $color="white">
       <Header title="내 정보 관리" showClose={true}></Header>
       {/* 약관 */}
       <styled.BaseContainer>
@@ -20,7 +20,7 @@ export default function InfoPage() {
           <styled.BaseText>이름</styled.BaseText>
           <styled.FlexContainer>
             <styled.BaseText>{name}</styled.BaseText>
-            <styled.ModalOpenButton></styled.ModalOpenButton>
+            <div style={{ width: "11px" }}></div>
           </styled.FlexContainer>
         </styled.InfoRow>
 
@@ -29,7 +29,7 @@ export default function InfoPage() {
           <styled.BaseText>생년월일</styled.BaseText>
           <styled.FlexContainer>
             <styled.BaseText>{birthDate}</styled.BaseText>
-            <styled.ModalOpenButton></styled.ModalOpenButton>
+            <div style={{ width: "11px" }}></div>
           </styled.FlexContainer>
         </styled.InfoRow>
 
@@ -38,16 +38,18 @@ export default function InfoPage() {
           <styled.BaseText>전화번호</styled.BaseText>
           <styled.FlexContainer>
             <styled.BaseText>{phoneNumber}</styled.BaseText>
-            <styled.ModalOpenButton></styled.ModalOpenButton>
+            <styled.RightArrowButton></styled.RightArrowButton>
           </styled.FlexContainer>
         </styled.InfoRow>
 
         {/* 거주지 */}
         <styled.InfoRow>
           <styled.BaseText>거주지</styled.BaseText>
-          <styled.FlexContainer style={{
-            maxWidth: "70%"
-          }}>
+          <styled.FlexContainer
+            style={{
+              maxWidth: "70%",
+            }}
+          >
             <styled.BaseText
               style={{
                 whiteSpace: "nowrap",
@@ -57,7 +59,7 @@ export default function InfoPage() {
             >
               {address}
             </styled.BaseText>
-            <styled.ModalOpenButton></styled.ModalOpenButton>
+            <styled.RightArrowButton onClick={() => navigate("/profile/address")}></styled.RightArrowButton>
           </styled.FlexContainer>
         </styled.InfoRow>
       </styled.BaseContainer>
