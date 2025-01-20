@@ -2,12 +2,12 @@ import * as styled from "../styles";
 import BlueButton from "../../../ui/BlueBtn";
 import Navbar from "../../../layout/Navbar";
 import coin from "../../../assets/icon/coin.png";
+import { useNavigate } from "react-router-dom";
 
-interface AssetNoneProps {
-    onRegister: () => void;
-}
 
-export function AssetNone({ onRegister }: AssetNoneProps) {
+export function AssetNone() {
+    const navigate = useNavigate();
+
     return (
         <>
             <styled.TitleContainer>
@@ -20,7 +20,7 @@ export function AssetNone({ onRegister }: AssetNoneProps) {
             <styled.CoinImageWrapper>
                 <img src={coin} alt="coin" width={120} />
             </styled.CoinImageWrapper>
-            <BlueButton variant="large" onClick={onRegister}>자산 연결하기</BlueButton>
+            <BlueButton variant="large" onClick={() => navigate("/asset/register")}>자산 연결하기</BlueButton>
             <Navbar />
         </>
     );

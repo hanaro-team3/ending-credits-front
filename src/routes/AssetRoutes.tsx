@@ -1,7 +1,8 @@
 import { RouteObject } from "react-router-dom";
 import AssetPage from "../pages/AssetPage/AssetPage";
-import CalculatePage from "../pages/AssetPage/CalculatePage";
-import AssetDetailPage from "../pages/AssetPage/AssetDetailPage";
+import AssetRegisterPage from "../pages/AssetPage/AssetRegisterPage/AssetRegisterPage";
+import AssetCalculatePage from "../pages/AssetPage/AssetCalculatePage/AssetCalculatePage";
+import AssetDetailPage from "../pages/AssetPage/AssetDetailPage/AssetDetailPage";
 
 const AssetRoutes: RouteObject[] = [
   {
@@ -9,8 +10,11 @@ const AssetRoutes: RouteObject[] = [
     element: <AssetPage />,
   },
   {
+    path: "/asset/register",
+    element: <AssetRegisterPage />,
+  },  {
     path: "/asset/calculate",
-    element: <CalculatePage />,
+    element: <AssetCalculatePage />,
   },
   {
     path: "/asset/detail",

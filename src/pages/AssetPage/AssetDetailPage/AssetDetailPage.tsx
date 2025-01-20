@@ -1,8 +1,14 @@
-import * as styled from "./styles";
-import Header from "../../layout/Header";
-import arrow from "../../assets/icon/arrow.png";
+import * as styled from "../styles";
+import { useNavigate } from "react-router-dom";
 // [import { useChartData } from "./hooks/useBarChartData";
 // import ReactApexChart from "react-apexcharts";
+
+// components
+import Header from "../../../layout/Header";
+import BlueButton from "../../../ui/BlueBtn";
+
+// assets
+import arrow from "../../../assets/icon/arrow.png";
 
 interface AssetItemType {
     icon: string;
@@ -86,10 +92,11 @@ function AssetList({ items, showArrow }: { items: AssetItemType[], showArrow: bo
 
 function AssetDetailPage() {
     // const { chartData } = useChartData();
+    const navigate = useNavigate();
 
     return (
         <styled.Container>
-            <Header title="자산 상세" showClose={false} />
+            <Header title="자산 상세" showClose={true} />
             
             <styled.TitleContainer>
                 <styled.SubTitle>총 자산</styled.SubTitle>
@@ -115,6 +122,10 @@ function AssetDetailPage() {
             <styled.AssetContainer>
                 <AssetList items={LOAN_DATA} showArrow={false} />
             </styled.AssetContainer>
+
+            <BlueButton variant="large" onClick={() => navigate("/asset/register")}>
+                <p>자산 연결 추가하기</p>
+            </BlueButton>
         </styled.Container>
     );
 }

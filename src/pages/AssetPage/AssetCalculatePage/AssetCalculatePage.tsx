@@ -1,12 +1,13 @@
-import * as styled from "./styles";
-
-// components
-import Header from "../../layout/Header";
-import BlueButton from "../../ui/BlueBtn";
+import * as styled from "../styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CalculatePage() {
+// components
+import Header from "../../../layout/Header";
+import BlueButton from "../../../ui/BlueBtn";
+
+
+function AssetCalculatePage() {
     const [total, setTotal] = useState(0);
     const [monthlyExpense, setMonthlyExpense] = useState(0);
     const [retirementAge, setRetirementAge] = useState(0);
@@ -85,4 +86,4 @@ function CalculatePage() {
     );
 }
 
-export default CalculatePage;
+export default AssetCalculatePage;

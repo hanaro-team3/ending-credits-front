@@ -1,14 +1,18 @@
 import * as styled from "../styles";
-import BlueButton from "../../../ui/BlueBtn";
-import magicWand from "../../../assets/icon/magicWand.png";
-import { BANK_DATA, TAB_DATA } from "../constants";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface AssetRegisterProps {
-    onRegister: () => void;
-}
+// components
+import Header from "../../../layout/Header";
+import BlueButton from "../../../ui/BlueBtn";
 
-export function AssetRegister({ onRegister }: AssetRegisterProps) {
+// assets
+import magicWand from "../../../assets/icon/magicWand.png";
+
+// constants
+import { BANK_DATA, TAB_DATA } from "../constants";
+
+function AssetRegisterPage() {
     const [activeTab, setActiveTab] = useState<typeof TAB_DATA[number]>("은행");
     const [selectedItems, setSelectedItems] = useState<Record<string, string[]>>(
         TAB_DATA.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
@@ -45,8 +49,12 @@ export function AssetRegister({ onRegister }: AssetRegisterProps) {
 
     const hasSelectedItems = Object.values(selectedItems).some(bank => bank.length > 0);
 
+    const navigate = useNavigate();
+
     return (
-        <styled.RegisterContainer>
+        <styled.Container>
+            <Header title="자산 연결" showClose={true} />
+
             <styled.MagicButton>
                 <img src={magicWand} alt="요술봉" width={34} />
                 <span>모든 자산을 한 번에 연결해 보세요</span>
@@ -88,9 +96,11 @@ export function AssetRegister({ onRegister }: AssetRegisterProps) {
 
             {hasSelectedItems && (
                 <styled.ButtonWrapper>
-                    <BlueButton variant="large" onClick={onRegister}>연결하기</BlueButton>
+                    <BlueButton variant="large" onClick={() => navigate("/asset/detail")}>연결하기</BlueButton>
                 </styled.ButtonWrapper>
             )}
-        </styled.RegisterContainer>
+        </styled.Container>
     );
 } 
+
+export default AssetRegisterPage;
