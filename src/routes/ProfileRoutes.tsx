@@ -4,6 +4,7 @@ import InfoPage from "../pages/ProfilePage/InfoPage/InfoPage";
 import PrivacyPolicyPage from "../pages/ProfilePage/PrivacyPolicyPage/PrivacyPolicyPage";
 import TermsOfUsePage from "../pages/ProfilePage/TermsOfUsePage/TermsOfUsePage";
 import AddressPage from "../pages/ProfilePage/InfoPage/AddressPage/AddressPage";
+import PhoneNumberPage from "../pages/ProfilePage/InfoPage/PhoneNumberPage/PhoneNumberPage";
 
 const ProfileRoutes: RouteObject[] = [
   {
@@ -23,8 +24,12 @@ const ProfileRoutes: RouteObject[] = [
     element: <TermsOfUsePage />,
   },
   {
-    path: "/profile/address",
+    path: "/profile/info/address",
     element: <AddressPage />,
+  },
+  {
+    path: "/profile/info/phone-number",
+    element: <PhoneNumberPage />,
   },
 ];
 
