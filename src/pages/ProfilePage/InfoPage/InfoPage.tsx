@@ -38,7 +38,7 @@ export default function InfoPage() {
           <styled.BaseText>전화번호</styled.BaseText>
           <styled.FlexContainer>
             <styled.BaseText>{phoneNumber}</styled.BaseText>
-            <styled.RightArrowButton></styled.RightArrowButton>
+            <styled.RightArrowButton onClick={() => navigate("/profile/info/phone-number")}></styled.RightArrowButton>
           </styled.FlexContainer>
         </styled.InfoRow>
 
@@ -59,7 +59,7 @@ export default function InfoPage() {
             >
               {address}
             </styled.BaseText>
-            <styled.RightArrowButton onClick={() => navigate("/profile/address")}></styled.RightArrowButton>
+            <styled.RightArrowButton onClick={() => navigate("/profile/info/address")}></styled.RightArrowButton>
           </styled.FlexContainer>
         </styled.InfoRow>
       </styled.BaseContainer>
