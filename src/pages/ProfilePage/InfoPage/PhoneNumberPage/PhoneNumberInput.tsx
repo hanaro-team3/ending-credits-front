@@ -15,6 +15,8 @@ const Container = styled.div`
 `;
 
 const Select = styled.select`
+  color: black;
+  background-color: white;
   border: 2px solid #4792dc;
   border-radius: 12px 0px 0px 12px;
   padding: 1rem;
@@ -23,6 +25,8 @@ const Select = styled.select`
 `;
 
 const Input = styled.input`
+  color: black;
+  background-color: white;
   border: 2px solid #4792dc;
   border-radius: 0px 12px 12px 0px;
   padding: 1rem;
