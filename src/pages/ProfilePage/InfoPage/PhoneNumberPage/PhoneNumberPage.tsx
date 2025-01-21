@@ -93,6 +93,7 @@ export default function PhoneNumberPage() {
                 fontSize: "24px",
                 fontWeight: "bold",
                 marginTop: "5vh",
+                color: "black",
               }}
             >
               {"인증번호를 입력해 주세요"}
@@ -106,6 +107,7 @@ export default function PhoneNumberPage() {
                 height: "55px",
                 padding: "1rem",
                 backgroundColor: "white",
+                color: "black",
               }}
               placeholder="문자로 수신한 인증번호 입력"
               value={verificationCode}
