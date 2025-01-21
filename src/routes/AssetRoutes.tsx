@@ -4,6 +4,10 @@ import AssetRegisterPage from "../pages/AssetPage/AssetRegisterPage/AssetRegiste
 import AssetCalculatePage from "../pages/AssetPage/AssetCalculatePage/AssetCalculatePage";
 import AssetDetailPage from "../pages/AssetPage/AssetDetailPage/AssetDetailPage";
 import AssetListPage from "../pages/AssetPage/AssetListPage/AssetListPage";
+import ProductPage from "../pages/ProductPage/ProductPage";
+import ProductComparePage from "../pages/ProductPage/ProductComparePage/ProductComparePage";
+import ProductSearch from "../pages/ProductPage/ProductSearch/ProductSearch";
+import ProductDetail from "../pages/ProductPage/ProductDetail/ProductDetail";
 
 const AssetRoutes: RouteObject[] = [
   {
@@ -24,6 +28,22 @@ const AssetRoutes: RouteObject[] = [
   {
     path: "/asset/detail/:label",
     element: <AssetDetailPage />,
+  },
+  {
+    path: "/product",
+    element: <ProductPage />,
+  },
+  {
+    path: "/product/compare",
+    element: <ProductComparePage />,
+  },
+  {
+    path: "/product/search",
+    element: <ProductSearch />,
+  },
+  {
+    path: "/product/detail/:id",
+    element: <ProductDetail />,
   },
 ];
 

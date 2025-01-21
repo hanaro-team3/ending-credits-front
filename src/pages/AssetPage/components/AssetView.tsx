@@ -30,7 +30,7 @@ export function AssetView() {
                     />
                 </div>
 
-                <BlueButton variant="large">투자로 돈 불리기</BlueButton>
+                <BlueButton variant="large" onClick={() => {navigate("/product")}}>투자로 돈 불리기</BlueButton>
             </div>
 
             <Navbar />

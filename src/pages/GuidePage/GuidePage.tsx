@@ -3,6 +3,7 @@ import Header from "../../layout/Header";
 import { useState, useLayoutEffect } from "react";
 import { GuideContent } from "./components/GuideContent";
 import { TabType } from "./types";
+import { Tab, Tabs } from "../../ui/Tab";
 
 // 탭 데이터
 const TAB_DATA = [
@@ -40,17 +41,17 @@ function GuidePage() {
             </styled.TitleContainer>
             
             {/* 탭 섹션 */}
-            <styled.TabContainer>
+            <Tabs>
                 {TAB_DATA.map(({ id, label }) => (
-                    <styled.TabText
+                    <Tab
                         key={id}
-                        className={activeTab === id ? "active" : ""}
+                        id={id}
+                        label={label}
+                        isActive={activeTab === id}
                         onClick={() => setActiveTab(id as TabType)}
-                    >
-                        {label}
-                    </styled.TabText>
+                    />
                 ))}
-            </styled.TabContainer>
+            </Tabs>
 
             {/* 컨텐츠 섹션 */}
             <styled.ContentWrapper>

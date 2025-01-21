@@ -8,9 +8,11 @@ import logoInline from "../../assets/logo/logoInline.svg";
 import moneyBag from "../../assets/icon/moneyBag.png";
 import book from "../../assets/icon/book.png";
 import plant from "../../assets/icon/plant.png";
-import search from "../../assets/icon/search.png";
 import dove from "../../assets/icon/dove.png";
+
+// components
 import Navbar from "../../layout/Navbar";
+import SearchBar from  "../../ui/SearchBar"
 
 const StatusSection = () => (
 	<styled.Section>
@@ -46,17 +48,6 @@ const AssetSection = () => {
 		</styled.AssetSection>
 	);
 };
-
-const SearchBar = () => (
-	<styled.SearchBarWrapper>
-		<styled.SearchBar name="search" placeholder="궁금한 내용을 검색해 보세요!" />
-		<styled.SearchIcon
-			src={search}
-			alt="검색"
-			onClick={() => console.log("검색 실행")}
-		/>
-	</styled.SearchBarWrapper>
-);
 
 const CarouselSection = () => (
 	<styled.Carousel>
