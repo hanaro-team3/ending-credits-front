@@ -174,135 +174,6 @@ interface InheritorModalProps {
 	onSubmit: (data: { name: string; relation: string }) => void;
 }
 
-// const InheritorModal: React.FC<InheritorModalProps> = ({
-// 	isOpen,
-// 	onClose,
-// 	onSubmit,
-// }) => {
-// 	const [name, setName] = useState("");
-// 	const [relation, setRelation] = useState("");
-// 	const submitButtonRef = useRef<HTMLButtonElement>(null);
-// 	const [isSubmitting, setIsSubmitting] = useState(false);
-
-// 	useEffect(() => {
-// 		if (!isOpen) {
-// 			setName("");
-// 			setRelation("");
-// 			setIsSubmitting(false);
-// 		}
-// 	}, [isOpen]);
-
-// 	const handleSubmit = (e: React.MouseEvent | React.TouchEvent) => {
-// 		e.preventDefault();
-
-// 		// 중복 제출 방지
-// 		if (isSubmitting) return;
-
-// 		if (name && relation) {
-// 			setIsSubmitting(true);
-// 			onSubmit({ name, relation });
-// 			onClose();
-// 		}
-// 	};
-
-// 	// 터치 이벤트 시작 시 시각적 피드백
-// 	const handleTouchStart = (e: React.TouchEvent) => {
-// 		e.preventDefault();
-// 		if (submitButtonRef.current) {
-// 			submitButtonRef.current.style.opacity = "0.8";
-// 		}
-// 	};
-
-// 	// 터치 이벤트 종료 시 시각적 피드백 복구
-// 	const handleTouchEnd = (e: React.TouchEvent) => {
-// 		e.preventDefault();
-// 		if (submitButtonRef.current) {
-// 			submitButtonRef.current.style.opacity = "1";
-// 		}
-// 		handleSubmit(e);
-// 	};
-
-// 	// 터치 이벤트 취소 시 시각적 피드백 복구
-// 	const handleTouchCancel = () => {
-// 		if (submitButtonRef.current) {
-// 			submitButtonRef.current.style.opacity = "1";
-// 		}
-// 	};
-
-// 	// 모달 오버레이 클릭 시 닫기
-// 	const handleOverlayClick = (e: React.MouseEvent) => {
-// 		if (e.target === e.currentTarget) {
-// 			onClose();
-// 		}
-// 	};
-
-// 	if (!isOpen) return null;
-
-// 	return (
-// 		<styled.ModalOverlay onClick={handleOverlayClick}>
-// 			<styled.ModalContent onClick={(e) => e.stopPropagation()}>
-// 				<styled.ModalTitle>상속인 선택</styled.ModalTitle>
-// 				<styled.InheritorForm>
-// 					<div
-// 						style={{
-// 							display: "flex",
-// 							justifyContent: "flex-start",
-// 							alignItems: "center",
-// 							marginBottom: "20px",
-// 						}}
-// 					>
-// 						<styled.FormLabel>관계 :</styled.FormLabel>
-// 						<styled.FormSelect
-// 							value={relation}
-// 							onChange={(e) => setRelation(e.target.value)}
-// 						>
-// 							<option value="" disabled>
-// 								관계를 선택해 주세요.
-// 							</option>
-// 							<option value="spouse">배우자</option>
-// 							<option value="parents">부모</option>
-// 							<option value="children">자녀</option>
-// 							<option value="legalHeirs">법정상속인</option>
-// 							<option value="nonHeirs">비상속인(유증)</option>
-// 							<option value="donation">
-// 								국가 등에 기부(유증)
-// 							</option>
-// 							<option value="establishment">
-// 								공익 법인 설립(출연)
-// 							</option>
-// 						</styled.FormSelect>
-// 					</div>
-// 					<div
-// 						style={{
-// 							display: "flex",
-// 							justifyContent: "flex-start",
-// 							alignItems: "center",
-// 						}}
-// 					>
-// 						<styled.FormLabel>성함 :</styled.FormLabel>
-// 						<styled.FormInput
-// 							placeholder="상속인의 이름을 입력하세요"
-// 							value={name}
-// 							onChange={(e) => setName(e.target.value)}
-// 						/>
-// 					</div>
-// 					<styled.SubmitButton
-// 						ref={submitButtonRef}
-// 						onClick={handleSubmit}
-// 						onTouchStart={handleTouchStart}
-// 						onTouchEnd={handleTouchEnd}
-// 						onTouchCancel={handleTouchCancel}
-// 						type="button"
-// 						disabled={isSubmitting || !name || !relation}
-// 					>
-// 						추가하기
-// 					</styled.SubmitButton>
-// 				</styled.InheritorForm>
-// 			</styled.ModalContent>
-// 		</styled.ModalOverlay>
-// 	);
-// };
-
 const SelectInheritorPage: React.FC<PageProps> = ({
 	onNext,
 	onPrev,
@@ -432,80 +303,59 @@ const SelectInheritorPage: React.FC<PageProps> = ({
 		});
 	};
 
-	const saveInheritorName = (name: string) => {
+	const saveInheritorInfo = (name: string, relation: string) => {
 		try {
-			// 기존 데이터 가져오기
-			const storedData = localStorage.getItem("inheritorNames");
-			let nameFrequency: { [key: string]: number } = {};
+			const storedData = localStorage.getItem("inheritorInfo");
+			let inheritorFrequency: {
+				[key: string]: { relation: string; count: number };
+			} = {};
 
 			if (storedData) {
-				nameFrequency = JSON.parse(storedData);
+				inheritorFrequency = JSON.parse(storedData);
 			}
 
-			// 빈도 수 증가
-			nameFrequency[name] = (nameFrequency[name] || 0) + 1;
+			// Create a unique key combining name and relation
+			const key = `${name}|${relation}`;
 
-			// 저장
+			// Update frequency count and relation
+			inheritorFrequency[key] = {
+				relation: relation,
+				count: (inheritorFrequency[key]?.count || 0) + 1,
+			};
+
 			localStorage.setItem(
-				"inheritorNames",
-				JSON.stringify(nameFrequency)
+				"inheritorInfo",
+				JSON.stringify(inheritorFrequency)
 			);
 		} catch (error) {
 			console.error("Error saving to localStorage:", error);
 		}
 	};
 
-	const getTopInheritorNames = (limit: number = 5): string[] => {
+	const getTopInheritors = (
+		limit: number = 5
+	): Array<{ name: string; relation: string }> => {
 		try {
-			const storedData = localStorage.getItem("inheritorNames");
+			const storedData = localStorage.getItem("inheritorInfo");
 			if (!storedData) return [];
 
-			const nameFrequency = JSON.parse(storedData);
+			const inheritorFrequency = JSON.parse(storedData);
 
-			// 빈도수에 따라 정렬하여 상위 N개 반환
-			return Object.entries(nameFrequency)
-				.sort(([, a], [, b]) => (b as number) - (a as number))
+			return Object.entries(inheritorFrequency)
+				.sort(([, a], [, b]) => b.count - a.count)
 				.slice(0, limit)
-				.map(([name]) => name);
+				.map(([key, value]) => {
+					const [name] = key.split("|");
+					return {
+						name: name,
+						relation: value.relation,
+					};
+				});
 		} catch (error) {
 			console.error("Error reading from localStorage:", error);
 			return [];
 		}
 	};
-
-	// const handleDeleteInheritor = (assetId: string, inheritorId: string) => {
-	// 	setInheritanceInfo((prev) => {
-	// 		const asset = prev[assetId];
-	// 		const remainingInheritors = asset.inheritors.filter(
-	// 			(inheritor) => inheritor.id !== inheritorId
-	// 		);
-
-	// 		// 남은 상속인들의 비율을 균등하게 재조정
-	// 		const updatedInheritors = remainingInheritors.map((inheritor) => ({
-	// 			...inheritor,
-	// 			ratio:
-	// 				remainingInheritors.length > 0
-	// 					? Number((100 / remainingInheritors.length).toFixed(1))
-	// 					: 0,
-	// 		}));
-
-	// 		const updatedInfo = {
-	// 			...prev,
-	// 			[assetId]: {
-	// 				...asset,
-	// 				inheritors: updatedInheritors,
-	// 			},
-	// 		};
-
-	// 		// FormData도 업데이트
-	// 		setFormData((prevFormData) => ({
-	// 			...prevFormData,
-	// 			inheritanceInfo: updatedInfo,
-	// 		}));
-
-	// 		return updatedInfo;
-	// 	});
-	// };
 
 	const handleDeleteInheritor = (assetId: string, inheritorId: string) => {
 		setInheritanceInfo((prev) => {
@@ -533,6 +383,22 @@ const SelectInheritorPage: React.FC<PageProps> = ({
 		});
 	};
 
+	const relationMapping = {
+		spouse: "배우자",
+		parents: "부모",
+		children: "자녀",
+		legalHeirs: "법정상속인",
+		donation: "국가 등에 기부(유증)",
+	};
+
+	// 관계 코드를 한글로 변환하는 함수
+	const getRelationInKorean = (relationCode: string): string => {
+		return (
+			relationMapping[relationCode as keyof typeof relationMapping] ||
+			relationCode
+		);
+	};
+
 	const InheritorModal: React.FC<InheritorModalProps> = ({
 		isOpen,
 		onClose,
@@ -540,13 +406,15 @@ const SelectInheritorPage: React.FC<PageProps> = ({
 	}) => {
 		const [name, setName] = useState("");
 		const [relation, setRelation] = useState("");
-		const [topNames, setTopNames] = useState<string[]>([]);
+		const [topInheritors, setTopInheritors] = useState<
+			Array<{ name: string; relation: string }>
+		>([]);
 		const submitButtonRef = useRef<HTMLButtonElement>(null);
 		const [isSubmitting, setIsSubmitting] = useState(false);
 
 		useEffect(() => {
 			if (isOpen) {
-				setTopNames(getTopInheritorNames(5));
+				setTopInheritors(getTopInheritors(5));
 			}
 		}, [isOpen]);
 
@@ -565,14 +433,18 @@ const SelectInheritorPage: React.FC<PageProps> = ({
 
 			if (name && relation) {
 				setIsSubmitting(true);
-				saveInheritorName(name);
+				saveInheritorInfo(name, relation);
 				onSubmit({ name, relation });
 				onClose();
 			}
 		};
 
-		const handleSuggestionClick = (suggestedName: string) => {
+		const handleSuggestionClick = (
+			suggestedName: string,
+			suggestedRelation: string
+		) => {
 			setName(suggestedName);
+			setRelation(suggestedRelation);
 		};
 
 		if (!isOpen) return null;
@@ -602,12 +474,8 @@ const SelectInheritorPage: React.FC<PageProps> = ({
 								<option value="parents">부모</option>
 								<option value="children">자녀</option>
 								<option value="legalHeirs">법정상속인</option>
-								<option value="nonHeirs">비상속인(유증)</option>
 								<option value="donation">
 									국가 등에 기부(유증)
-								</option>
-								<option value="establishment">
-									공익 법인 설립(출연)
 								</option>
 							</styled.FormSelect>
 						</div>
@@ -626,17 +494,24 @@ const SelectInheritorPage: React.FC<PageProps> = ({
 							/>
 						</div>
 
-						{topNames.length > 0 && (
+						{topInheritors.length > 0 && (
 							<styled.SuggestionsContainer>
-								{topNames.map((suggestedName) => (
+								{topInheritors.map((inheritor) => (
 									<styled.SuggestionChip
-										key={suggestedName}
+										key={`${inheritor.name}-${inheritor.relation}`}
 										onClick={() =>
-											handleSuggestionClick(suggestedName)
+											handleSuggestionClick(
+												inheritor.name,
+												inheritor.relation
+											)
 										}
 										type="button"
 									>
-										{suggestedName}
+										{`${
+											inheritor.name
+										} (${getRelationInKorean(
+											inheritor.relation
+										)})`}
 									</styled.SuggestionChip>
 								))}
 							</styled.SuggestionsContainer>

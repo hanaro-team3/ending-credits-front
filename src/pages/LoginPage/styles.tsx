@@ -181,3 +181,100 @@ export const ForgotPassword = styled.div`
 		text-decoration: underline;
 	}
 `;
+
+//-------------------------------------------------
+export const TopContainer = styled.div`
+	width: 330px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+
+	margin-top: 101px;
+`;
+
+export const SimpleLoginTitle = styled.div`
+	font-family: "Pretendard";
+	font-weight: 800;
+	font-size: 24px;
+	color: #2b2b2b;
+
+	margin-top: 23px;
+`;
+
+export const SimpleLoginIcon = styled.div`
+	width: 53px;
+	height: 53px;
+
+	background: #e9e9e9;
+	border-radius: 50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+export const PasswordDiv = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 36px;
+`;
+
+// export const PasswordCircle = styled.div`
+// 	width: 11px;
+// 	height: 11px;
+
+// 	background: #e9e9e9;
+// 	border-radius: 50%;
+// 	margin-right: 16px;
+// `;
+
+export const PasswordCircle = styled.div<{ filled?: boolean }>`
+	background: ${(props) => (props.filled ? "#4792DC" : "#e9e9e9")};
+	width: 11px;
+	height: 11px;
+
+	border-radius: 50%;
+	margin-right: 16px;
+`;
+
+export const KeypadContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 15px;
+	width: 330px;
+	margin-top: 80px;
+	place-items: center;
+
+	margin-bottom: 100px;
+`;
+
+export const KeypadButton = styled.button`
+	height: 65px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: "Pretendard";
+	font-size: 28px;
+	font-weight: 400;
+	color: #2b2b2b;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0 30px;
+
+	&:active {
+		opacity: 0.7;
+	}
+`;
+
+export const SpecialButton = styled(KeypadButton)`
+	font-size: 20px;
+`;
+
+export const FaceIdBtn = styled.img`
+	width: 26px;
+	height: auto;
+`;
