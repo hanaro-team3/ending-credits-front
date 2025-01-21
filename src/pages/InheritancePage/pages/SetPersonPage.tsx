@@ -57,9 +57,7 @@ const SetPersonPage: React.FC<PageProps> = ({
 					<option value="parents">부모</option>
 					<option value="children">자녀</option>
 					<option value="legalHeirs">법정상속인</option>
-					<option value="nonHeirs">비상속인(유증)</option>
 					<option value="donation">국가 등에 기부(유증)</option>
-					<option value="establishment">공익 법인 설립(출연)</option>
 				</styled.Page6Select>
 			</styled.Page6InputDiv>
 		</styled.TopContainer>
