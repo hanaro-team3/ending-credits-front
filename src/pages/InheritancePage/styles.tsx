@@ -100,3 +100,85 @@ export const SelectDivImg = styled.img`
 	width: auto;
 	height: 100%;
 `;
+
+export const PercentDiv = styled.div`
+	width: 73px;
+	height: 73px;
+	border-radius: 50%;
+	border: 10px solid #4792dc;
+	margin-left: 49px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	font-family: "Pretendard";
+	font-weight: 700;
+	font-size: 16px;
+	color: #4792dc;
+`;
+
+export const ContactDiv = styled.div`
+	width: 338px;
+	height: 65px;
+	background-color: #5082a9;
+	border-radius: 14px;
+	margin-top: 14px;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+`;
+
+export const ContactDivImg = styled.img`
+	width: 34px;
+	height: 34px;
+	margin-left: 23px;
+`;
+
+export const ContactDivText = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: center;
+	margin-left: 18px;
+`;
+
+export const ContactDivTextTitle = styled.div`
+	font-family: "Pretendard";
+	font-weight: 700;
+	font-size: 16px;
+	color: #ffffff;
+	text-align: left;
+`;
+
+export const ContactDivTextSub = styled.div`
+	font-family: "Pretendard";
+	font-weight: 400;
+	font-size: 11px;
+	color: #ffffff;
+	text-align: left;
+`;
+
+export const ContactDivButton = styled.img`
+	width: 14px;
+	height: 14px;
+	margin-left: 65px;
+`;
+
+export const SubTitle = styled.div`
+	width: 352px;
+	font-family: "Pretendard";
+	font-weight: 400;
+	font-size: 14px;
+	color: #2b2b2b;
+	text-align: left;
+	margin-top: 11px;
+	line-height: 1.2;
+`;
+
+export const BookImg = styled.img`
+	width: 55px;
+	height: auto;
+	margin-left: 30px;
+`;
