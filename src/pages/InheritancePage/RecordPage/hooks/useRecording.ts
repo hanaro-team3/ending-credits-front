@@ -8,6 +8,7 @@
 // 	const [isRecording, setIsRecording] = useState<boolean>(false);
 // 	const [showNav, setShowNav] = useState<boolean>(false);
 // 	const [error, setError] = useState<string>("");
+// 	const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
 
 // 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 // 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -18,18 +19,9 @@
 // 	const chunksRef = useRef<Blob[]>([]);
 
 // 	useEffect(() => {
+// 		checkMicrophonePermission();
 // 		return () => {
-// 			if (animationFrameRef.current) {
-// 				cancelAnimationFrame(animationFrameRef.current);
-// 			}
-// 			if (mediaStreamRef.current) {
-// 				mediaStreamRef.current
-// 					.getTracks()
-// 					.forEach((track) => track.stop());
-// 			}
-// 			if (audioContextRef.current) {
-// 				audioContextRef.current.close();
-// 			}
+// 			cleanup();
 // 		};
 // 	}, []);
 
@@ -38,6 +30,32 @@
 // 			requestAnimationFrame(draw);
 // 		}
 // 	}, [isRecording]);
+
+// 	const checkMicrophonePermission = async () => {
+// 		try {
+// 			const stream = await navigator.mediaDevices.getUserMedia({
+// 				audio: true,
+// 			});
+// 			stream.getTracks().forEach((track) => track.stop());
+// 			setPermissionGranted(true);
+// 			setError("");
+// 		} catch (err) {
+// 			setPermissionGranted(false);
+// 			setError("마이크 접근 권한이 필요합니다.");
+// 		}
+// 	};
+
+// 	const cleanup = () => {
+// 		if (animationFrameRef.current) {
+// 			cancelAnimationFrame(animationFrameRef.current);
+// 		}
+// 		if (mediaStreamRef.current) {
+// 			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+// 		}
+// 		if (audioContextRef.current) {
+// 			audioContextRef.current.close();
+// 		}
+// 	};
 
 // 	const draw = () => {
 // 		const analyser = analyserRef.current;
@@ -83,96 +101,6 @@
 // 		animationFrameRef.current = requestAnimationFrame(draw);
 // 	};
 
-// 	const convertToMp3 = async (audioData: Blob): Promise<Blob> => {
-// 		const audioContext = new AudioContext();
-// 		const arrayBuffer = await audioData.arrayBuffer();
-// 		const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-// 		const offlineContext = new OfflineAudioContext({
-// 			numberOfChannels: audioBuffer.numberOfChannels,
-// 			length: audioBuffer.length,
-// 			sampleRate: audioBuffer.sampleRate,
-// 		});
-
-// 		const source = offlineContext.createBufferSource();
-// 		source.buffer = audioBuffer;
-// 		source.connect(offlineContext.destination);
-// 		source.start();
-
-// 		const renderedBuffer = await offlineContext.startRendering();
-
-// 		// Convert AudioBuffer to WAV format
-// 		const wav = audioBufferToWav(renderedBuffer);
-
-// 		// Return as MP3 blob
-// 		return new Blob([wav], { type: "audio/mp3" });
-// 	};
-
-// 	const audioBufferToWav = (buffer: AudioBuffer): ArrayBuffer => {
-// 		const interleaved = interleaveChannels(buffer);
-// 		const dataView = createWavHeader(buffer, interleaved.length);
-// 		const wavBytes = new Uint8Array(
-// 			dataView.buffer.byteLength + interleaved.length
-// 		);
-// 		wavBytes.set(new Uint8Array(dataView.buffer), 0);
-// 		wavBytes.set(interleaved, dataView.buffer.byteLength);
-// 		return wavBytes.buffer;
-// 	};
-
-// 	const interleaveChannels = (buffer: AudioBuffer): Float32Array => {
-// 		const numberOfChannels = buffer.numberOfChannels;
-// 		const length = buffer.length * numberOfChannels;
-// 		const result = new Float32Array(length);
-
-// 		for (let i = 0; i < buffer.length; i++) {
-// 			for (let channel = 0; channel < numberOfChannels; channel++) {
-// 				result[i * numberOfChannels + channel] =
-// 					buffer.getChannelData(channel)[i];
-// 			}
-// 		}
-
-// 		return result;
-// 	};
-
-// 	const createWavHeader = (
-// 		buffer: AudioBuffer,
-// 		dataLength: number
-// 	): DataView => {
-// 		const header = new ArrayBuffer(44);
-// 		const view = new DataView(header);
-
-// 		// RIFF chunk descriptor
-// 		writeString(view, 0, "RIFF");
-// 		view.setUint32(4, 36 + dataLength, true);
-// 		writeString(view, 8, "WAVE");
-
-// 		// fmt sub-chunk
-// 		writeString(view, 12, "fmt ");
-// 		view.setUint32(16, 16, true);
-// 		view.setUint16(20, 1, true);
-// 		view.setUint16(22, buffer.numberOfChannels, true);
-// 		view.setUint32(24, buffer.sampleRate, true);
-// 		view.setUint32(28, buffer.sampleRate * 4, true);
-// 		view.setUint16(32, 4, true);
-// 		view.setUint16(34, 16, true);
-
-// 		// data sub-chunk
-// 		writeString(view, 36, "data");
-// 		view.setUint32(40, dataLength, true);
-
-// 		return view;
-// 	};
-
-// 	const writeString = (
-// 		view: DataView,
-// 		offset: number,
-// 		string: string
-// 	): void => {
-// 		for (let i = 0; i < string.length; i++) {
-// 			view.setUint8(offset + i, string.charCodeAt(i));
-// 		}
-// 	};
-
 // 	const startRecording = async () => {
 // 		try {
 // 			const stream = await navigator.mediaDevices.getUserMedia({
@@ -182,11 +110,12 @@
 // 					autoGainControl: true,
 // 				},
 // 			});
+
+// 			setPermissionGranted(true);
+// 			setError("");
 // 			mediaStreamRef.current = stream;
 
-// 			const mediaRecorder = new MediaRecorder(stream, {
-// 				mimeType: "audio/webm;codecs=opus",
-// 			});
+// 			const mediaRecorder = new MediaRecorder(stream);
 // 			mediaRecorderRef.current = mediaRecorder;
 // 			chunksRef.current = [];
 
@@ -196,18 +125,12 @@
 // 				}
 // 			});
 
-// 			mediaRecorder.addEventListener("stop", async () => {
+// 			mediaRecorder.addEventListener("stop", () => {
 // 				const audioBlob = new Blob(chunksRef.current, {
 // 					type: "audio/webm",
 // 				});
-
-// 				try {
-// 					const mp3Blob = await convertToMp3(audioBlob);
-// 					onRecordingComplete(mp3Blob);
-// 				} catch (err) {
-// 					console.error("Error converting to MP3:", err);
-// 					setError("오디오 변환 중 오류가 발생했습니다.");
-// 				}
+// 				onRecordingComplete(audioBlob);
+// 				setShowNav(true);
 // 			});
 
 // 			const audioContext = new AudioContext();
@@ -224,8 +147,9 @@
 // 			setIsRecording(true);
 // 			setShowNav(false);
 // 		} catch (err) {
-// 			setError("마이크 접근 권한이 필요합니다.");
 // 			console.error("Error accessing microphone:", err);
+// 			setPermissionGranted(false);
+// 			setError("마이크 접근 권한이 필요합니다.");
 // 		}
 // 	};
 
@@ -236,26 +160,8 @@
 // 		) {
 // 			mediaRecorderRef.current.stop();
 // 		}
-// 		if (mediaStreamRef.current) {
-// 			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-// 		}
-// 		if (animationFrameRef.current) {
-// 			cancelAnimationFrame(animationFrameRef.current);
-// 		}
-// 		if (audioContextRef.current) {
-// 			audioContextRef.current.close();
-// 		}
-
+// 		cleanup();
 // 		setIsRecording(false);
-// 		setShowNav(true);
-
-// 		const canvas = canvasRef.current;
-// 		if (canvas) {
-// 			const ctx = canvas.getContext("2d");
-// 			if (ctx) {
-// 				ctx.clearRect(0, 0, canvas.width, canvas.height);
-// 			}
-// 		}
 // 	};
 
 // 	const handleRecordClick = () => {
@@ -272,6 +178,7 @@
 // 		error,
 // 		canvasRef,
 // 		handleRecordClick,
+// 		permissionGranted,
 // 	};
 // };
 
@@ -285,7 +192,6 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 	const [isRecording, setIsRecording] = useState<boolean>(false);
 	const [showNav, setShowNav] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
-	const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
 
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -295,87 +201,73 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 	const mediaStreamRef = useRef<MediaStream | null>(null);
 	const chunksRef = useRef<Blob[]>([]);
 
-	useEffect(() => {
-		checkMicrophonePermission();
-		return () => {
-			cleanup();
-		};
-	}, []);
-
-	useEffect(() => {
-		if (isRecording) {
-			requestAnimationFrame(draw);
+	// Browser compatibility check for MIME types
+	const getSupportedMimeType = () => {
+		if (MediaRecorder.isTypeSupported("audio/mpeg")) {
+			return "audio/mpeg";
 		}
-	}, [isRecording]);
-
-	const checkMicrophonePermission = async () => {
-		try {
-			const stream = await navigator.mediaDevices.getUserMedia({
-				audio: true,
-			});
-			stream.getTracks().forEach((track) => track.stop());
-			setPermissionGranted(true);
-			setError("");
-		} catch (err) {
-			setPermissionGranted(false);
-			setError("마이크 접근 권한이 필요합니다.");
+		if (MediaRecorder.isTypeSupported("audio/mp4")) {
+			return "audio/mp4";
 		}
+		if (MediaRecorder.isTypeSupported("audio/mp3")) {
+			return "audio/mp3";
+		}
+		return "audio/webm"; // Fallback
 	};
 
-	const cleanup = () => {
-		if (animationFrameRef.current) {
-			cancelAnimationFrame(animationFrameRef.current);
-		}
-		if (mediaStreamRef.current) {
-			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-		}
-		if (audioContextRef.current) {
-			audioContextRef.current.close();
-		}
+	const convertToMP3 = async (audioData: Blob): Promise<Blob> => {
+		const audioContext = new (window.AudioContext ||
+			window.webkitAudioContext)();
+		const arrayBuffer = await audioData.arrayBuffer();
+		const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+		const channels = audioBuffer.numberOfChannels;
+		const sampleRate = audioBuffer.sampleRate;
+		const length = audioBuffer.length;
+
+		// Create offline context for processing
+		const offlineContext = new OfflineAudioContext(
+			channels,
+			length,
+			sampleRate
+		);
+		const source = offlineContext.createBufferSource();
+		source.buffer = audioBuffer;
+		source.connect(offlineContext.destination);
+		source.start();
+
+		// Render audio
+		const renderedBuffer = await offlineContext.startRendering();
+
+		// Convert to MP3 format
+		const mp3Data = await encodeMP3(renderedBuffer);
+		return new Blob([mp3Data], { type: "audio/mp3" });
 	};
 
-	const draw = () => {
-		const analyser = analyserRef.current;
-		const canvas = canvasRef.current;
+	const encodeMP3 = async (
+		audioBuffer: AudioBuffer
+	): Promise<ArrayBuffer> => {
+		const channels = audioBuffer.numberOfChannels;
+		const samples = audioBuffer.length;
+		const sampleRate = audioBuffer.sampleRate;
 
-		if (!analyser || !canvas || !isRecording) {
-			return;
-		}
-
-		const ctx = canvas.getContext("2d");
-		if (!ctx) {
-			return;
-		}
-
-		const bufferLength = analyser.frequencyBinCount;
-		const dataArray = new Uint8Array(bufferLength);
-		analyser.getByteTimeDomainData(dataArray);
-
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.fillStyle = "#f2f4f5";
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.lineWidth = 2;
-		ctx.strokeStyle = "#4792dc";
-		ctx.beginPath();
-
-		const sliceWidth = canvas.width / bufferLength;
-		let x = 0;
-
-		for (let i = 0; i < bufferLength; i++) {
-			const v = dataArray[i] / 128.0;
-			const y = (v * canvas.height) / 2;
-
-			if (i === 0) {
-				ctx.moveTo(x, y);
-			} else {
-				ctx.lineTo(x, y);
+		// Create interleaved audio data
+		const interleavedData = new Float32Array(samples * channels);
+		for (let channel = 0; channel < channels; channel++) {
+			const channelData = audioBuffer.getChannelData(channel);
+			for (let i = 0; i < samples; i++) {
+				interleavedData[i * channels + channel] = channelData[i];
 			}
-
-			x += sliceWidth;
 		}
 
-		ctx.stroke();
-		animationFrameRef.current = requestAnimationFrame(draw);
+		// Convert to 16-bit PCM
+		const pcmData = new Int16Array(interleavedData.length);
+		for (let i = 0; i < interleavedData.length; i++) {
+			const s = Math.max(-1, Math.min(1, interleavedData[i]));
+			pcmData[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+		}
+
+		return pcmData.buffer;
 	};
 
 	const startRecording = async () => {
@@ -388,11 +280,13 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 				},
 			});
 
-			setPermissionGranted(true);
-			setError("");
 			mediaStreamRef.current = stream;
+			const mimeType = getSupportedMimeType();
+			const mediaRecorder = new MediaRecorder(stream, {
+				mimeType,
+				audioBitsPerSecond: 128000,
+			});
 
-			const mediaRecorder = new MediaRecorder(stream);
 			mediaRecorderRef.current = mediaRecorder;
 			chunksRef.current = [];
 
@@ -402,15 +296,22 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 				}
 			});
 
-			mediaRecorder.addEventListener("stop", () => {
-				const audioBlob = new Blob(chunksRef.current, {
-					type: "audio/webm",
-				});
-				onRecordingComplete(audioBlob);
-				setShowNav(true);
+			mediaRecorder.addEventListener("stop", async () => {
+				try {
+					const audioBlob = new Blob(chunksRef.current, {
+						type: mimeType,
+					});
+					const mp3Blob = await convertToMP3(audioBlob);
+					onRecordingComplete(mp3Blob);
+					setShowNav(true);
+				} catch (error) {
+					console.error("Error converting to MP3:", error);
+					setError("녹음 변환 중 오류가 발생했습니다.");
+				}
 			});
 
-			const audioContext = new AudioContext();
+			const audioContext = new (window.AudioContext ||
+				window.webkitAudioContext)();
 			audioContextRef.current = audioContext;
 
 			const analyser = audioContext.createAnalyser();
@@ -423,9 +324,9 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 			mediaRecorder.start();
 			setIsRecording(true);
 			setShowNav(false);
+			setError("");
 		} catch (err) {
 			console.error("Error accessing microphone:", err);
-			setPermissionGranted(false);
 			setError("마이크 접근 권한이 필요합니다.");
 		}
 	};
@@ -437,8 +338,25 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 		) {
 			mediaRecorderRef.current.stop();
 		}
-		cleanup();
+		if (mediaStreamRef.current) {
+			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+		}
+		if (animationFrameRef.current) {
+			cancelAnimationFrame(animationFrameRef.current);
+		}
+		if (audioContextRef.current) {
+			audioContextRef.current.close();
+		}
+
 		setIsRecording(false);
+
+		const canvas = canvasRef.current;
+		if (canvas) {
+			const ctx = canvas.getContext("2d");
+			if (ctx) {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+			}
+		}
 	};
 
 	const handleRecordClick = () => {
@@ -455,6 +373,5 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 		error,
 		canvasRef,
 		handleRecordClick,
-		permissionGranted,
 	};
 };
