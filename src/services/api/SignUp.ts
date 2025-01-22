@@ -35,7 +35,7 @@ export const userService = {
 		const queryParams = new URLSearchParams({
 			identifier: data.identifier,
 			password: data.password,
-			loginType: data.loginType, // NORMAL로 변환
+			loginType: data.loginType.toUpperCase(), // NORMAL로 변환
 			birthDate: data.birthDate,
 			phoneNumber: data.phoneNumber,
 			address: data.address || "주소", // 없으면 기본값

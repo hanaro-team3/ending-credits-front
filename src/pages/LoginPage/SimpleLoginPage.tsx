@@ -193,7 +193,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import * as styled from "./styles";
 import backbtn from "../../images/back-icon.png";
 import { EndingCreditLoginProps } from "./types";
-import { userService } from "../../services/api/Signup";
+import { userService } from "../../services/api/SignUp";
 import faceidicon from "../../images/face-id-icon.png";
 import { useLocation, useNavigate } from "react-router-dom";
 
