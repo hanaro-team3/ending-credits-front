@@ -36,11 +36,12 @@ const SelectItem = styled.div`
 	}
 `;
 
-const Select = ({ items }: { items: string[] }) => {
+const Select = ({ items, onSelect }: { items: string[], onSelect?: (item: string) => void }) => {
     const [activeItem, setActiveItem] = useState(0);
 
     const handleClick = (index: number) => {
         setActiveItem(index);
+		onSelect?.(items[index]);
     };
 
     return (

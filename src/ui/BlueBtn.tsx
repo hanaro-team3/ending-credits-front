@@ -44,6 +44,9 @@ const StyledBlueButton = styled.button<StyledButtonProps>`
 	color: white;
 	cursor: pointer;
 	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	&:active {
 		background-color: #306394;
