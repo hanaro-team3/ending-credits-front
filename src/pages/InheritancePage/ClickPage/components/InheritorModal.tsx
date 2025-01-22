@@ -6,18 +6,15 @@ import {
 	getTopInheritors,
 	saveInheritorInfo,
 } from "../utils/inheritorUtils";
+import Modal from "../../../../layout/Modal";
+import BlueButton from "../../../../ui/BlueBtn";
 
-export const InheritorModal: React.FC<InheritorModalProps> = ({
-	isOpen,
-	onClose,
-	onSubmit,
-}) => {
+export function InheritorModal({ isOpen, onClose, onSubmit }: InheritorModalProps) {
 	const [name, setName] = useState("");
 	const [relation, setRelation] = useState("");
 	const [topInheritors, setTopInheritors] = useState<
 		Array<{ name: string; relation: string }>
 	>([]);
-	const submitButtonRef = useRef<HTMLButtonElement>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	useEffect(() => {
@@ -34,15 +31,15 @@ export const InheritorModal: React.FC<InheritorModalProps> = ({
 		}
 	}, [isOpen]);
 
-	const handleSubmit = (e: React.MouseEvent | React.TouchEvent) => {
-		e.preventDefault();
-
+	const handleSubmit = () => {
 		if (isSubmitting) return;
 
 		if (name && relation) {
 			setIsSubmitting(true);
 			saveInheritorInfo(name, relation);
 			onSubmit({ name, relation });
+			setName("");
+			setRelation("");
 			onClose();
 		}
 	};
@@ -55,84 +52,83 @@ export const InheritorModal: React.FC<InheritorModalProps> = ({
 		setRelation(suggestedRelation);
 	};
 
-	if (!isOpen) return null;
-
 	return (
-		<styled.ModalOverlay onClick={onClose}>
-			<styled.ModalContent onClick={(e) => e.stopPropagation()}>
-				<styled.ModalTitle>상속인 선택</styled.ModalTitle>
-				<styled.InheritorForm>
-					<div
-						style={{
-							display: "flex",
-							justifyContent: "flex-start",
-							alignItems: "center",
-							marginBottom: "20px",
-						}}
+		<Modal 
+			isOpen={isOpen} 
+			onClose={onClose}
+			title="상속인 추가"
+		>
+			<styled.InheritorForm>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-start",
+						alignItems: "center",
+						marginBottom: "20px",
+					}}
+				>
+					<styled.FormLabel>관계 :</styled.FormLabel>
+					<styled.FormSelect
+						value={relation}
+						onChange={(e) => setRelation(e.target.value)}
 					>
-						<styled.FormLabel>관계 :</styled.FormLabel>
-						<styled.FormSelect
-							value={relation}
-							onChange={(e) => setRelation(e.target.value)}
-						>
-							<option value="" disabled>
-								관계를 선택해 주세요.
-							</option>
-							<option value="spouse">배우자</option>
-							<option value="parents">부모</option>
-							<option value="children">자녀</option>
-							<option value="legalHeirs">법정상속인</option>
-							<option value="donation">
-								국가 등에 기부(유증)
-							</option>
-						</styled.FormSelect>
-					</div>
-					<div
-						style={{
-							display: "flex",
-							justifyContent: "flex-start",
-							alignItems: "center",
-						}}
-					>
-						<styled.FormLabel>성함 :</styled.FormLabel>
-						<styled.FormInput
-							placeholder="상속인의 이름을 입력하세요"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-						/>
-					</div>
+						<option value="" disabled>
+							관계를 선택해 주세요.
+						</option>
+						<option value="spouse">배우자</option>
+						<option value="parents">부모</option>
+						<option value="children">자녀</option>
+						<option value="legalHeirs">법정상속인</option>
+						<option value="donation">
+							국가 등에 기부(유증)
+						</option>
+					</styled.FormSelect>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-start",
+						alignItems: "center",
+					}}
+				>
+					<styled.FormLabel>성함 :</styled.FormLabel>
+					<styled.FormInput
+						placeholder="상속인의 이름을 입력하세요"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
+				</div>
 
-					{topInheritors.length > 0 && (
-						<styled.SuggestionsContainer>
-							{topInheritors.map((inheritor) => (
-								<styled.SuggestionChip
-									key={`${inheritor.name}-${inheritor.relation}`}
-									onClick={() =>
-										handleSuggestionClick(
-											inheritor.name,
-											inheritor.relation
-										)
-									}
-									type="button"
-								>
-									{`${inheritor.name} (${getRelationInKorean(
+				{topInheritors.length > 0 && (
+					<styled.SuggestionsContainer>
+						{topInheritors.map((inheritor) => (
+							<styled.SuggestionChip
+								key={`${inheritor.name}-${inheritor.relation}`}
+								onClick={() =>
+									handleSuggestionClick(
+										inheritor.name,
 										inheritor.relation
-									)})`}
-								</styled.SuggestionChip>
-							))}
-						</styled.SuggestionsContainer>
-					)}
+									)
+								}
+								type="button"
+							>
+								{`${inheritor.name} (${getRelationInKorean(
+									inheritor.relation
+								)})`}
+							</styled.SuggestionChip>
+						))}
+					</styled.SuggestionsContainer>
+				)}
 
-					<styled.SubmitButton
-						ref={submitButtonRef}
-						onClick={handleSubmit}
-						type="button"
-						disabled={isSubmitting || !name || !relation}
-					>
-						추가하기
-					</styled.SubmitButton>
-				</styled.InheritorForm>
-			</styled.ModalContent>
-		</styled.ModalOverlay>
+				<BlueButton 
+					variant="medium" 
+					onClick={handleSubmit}
+					style={{ width: "100%" }}
+					disabled={isSubmitting || !name || !relation}
+				>
+					추가하기
+				</BlueButton>
+			</styled.InheritorForm>
+		</Modal>
 	);
-};
+}

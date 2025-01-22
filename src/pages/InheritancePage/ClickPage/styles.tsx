@@ -337,7 +337,7 @@ export const AddInheritorBtn = styled.div`
 
 //--------------------------------------------
 export const SuggestionsContainer = styled.div`
-	margin-top: 18px;
+	margin: 18px 0;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
