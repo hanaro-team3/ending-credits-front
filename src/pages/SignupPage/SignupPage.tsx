@@ -13,9 +13,9 @@ import backbtn from "../../images/back-icon.png";
 import BlueButton from "../../ui/BlueBtn";
 import showPasswordIcon from "../../images/show-pw-icon.png";
 import hidePasswordIcon from "../../images/hide-pw-icon.png";
-import { userService } from "../../services/api/Signup";
+import { userService } from "../../services/api/SignUp";
 import { CheckDuplicateIdDTO, SignupDTO } from "../../services/dto/Auth";
-import { Moon, X, LightbulbOff, Camera } from "lucide-react";
+import { Moon, X, LightbulbOff } from "lucide-react";
 
 interface FormData {
 	phoneNumber: string;
@@ -35,11 +35,6 @@ interface CheckboxState {
 	sms: boolean;
 	personal: boolean;
 	benefits: boolean;
-}
-
-interface CheckboxProps {
-	checked: boolean;
-	className?: string;
 }
 
 const StepForm = () => {
@@ -253,7 +248,7 @@ const StepForm = () => {
 
 		// 엣지 검출을 위한 설정
 		const EDGE_THRESHOLD = 30; // 엣지 감지 임계값
-		let edges: boolean[][] = Array(height)
+		const edges: boolean[][] = Array(height)
 			.fill(false)
 			.map(() => Array(width).fill(false));
 		let edgeCount = 0;

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { data, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import * as styled from "./styles";
 import mainlogo from "../../images/main-logo.png";
 import kakaologo from "../../images/kakao-logo.png";
