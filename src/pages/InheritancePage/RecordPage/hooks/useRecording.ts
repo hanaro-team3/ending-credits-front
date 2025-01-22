@@ -83,6 +83,96 @@
 // 		animationFrameRef.current = requestAnimationFrame(draw);
 // 	};
 
+// 	const convertToMp3 = async (audioData: Blob): Promise<Blob> => {
+// 		const audioContext = new AudioContext();
+// 		const arrayBuffer = await audioData.arrayBuffer();
+// 		const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+// 		const offlineContext = new OfflineAudioContext({
+// 			numberOfChannels: audioBuffer.numberOfChannels,
+// 			length: audioBuffer.length,
+// 			sampleRate: audioBuffer.sampleRate,
+// 		});
+
+// 		const source = offlineContext.createBufferSource();
+// 		source.buffer = audioBuffer;
+// 		source.connect(offlineContext.destination);
+// 		source.start();
+
+// 		const renderedBuffer = await offlineContext.startRendering();
+
+// 		// Convert AudioBuffer to WAV format
+// 		const wav = audioBufferToWav(renderedBuffer);
+
+// 		// Return as MP3 blob
+// 		return new Blob([wav], { type: "audio/mp3" });
+// 	};
+
+// 	const audioBufferToWav = (buffer: AudioBuffer): ArrayBuffer => {
+// 		const interleaved = interleaveChannels(buffer);
+// 		const dataView = createWavHeader(buffer, interleaved.length);
+// 		const wavBytes = new Uint8Array(
+// 			dataView.buffer.byteLength + interleaved.length
+// 		);
+// 		wavBytes.set(new Uint8Array(dataView.buffer), 0);
+// 		wavBytes.set(interleaved, dataView.buffer.byteLength);
+// 		return wavBytes.buffer;
+// 	};
+
+// 	const interleaveChannels = (buffer: AudioBuffer): Float32Array => {
+// 		const numberOfChannels = buffer.numberOfChannels;
+// 		const length = buffer.length * numberOfChannels;
+// 		const result = new Float32Array(length);
+
+// 		for (let i = 0; i < buffer.length; i++) {
+// 			for (let channel = 0; channel < numberOfChannels; channel++) {
+// 				result[i * numberOfChannels + channel] =
+// 					buffer.getChannelData(channel)[i];
+// 			}
+// 		}
+
+// 		return result;
+// 	};
+
+// 	const createWavHeader = (
+// 		buffer: AudioBuffer,
+// 		dataLength: number
+// 	): DataView => {
+// 		const header = new ArrayBuffer(44);
+// 		const view = new DataView(header);
+
+// 		// RIFF chunk descriptor
+// 		writeString(view, 0, "RIFF");
+// 		view.setUint32(4, 36 + dataLength, true);
+// 		writeString(view, 8, "WAVE");
+
+// 		// fmt sub-chunk
+// 		writeString(view, 12, "fmt ");
+// 		view.setUint32(16, 16, true);
+// 		view.setUint16(20, 1, true);
+// 		view.setUint16(22, buffer.numberOfChannels, true);
+// 		view.setUint32(24, buffer.sampleRate, true);
+// 		view.setUint32(28, buffer.sampleRate * 4, true);
+// 		view.setUint16(32, 4, true);
+// 		view.setUint16(34, 16, true);
+
+// 		// data sub-chunk
+// 		writeString(view, 36, "data");
+// 		view.setUint32(40, dataLength, true);
+
+// 		return view;
+// 	};
+
+// 	const writeString = (
+// 		view: DataView,
+// 		offset: number,
+// 		string: string
+// 	): void => {
+// 		for (let i = 0; i < string.length; i++) {
+// 			view.setUint8(offset + i, string.charCodeAt(i));
+// 		}
+// 	};
+
 // 	const startRecording = async () => {
 // 		try {
 // 			const stream = await navigator.mediaDevices.getUserMedia({
@@ -94,7 +184,9 @@
 // 			});
 // 			mediaStreamRef.current = stream;
 
-// 			const mediaRecorder = new MediaRecorder(stream);
+// 			const mediaRecorder = new MediaRecorder(stream, {
+// 				mimeType: "audio/webm;codecs=opus",
+// 			});
 // 			mediaRecorderRef.current = mediaRecorder;
 // 			chunksRef.current = [];
 
@@ -104,11 +196,18 @@
 // 				}
 // 			});
 
-// 			mediaRecorder.addEventListener("stop", () => {
+// 			mediaRecorder.addEventListener("stop", async () => {
 // 				const audioBlob = new Blob(chunksRef.current, {
 // 					type: "audio/webm",
 // 				});
-// 				onRecordingComplete(audioBlob);
+
+// 				try {
+// 					const mp3Blob = await convertToMp3(audioBlob);
+// 					onRecordingComplete(mp3Blob);
+// 				} catch (err) {
+// 					console.error("Error converting to MP3:", err);
+// 					setError("오디오 변환 중 오류가 발생했습니다.");
+// 				}
 // 			});
 
 // 			const audioContext = new AudioContext();
@@ -186,6 +285,7 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 	const [isRecording, setIsRecording] = useState<boolean>(false);
 	const [showNav, setShowNav] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
+	const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
 
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -196,18 +296,9 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 	const chunksRef = useRef<Blob[]>([]);
 
 	useEffect(() => {
+		checkMicrophonePermission();
 		return () => {
-			if (animationFrameRef.current) {
-				cancelAnimationFrame(animationFrameRef.current);
-			}
-			if (mediaStreamRef.current) {
-				mediaStreamRef.current
-					.getTracks()
-					.forEach((track) => track.stop());
-			}
-			if (audioContextRef.current) {
-				audioContextRef.current.close();
-			}
+			cleanup();
 		};
 	}, []);
 
@@ -216,6 +307,32 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 			requestAnimationFrame(draw);
 		}
 	}, [isRecording]);
+
+	const checkMicrophonePermission = async () => {
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({
+				audio: true,
+			});
+			stream.getTracks().forEach((track) => track.stop());
+			setPermissionGranted(true);
+			setError("");
+		} catch (err) {
+			setPermissionGranted(false);
+			setError("마이크 접근 권한이 필요합니다.");
+		}
+	};
+
+	const cleanup = () => {
+		if (animationFrameRef.current) {
+			cancelAnimationFrame(animationFrameRef.current);
+		}
+		if (mediaStreamRef.current) {
+			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+		}
+		if (audioContextRef.current) {
+			audioContextRef.current.close();
+		}
+	};
 
 	const draw = () => {
 		const analyser = analyserRef.current;
@@ -261,96 +378,6 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 		animationFrameRef.current = requestAnimationFrame(draw);
 	};
 
-	const convertToMp3 = async (audioData: Blob): Promise<Blob> => {
-		const audioContext = new AudioContext();
-		const arrayBuffer = await audioData.arrayBuffer();
-		const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-		const offlineContext = new OfflineAudioContext({
-			numberOfChannels: audioBuffer.numberOfChannels,
-			length: audioBuffer.length,
-			sampleRate: audioBuffer.sampleRate,
-		});
-
-		const source = offlineContext.createBufferSource();
-		source.buffer = audioBuffer;
-		source.connect(offlineContext.destination);
-		source.start();
-
-		const renderedBuffer = await offlineContext.startRendering();
-
-		// Convert AudioBuffer to WAV format
-		const wav = audioBufferToWav(renderedBuffer);
-
-		// Return as MP3 blob
-		return new Blob([wav], { type: "audio/mp3" });
-	};
-
-	const audioBufferToWav = (buffer: AudioBuffer): ArrayBuffer => {
-		const interleaved = interleaveChannels(buffer);
-		const dataView = createWavHeader(buffer, interleaved.length);
-		const wavBytes = new Uint8Array(
-			dataView.buffer.byteLength + interleaved.length
-		);
-		wavBytes.set(new Uint8Array(dataView.buffer), 0);
-		wavBytes.set(interleaved, dataView.buffer.byteLength);
-		return wavBytes.buffer;
-	};
-
-	const interleaveChannels = (buffer: AudioBuffer): Float32Array => {
-		const numberOfChannels = buffer.numberOfChannels;
-		const length = buffer.length * numberOfChannels;
-		const result = new Float32Array(length);
-
-		for (let i = 0; i < buffer.length; i++) {
-			for (let channel = 0; channel < numberOfChannels; channel++) {
-				result[i * numberOfChannels + channel] =
-					buffer.getChannelData(channel)[i];
-			}
-		}
-
-		return result;
-	};
-
-	const createWavHeader = (
-		buffer: AudioBuffer,
-		dataLength: number
-	): DataView => {
-		const header = new ArrayBuffer(44);
-		const view = new DataView(header);
-
-		// RIFF chunk descriptor
-		writeString(view, 0, "RIFF");
-		view.setUint32(4, 36 + dataLength, true);
-		writeString(view, 8, "WAVE");
-
-		// fmt sub-chunk
-		writeString(view, 12, "fmt ");
-		view.setUint32(16, 16, true);
-		view.setUint16(20, 1, true);
-		view.setUint16(22, buffer.numberOfChannels, true);
-		view.setUint32(24, buffer.sampleRate, true);
-		view.setUint32(28, buffer.sampleRate * 4, true);
-		view.setUint16(32, 4, true);
-		view.setUint16(34, 16, true);
-
-		// data sub-chunk
-		writeString(view, 36, "data");
-		view.setUint32(40, dataLength, true);
-
-		return view;
-	};
-
-	const writeString = (
-		view: DataView,
-		offset: number,
-		string: string
-	): void => {
-		for (let i = 0; i < string.length; i++) {
-			view.setUint8(offset + i, string.charCodeAt(i));
-		}
-	};
-
 	const startRecording = async () => {
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({
@@ -360,11 +387,12 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 					autoGainControl: true,
 				},
 			});
+
+			setPermissionGranted(true);
+			setError("");
 			mediaStreamRef.current = stream;
 
-			const mediaRecorder = new MediaRecorder(stream, {
-				mimeType: "audio/webm;codecs=opus",
-			});
+			const mediaRecorder = new MediaRecorder(stream);
 			mediaRecorderRef.current = mediaRecorder;
 			chunksRef.current = [];
 
@@ -374,18 +402,12 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 				}
 			});
 
-			mediaRecorder.addEventListener("stop", async () => {
+			mediaRecorder.addEventListener("stop", () => {
 				const audioBlob = new Blob(chunksRef.current, {
 					type: "audio/webm",
 				});
-
-				try {
-					const mp3Blob = await convertToMp3(audioBlob);
-					onRecordingComplete(mp3Blob);
-				} catch (err) {
-					console.error("Error converting to MP3:", err);
-					setError("오디오 변환 중 오류가 발생했습니다.");
-				}
+				onRecordingComplete(audioBlob);
+				setShowNav(true);
 			});
 
 			const audioContext = new AudioContext();
@@ -402,8 +424,9 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 			setIsRecording(true);
 			setShowNav(false);
 		} catch (err) {
-			setError("마이크 접근 권한이 필요합니다.");
 			console.error("Error accessing microphone:", err);
+			setPermissionGranted(false);
+			setError("마이크 접근 권한이 필요합니다.");
 		}
 	};
 
@@ -414,26 +437,8 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 		) {
 			mediaRecorderRef.current.stop();
 		}
-		if (mediaStreamRef.current) {
-			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-		}
-		if (animationFrameRef.current) {
-			cancelAnimationFrame(animationFrameRef.current);
-		}
-		if (audioContextRef.current) {
-			audioContextRef.current.close();
-		}
-
+		cleanup();
 		setIsRecording(false);
-		setShowNav(true);
-
-		const canvas = canvasRef.current;
-		if (canvas) {
-			const ctx = canvas.getContext("2d");
-			if (ctx) {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-			}
-		}
 	};
 
 	const handleRecordClick = () => {
@@ -450,5 +455,6 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 		error,
 		canvasRef,
 		handleRecordClick,
+		permissionGranted,
 	};
 };
