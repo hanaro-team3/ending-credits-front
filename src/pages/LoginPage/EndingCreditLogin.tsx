@@ -7,7 +7,7 @@ import showPasswordIcon from "../../images/show-pw-icon.png";
 import hidePasswordIcon from "../../images/hide-pw-icon.png";
 import LoginButton from "../../ui/BlueBtn";
 import { LoginDTO } from "../../services/dto/Auth";
-import { userService } from "../../services/api/Signup";
+import { userService } from "../../services/api/SignUp";
 
 interface LoginForm {
 	username: string;
