@@ -1,5 +1,6 @@
 import * as styled from "../styles";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // components
 import Header from "../../../layout/Header";
@@ -45,6 +46,7 @@ const PRODUCT_LIST = [
 
 function ProductSearch() {
 	const [activeTab, setActiveTab] = useState<'연금저축' | '퇴직연금'>('연금저축');
+	const navigate = useNavigate();
 	// const [searchTerm, setSearchTerm] = useState('');
 
 	// const filteredProducts = PRODUCT_LIST.filter(product => 
@@ -75,7 +77,7 @@ function ProductSearch() {
 
 			<styled.ProductList>
 				{PRODUCT_LIST.map((product) => (
-					<styled.ProductItem key={product.id}>
+					<styled.ProductItem key={product.id} onClick={() => navigate(`/product/detail/${product.id}`)}>
 						<styled.ProductItemLeft>
 							<styled.ProductImage 
 								src={product.image} 

@@ -1,6 +1,6 @@
 import * as styled from "../styles"
 import Header from "../../../layout/Header";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AssetCard } from "../components/AssetCard";
 import BlueButton from "../../../ui/BlueBtn";
 
@@ -219,6 +219,7 @@ function Automobile() {
 }
 
 function Pension() {
+    const navigate = useNavigate(); 
     return(
         <>
             <styled.TitleContainer>
@@ -231,7 +232,7 @@ function Pension() {
                 <AssetCard label="개인연금" value="2천만원" />
                 <AssetCard label="합계" value="2천만원" highlight='blue' />
 
-                <BlueButton variant="large">투자로 돈 불리기</BlueButton>
+                <BlueButton variant="large" onClick={() => {navigate("/product")}}>투자로 돈 불리기</BlueButton>
             </div>
         </>
     )

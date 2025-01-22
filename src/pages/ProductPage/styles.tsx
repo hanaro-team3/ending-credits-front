@@ -7,6 +7,15 @@ export const Container = styled.div`
 	padding: 0 20px;
 	padding-bottom: 100px;
 	min-height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 export const TitleContainer = styled.div`
@@ -31,12 +40,11 @@ export const ProductCarousel = styled.div`
 	width: 100%;
 	overflow-x: scroll;
 	overflow-y: hidden;
-	-webkit-overflow-scrolling: touch;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 	padding: 1.5rem 0;
 	align-items: center;
-	height: 300px;
+	min-height: 300px;
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -45,17 +53,18 @@ export const ProductCarousel = styled.div`
 
 export const ProductCard = styled.div<{ $active?: boolean }>`
 	width: 250px;
-	height: ${props => props.$active ? '280px' : '250px'};
+	min-height: ${props => props.$active ? '280px' : '250px'};
 	flex-shrink: 0;
 	border-radius: 12px;
 	padding: 25px;
 	display: flex;
 	flex-direction: column;
 	gap: 25px;
-	justify-content: end;
+	justify-content: flex-end;
 	align-items: center;
 	transition: all 0.3s ease;
 	opacity: ${props => props.$active ? 1 : 0.7};
+	transform: ${props => props.$active ? 'scale(1.05)' : 'scale(1)'};
 
 	p {
 		width: 100%;
@@ -168,5 +177,12 @@ export const ProductTitle = styled.span`
 export const ProductSubTitle = styled.span`
 	font-size: 12px;
 	color: #878787;
+`;
+
+export const ButtonContainer = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding: 10px 0;
 `;
 	

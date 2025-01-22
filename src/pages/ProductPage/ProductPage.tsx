@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 //component
 import Header from "../../layout/Header";
 import SearchBar from "../../ui/SearchBar";
-import BlueBtn from "../../ui/BlueBtn"
-import WhiteBtn from "../../ui/WhiteBtn"
+import BlueButton from "../../ui/BlueBtn"
+import WhiteButton from "../../ui/WhiteBtn"
 
 const RECOMMEND_PRODUCTS = [
 	{
@@ -86,30 +86,34 @@ function ProductPage() {
 						onClick={() => navigate(`/product/detail/0`)}
 					>
 						<p>{product.title}</p>
-						<WhiteBtn style={{width: '100%'}}>상품 알아보기</WhiteBtn>
+						<WhiteButton style={{width: '100%'}}>상품 알아보기</WhiteButton>
 					</styled.ProductCard>
 				))}
 			</styled.ProductCarousel>
 
-				<BlueBtn onClick={() => navigate('/product/compare')}>상품 비교하기</BlueBtn>
+			<styled.ButtonContainer>
+				<BlueButton onClick={() => navigate('/product/compare')}>
+					상품 비교하기
+				</BlueButton>
+			</styled.ButtonContainer>
 
-				<h3>하나은행 상품</h3>
-				<styled.GridContainer>
-					{["하나은행 상품1", "하나은행 상품2"].map((name, index) => (
-						<styled.GridItem key={index}>
-							{name}
-						</styled.GridItem>
-					))}
-                </styled.GridContainer>
+			<h3>하나은행 상품</h3>
+			<styled.GridContainer>
+				{["하나은행 상품1", "하나은행 상품2"].map((name, index) => (
+					<styled.GridItem key={index}>
+						{name}
+					</styled.GridItem>
+				))}
+			</styled.GridContainer>
 
-				<h3>전체 상품</h3>
-				<styled.GridContainer>
-					{["상품1", "상품2", "상품3", "상품4", "상품5", "상품6", "상품7", "상품8"].map((name, index) => (
-						<styled.GridItem key={index}>
-							{name}
-						</styled.GridItem>
-					))}
-                </styled.GridContainer>
+			<h3>전체 상품</h3>
+			<styled.GridContainer>
+				{["상품1", "상품2", "상품3", "상품4", "상품5", "상품6", "상품7", "상품8"].map((name, index) => (
+					<styled.GridItem key={index}>
+						{name}
+					</styled.GridItem>
+				))}
+			</styled.GridContainer>
 		</styled.Container>
 	);
 }

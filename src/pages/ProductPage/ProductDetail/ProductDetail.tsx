@@ -34,6 +34,15 @@ function ProductDetail() {
 			<h3>수수료 추이</h3>
 			<ReactApexChart options={chartData.options} series={chartData.series} type="area" height={350} />
 
+
+			<h3>관련 상품</h3>
+				<styled.GridContainer>
+					{["상품1", "상품2"].map((name, index) => (
+						<styled.GridItem key={index}>
+							{name}
+						</styled.GridItem>
+					))}
+                </styled.GridContainer>
 			<BlueButton>가입하기</BlueButton>
 		</styled.Container>
 	);

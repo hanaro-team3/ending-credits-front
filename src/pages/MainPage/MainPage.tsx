@@ -33,6 +33,7 @@ const StatusSection = () => (
 
 const AssetSection = () => {
 	const { chartData } = useChartData();
+    const navigate = useNavigate();
 
 	return (
 		<styled.AssetSection>
@@ -43,7 +44,7 @@ const AssetSection = () => {
 					series={chartData.series}
 					type="pie"
 				/>
-				<styled.AssetButton>상세보기</styled.AssetButton>
+				<styled.AssetButton onClick={() => {navigate("/asset")}}>상세보기</styled.AssetButton>
 			</styled.AssetCard>
 		</styled.AssetSection>
 	);
@@ -89,7 +90,7 @@ const GuideSection = () => {
             <styled.GuideDescription>사용법이 헷갈리지 않으세요?</styled.GuideDescription>
             <styled.GuideIcon src={book} width={30} alt="작성가이드" />
         </styled.GuideCard>
-        <styled.GuideCard>
+        <styled.GuideCard onClick={() => navigate("/product")}>
             <styled.GuideTitle>맞춤형 상품 추천</styled.GuideTitle>
             <styled.GuideDescription>퇴직 연금 운용을 도와드릴게요.</styled.GuideDescription>
             <styled.GuideIcon src={plant} width={30} alt="상품 추천" />
@@ -98,8 +99,10 @@ const GuideSection = () => {
     );
 };
 
-const BannerSection = () => (
-	<styled.Banner>
+const BannerSection = () => {
+    const navigate = useNavigate();
+    return (
+	<styled.Banner onClick={() => navigate("/inheritance")}>
 		<img src={moneyBag} alt="배너" />
 		<styled.BannerContent>
 			<styled.BannerDescription>
@@ -110,7 +113,8 @@ const BannerSection = () => (
 			</styled.BannerTitle>
 		</styled.BannerContent>
 	</styled.Banner>
-);
+    );
+};
 
 function MainPage() {
 	return (
