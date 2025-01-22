@@ -24,7 +24,8 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
     background-color: white;
     padding: 20px;
-    border-radius: 12px 12px 0 0;
+    padding-bottom: 40px;
+    border-radius: 20px 20px 0 0;
     width: 100%;
     position: relative;
     animation: slideUp 0.3s ease-out;
@@ -51,14 +52,6 @@ const ModalTitle = styled.h2`
     font-weight: bold;
 `;
 
-const CloseButton = styled.button`
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-`;
-
 function Modal({ isOpen, onClose, children, title }: ModalProps) {
     if (!isOpen) return null;
 
@@ -67,7 +60,6 @@ function Modal({ isOpen, onClose, children, title }: ModalProps) {
             <ModalContent onClick={e => e.stopPropagation()}>
                 <ModalHeader>
                     {title && <ModalTitle>{title}</ModalTitle>}
-                    <CloseButton onClick={onClose}>&times;</CloseButton>
                 </ModalHeader>
                 {children}
             </ModalContent>

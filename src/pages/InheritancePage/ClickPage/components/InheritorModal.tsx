@@ -123,7 +123,7 @@ export function InheritorModal({ isOpen, onClose, onSubmit }: InheritorModalProp
 				<BlueButton 
 					variant="medium" 
 					onClick={handleSubmit}
-					style={{ width: "100%" }}
+					style={{ width: "100%", marginTop: "18px" }}
 					disabled={isSubmitting || !name || !relation}
 				>
 					추가하기
