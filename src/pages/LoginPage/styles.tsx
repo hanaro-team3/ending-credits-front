@@ -9,7 +9,6 @@ export const Container = styled.div<{ isLoginPage?: boolean }>`
 	align-items: center;
 
 	background-color: white;
-	/* gap: ${(props) => (props.isLoginPage ? "190px" : "280px")}; */
 `;
 
 export const MainLogo = styled.img`
@@ -277,4 +276,11 @@ export const SpecialButton = styled(KeypadButton)`
 export const FaceIdBtn = styled.img`
 	width: 26px;
 	height: auto;
+`;
+
+export const ErrorMessage = styled.div`
+	color: #ff0000;
+	font-size: 14px;
+	margin-top: 8px;
+	text-align: center;
 `;

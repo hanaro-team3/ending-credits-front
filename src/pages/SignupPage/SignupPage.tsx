@@ -1,10 +1,12 @@
 import React, { useState, ChangeEvent, FormEvent, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as styled from "./styles";
 import backbtn from "../../images/back-icon.png";
 import BlueButton from "../../ui/BlueBtn";
 import showPasswordIcon from "../../images/show-pw-icon.png";
 import hidePasswordIcon from "../../images/hide-pw-icon.png";
+import { userService } from "../../services/api/Signup";
+import { CheckDuplicateIdDTO, SignupDTO } from "../../services/dto/Auth";
 
 interface FormData {
 	phoneNumber: string;
@@ -14,6 +16,7 @@ interface FormData {
 	password: string;
 	passwordConfirm: string;
 	userid: string;
+	email: string;
 }
 
 type CheckboxKeys = "service" | "financial" | "sms" | "personal" | "benefits";
@@ -32,6 +35,7 @@ interface CheckboxProps {
 
 const StepForm = () => {
 	const [currentStep, setCurrentStep] = useState<number>(0);
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState<FormData>({
 		phoneNumber: "",
 		carrier: "",
@@ -40,6 +44,7 @@ const StepForm = () => {
 		password: "",
 		passwordConfirm: "",
 		userid: "",
+		email: "",
 	});
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [showPasswordConfirm, setShowPasswordConfirm] =
@@ -108,9 +113,30 @@ const StepForm = () => {
 		setShowPassword(!showPassword);
 	};
 
-	const handleDupCheck = () => {
-		//아이디 중복 확인
-		setIsUserIdChecked(true);
+	const handleDupCheck = async () => {
+		if (!formData.userid.trim()) {
+			alert("아이디를 입력해주세요.");
+			return;
+		}
+
+		try {
+			const checkData: CheckDuplicateIdDTO = {
+				identifier: formData.userid,
+			};
+
+			const response = await userService.checkDuplicateId(checkData);
+			console.log(response);
+
+			// 중복 체크 성공 (중복되지 않은 아이디)
+			setIsUserIdChecked(true);
+			alert("사용 가능한 아이디입니다.");
+		} catch (error) {
+			console.error("ID check failed:", error);
+
+			// 중복된 아이디인 경우
+			setIsUserIdChecked(false);
+			alert("이미 사용중인 아이디입니다.");
+		}
 	};
 
 	const handleSingleCheck = (name: CheckboxKeys) => {
@@ -149,6 +175,30 @@ const StepForm = () => {
 			checkboxes.personal
 		);
 	}, [checkboxes]);
+
+	const handleSignup = async () => {
+		try {
+			const signupData: SignupDTO = {
+				identifier: formData.userid,
+				password: formData.password,
+				loginType: "NORMAL",
+				birthDate: "1999-07-28",
+				phoneNumber: formData.phoneNumber,
+				address: "서울시 성동구 성수동",
+				name: "홍소희",
+				email: formData.email,
+			};
+
+			console.log("Sending signup data:", signupData);
+
+			const response = await userService.registerUser(signupData);
+			console.log("Signup successful:", response); // 성공 응답 로깅
+
+			navigate("/simplelogin", { state: { userid: formData.userid } });
+		} catch (error) {
+			console.error("Signup failed:", error);
+		}
+	};
 
 	// 회원가입 첫번째 화면 - 전화번호 입력
 	const renderStep0 = () => (
@@ -202,6 +252,9 @@ const StepForm = () => {
 						</styled.IdNumberBackDiv>
 					</styled.IdNumberDiv>
 					<styled.NameDiv>홍소희</styled.NameDiv>
+					<styled.NameDiv style={{ marginTop: "18px" }}>
+						서울시 성동구 성수동
+					</styled.NameDiv>
 				</styled.Form>
 			</div>
 			<div>
@@ -241,6 +294,19 @@ const StepForm = () => {
 						<styled.DupCheckBtn onClick={handleDupCheck}>
 							중복확인
 						</styled.DupCheckBtn>
+					</styled.PasswordInputWrapper>
+					<styled.InputLabel htmlFor="username">
+						이메일
+					</styled.InputLabel>
+					<styled.PasswordInputWrapper>
+						<styled.Input
+							id="email"
+							name="email"
+							type="text"
+							placeholder="이메일을 입력하세요."
+							value={formData.email}
+							onChange={handleInputChange}
+						/>
 					</styled.PasswordInputWrapper>
 					<styled.InputLabel htmlFor="password">
 						비밀번호
@@ -374,7 +440,9 @@ const StepForm = () => {
 							? "#4792DC"
 							: "#D0D0D0",
 					}}
-					onClick={handleNext}
+					onClick={
+						areRequiredTermsAccepted ? handleSignup : undefined
+					}
 				>
 					확인
 				</BlueButton>
