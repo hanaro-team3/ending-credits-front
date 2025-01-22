@@ -1,4 +1,12 @@
-import React, { useState, ChangeEvent, FormEvent, useMemo } from "react";
+import React, {
+	useState,
+	ChangeEvent,
+	FormEvent,
+	useMemo,
+	useRef,
+	useCallback,
+	useEffect,
+} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as styled from "./styles";
 import backbtn from "../../images/back-icon.png";
@@ -7,6 +15,7 @@ import showPasswordIcon from "../../images/show-pw-icon.png";
 import hidePasswordIcon from "../../images/hide-pw-icon.png";
 import { userService } from "../../services/api/Signup";
 import { CheckDuplicateIdDTO, SignupDTO } from "../../services/dto/Auth";
+import { Moon, X, LightbulbOff, Camera } from "lucide-react";
 
 interface FormData {
 	phoneNumber: string;
@@ -36,6 +45,13 @@ interface CheckboxProps {
 const StepForm = () => {
 	const [currentStep, setCurrentStep] = useState<number>(0);
 	const navigate = useNavigate();
+	const videoRef = useRef<HTMLVideoElement>(null);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [hasPermission, setHasPermission] = useState<boolean>(false);
+	const [cameraError, setCameraError] = useState<string | null>(null);
+	const [isCapturing, setIsCapturing] = useState<boolean>(false);
+	const [capturedImage, setCapturedImage] = useState<string | null>(null);
+
 	const [formData, setFormData] = useState<FormData>({
 		phoneNumber: "",
 		carrier: "",
@@ -199,6 +215,273 @@ const StepForm = () => {
 			console.error("Signup failed:", error);
 		}
 	};
+
+	const startCamera = async () => {
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({
+				video: {
+					facingMode: "environment",
+					width: { ideal: 1920 },
+					height: { ideal: 1080 },
+				},
+			});
+
+			if (videoRef.current) {
+				videoRef.current.srcObject = stream;
+			}
+			setHasPermission(true);
+		} catch (err) {
+			setCameraError("카메라 접근 권한이 필요합니다.");
+			setHasPermission(false);
+		}
+	};
+
+	const detectIdCard = (
+		imageData: ImageData,
+		width: number,
+		height: number
+	): boolean => {
+		// 신분증의 일반적인 비율 (가로:세로 = 1.586:1)
+		const ID_CARD_RATIO = 1.586;
+		const RATIO_TOLERANCE = 0.2; // 허용 오차
+
+		// 이미지 중앙 영역만 분석 (전체 이미지의 80%)
+		const centerWidth = width * 0.8;
+		const centerHeight = height * 0.8;
+		const startX = Math.floor((width - centerWidth) / 2);
+		const startY = Math.floor((height - centerHeight) / 2);
+
+		// 엣지 검출을 위한 설정
+		const EDGE_THRESHOLD = 30; // 엣지 감지 임계값
+		let edges: boolean[][] = Array(height)
+			.fill(false)
+			.map(() => Array(width).fill(false));
+		let edgeCount = 0;
+
+		// Sobel 연산자를 사용한 엣지 검출
+		for (let y = startY + 1; y < startY + centerHeight - 1; y++) {
+			for (let x = startX + 1; x < startX + centerWidth - 1; x++) {
+				const idx = (y * width + x) * 4;
+
+				// 주변 픽셀과의 차이 계산 (Sobel operator 간소화 버전)
+				const gx =
+					-imageData.data[((y - 1) * width + (x - 1)) * 4] +
+					imageData.data[((y - 1) * width + (x + 1)) * 4] +
+					-2 * imageData.data[(y * width + (x - 1)) * 4] +
+					2 * imageData.data[(y * width + (x + 1)) * 4] +
+					-imageData.data[((y + 1) * width + (x - 1)) * 4] +
+					imageData.data[((y + 1) * width + (x + 1)) * 4];
+
+				const gy =
+					-imageData.data[((y - 1) * width + (x - 1)) * 4] +
+					-2 * imageData.data[((y - 1) * width + x) * 4] +
+					-imageData.data[((y - 1) * width + (x + 1)) * 4] +
+					imageData.data[((y + 1) * width + (x - 1)) * 4] +
+					2 * imageData.data[((y + 1) * width + x) * 4] +
+					imageData.data[((y + 1) * width + (x + 1)) * 4];
+
+				const gradient = Math.sqrt(gx * gx + gy * gy);
+
+				if (gradient > EDGE_THRESHOLD) {
+					edges[y][x] = true;
+					edgeCount++;
+				}
+			}
+		}
+
+		// 수평/수직 라인 검출
+		let horizontalLines = 0;
+		let verticalLines = 0;
+		const MIN_LINE_LENGTH = width * 0.3; // 최소 선 길이
+
+		// 수평 라인 검사
+		for (let y = startY; y < startY + centerHeight; y++) {
+			let lineLength = 0;
+			for (let x = startX; x < startX + centerWidth; x++) {
+				if (edges[y][x]) {
+					lineLength++;
+				} else if (lineLength > 0) {
+					if (lineLength >= MIN_LINE_LENGTH) {
+						horizontalLines++;
+					}
+					lineLength = 0;
+				}
+			}
+		}
+
+		// 수직 라인 검사
+		for (let x = startX; x < startX + centerWidth; x++) {
+			let lineLength = 0;
+			for (let y = startY; y < startY + centerHeight; y++) {
+				if (edges[y][x]) {
+					lineLength++;
+				} else if (lineLength > 0) {
+					if (lineLength >= MIN_LINE_LENGTH) {
+						verticalLines++;
+					}
+					lineLength = 0;
+				}
+			}
+		}
+
+		// 결과 분석
+		const edgeRatio = edgeCount / (centerWidth * centerHeight);
+		const aspectRatio = centerWidth / centerHeight;
+		const ratioInRange =
+			Math.abs(aspectRatio - ID_CARD_RATIO) <= RATIO_TOLERANCE;
+
+		// 신분증 판단 조건:
+		// 1. 적절한 비율의 직사각형
+		// 2. 충분한 수의 수평/수직 라인
+		// 3. 적절한 엣지 비율 (너무 많거나 적으면 안됨)
+		return (
+			ratioInRange &&
+			horizontalLines >= 2 &&
+			verticalLines >= 2 &&
+			edgeRatio > 0.05 &&
+			edgeRatio < 0.2
+		);
+	};
+
+	const analyzeFrame = useCallback(() => {
+		if (!videoRef.current || !canvasRef.current || isCapturing) return;
+
+		const canvas = canvasRef.current;
+		const context = canvas.getContext("2d");
+		if (!context) return;
+
+		const video = videoRef.current;
+
+		canvas.width = video.videoWidth;
+		canvas.height = video.videoHeight;
+
+		context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+		const imageData = context.getImageData(
+			0,
+			0,
+			canvas.width,
+			canvas.height
+		);
+
+		const isIdCard = detectIdCard(imageData, canvas.width, canvas.height);
+
+		if (isIdCard) {
+			captureImage();
+		}
+	}, [isCapturing, detectIdCard]);
+
+	const captureImage = useCallback(() => {
+		if (!videoRef.current || !canvasRef.current || isCapturing) return;
+
+		setIsCapturing(true);
+
+		const canvas = canvasRef.current;
+		const context = canvas.getContext("2d");
+		if (!context) return;
+
+		context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+		const image = canvas.toDataURL("image/jpeg");
+		setCapturedImage(image);
+
+		// 캡처 후 다음 단계로 자동 이동
+		setTimeout(() => {
+			setCurrentStep(0);
+		}, 1000);
+	}, [isCapturing]);
+
+	useEffect(() => {
+		if (currentStep === -1) {
+			startCamera();
+		}
+
+		return () => {
+			if (videoRef.current?.srcObject) {
+				const tracks = (
+					videoRef.current.srcObject as MediaStream
+				).getTracks();
+				tracks.forEach((track) => track.stop());
+			}
+		};
+	}, [currentStep]);
+
+	useEffect(() => {
+		let animationFrameId: number;
+		const analyze = () => {
+			analyzeFrame();
+			animationFrameId = requestAnimationFrame(analyze);
+		};
+
+		if (hasPermission && !isCapturing && currentStep === -1) {
+			analyze();
+		}
+
+		return () => {
+			if (animationFrameId) {
+				cancelAnimationFrame(animationFrameId);
+			}
+		};
+	}, [hasPermission, isCapturing, analyzeFrame, currentStep]);
+
+	// 신분증 촬영 화면 렌더링
+	const renderCameraStep = () => (
+		<styled.CameraContainer>
+			<styled.CloseButton>
+				<X size={24} />
+			</styled.CloseButton>
+
+			<styled.CameraTitle>
+				표시된 영역에 신분증을 맞춰 주세요.
+			</styled.CameraTitle>
+
+			<styled.CameraViewContainer>
+				{hasPermission && !capturedImage && (
+					<>
+						<styled.CameraVideo
+							ref={videoRef}
+							autoPlay
+							playsInline
+						/>
+						<styled.CameraCanvas ref={canvasRef} />
+						<styled.IdCardGuide />
+					</>
+				)}
+
+				{capturedImage && (
+					<styled.CapturedImage
+						src={capturedImage}
+						alt="Captured ID"
+					/>
+				)}
+
+				{!hasPermission && (
+					<styled.CameraErrorMessage>
+						{cameraError}
+					</styled.CameraErrorMessage>
+				)}
+			</styled.CameraViewContainer>
+
+			<styled.BottomGuide>
+				<styled.GuideItem>
+					<styled.GuideIcon>
+						<Moon size={24} />
+					</styled.GuideIcon>
+					<styled.GuideText>
+						어두운 배경에서{"\n"}촬영해 주세요
+					</styled.GuideText>
+				</styled.GuideItem>
+				<styled.GuideItem>
+					<styled.GuideIcon>
+						<LightbulbOff size={24} />
+					</styled.GuideIcon>
+					<styled.GuideText>
+						빛이 반사되지 않도록{"\n"}방향을 조정해 주세요
+					</styled.GuideText>
+				</styled.GuideItem>
+			</styled.BottomGuide>
+		</styled.CameraContainer>
+	);
 
 	// 회원가입 첫번째 화면 - 전화번호 입력
 	const renderStep0 = () => (
@@ -450,7 +733,7 @@ const StepForm = () => {
 		</styled.Container>
 	);
 
-	const steps = [renderStep0, renderStep1, renderStep2];
+	const steps = [renderCameraStep, renderStep0, renderStep1, renderStep2];
 
 	return <styled.Container>{steps[currentStep]()}</styled.Container>;
 };

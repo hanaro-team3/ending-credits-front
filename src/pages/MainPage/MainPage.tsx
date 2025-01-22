@@ -1,7 +1,7 @@
 import ReactApexChart from "react-apexcharts";
 import * as styled from "./styles";
 import { useChartData } from "./hooks/useChartData";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // assets
 import logoInline from "../../assets/logo/logoInline.svg";
@@ -12,7 +12,7 @@ import dove from "../../assets/icon/dove.png";
 
 // components
 import Navbar from "../../layout/Navbar";
-import SearchBar from  "../../ui/SearchBar"
+import SearchBar from "../../ui/SearchBar";
 
 const StatusSection = () => (
 	<styled.Section>
@@ -33,7 +33,7 @@ const StatusSection = () => (
 
 const AssetSection = () => {
 	const { chartData } = useChartData();
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	return (
 		<styled.AssetSection>
@@ -44,7 +44,13 @@ const AssetSection = () => {
 					series={chartData.series}
 					type="pie"
 				/>
-				<styled.AssetButton onClick={() => {navigate("/asset")}}>상세보기</styled.AssetButton>
+				<styled.AssetButton
+					onClick={() => {
+						navigate("/asset");
+					}}
+				>
+					상세보기
+				</styled.AssetButton>
 			</styled.AssetCard>
 		</styled.AssetSection>
 	);
@@ -80,46 +86,54 @@ const CarouselSection = () => (
 );
 
 const GuideSection = () => {
-    const navigate = useNavigate();
-    return (
-    <styled.GuideContainer>
-        <styled.GuideCard 
-            onClick={() => navigate("/guide", { state: { fromMain: true } })}
-        >     
-            <styled.GuideTitle>작성가이드</styled.GuideTitle>
-            <styled.GuideDescription>사용법이 헷갈리지 않으세요?</styled.GuideDescription>
-            <styled.GuideIcon src={book} width={30} alt="작성가이드" />
-        </styled.GuideCard>
-        <styled.GuideCard onClick={() => navigate("/product")}>
-            <styled.GuideTitle>맞춤형 상품 추천</styled.GuideTitle>
-            <styled.GuideDescription>퇴직 연금 운용을 도와드릴게요.</styled.GuideDescription>
-            <styled.GuideIcon src={plant} width={30} alt="상품 추천" />
-        </styled.GuideCard>
-    </styled.GuideContainer>
-    );
+	const navigate = useNavigate();
+	return (
+		<styled.GuideContainer>
+			<styled.GuideCard
+				onClick={() =>
+					navigate("/guide", { state: { fromMain: true } })
+				}
+			>
+				<styled.GuideTitle>작성가이드</styled.GuideTitle>
+				<styled.GuideDescription>
+					사용법이 헷갈리지 않으세요?
+				</styled.GuideDescription>
+				<styled.GuideIcon src={book} width={30} alt="작성가이드" />
+			</styled.GuideCard>
+			<styled.GuideCard onClick={() => navigate("/product")}>
+				<styled.GuideTitle>맞춤형 상품 추천</styled.GuideTitle>
+				<styled.GuideDescription>
+					퇴직 연금 운용을 도와드릴게요.
+				</styled.GuideDescription>
+				<styled.GuideIcon src={plant} width={30} alt="상품 추천" />
+			</styled.GuideCard>
+		</styled.GuideContainer>
+	);
 };
 
 const BannerSection = () => {
-    const navigate = useNavigate();
-    return (
-	<styled.Banner onClick={() => navigate("/inheritance")}>
-		<img src={moneyBag} alt="배너" />
-		<styled.BannerContent>
-			<styled.BannerDescription>
-				미리 준비하는 나만의 상속 설계
-			</styled.BannerDescription>
-			<styled.BannerTitle>
-				미리 준비하는 나만의 상속 설계
-			</styled.BannerTitle>
-		</styled.BannerContent>
-	</styled.Banner>
-    );
+	const navigate = useNavigate();
+	return (
+		<styled.Banner onClick={() => navigate("/inheritance")}>
+			<img src={moneyBag} alt="배너" />
+			<styled.BannerContent>
+				<styled.BannerDescription>
+					미리 준비하는 나만의 상속 설계
+				</styled.BannerDescription>
+				<styled.BannerTitle>
+					미리 준비하는 나만의 상속 설계
+				</styled.BannerTitle>
+			</styled.BannerContent>
+		</styled.Banner>
+	);
 };
 
 function MainPage() {
 	return (
 		<styled.Container>
-			<styled.Logo src={logoInline} alt="Main Logo" />
+			<Link to="/login">
+				<styled.Logo src={logoInline} alt="Main Logo" />
+			</Link>
 			<StatusSection />
 			<AssetSection />
 

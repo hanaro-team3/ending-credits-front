@@ -268,7 +268,7 @@ const SimpleLoginPage = ({
 									identifier: userid,
 									simplePassword: newPassword,
 								});
-								navigate("/home");
+								navigate("/");
 							} catch (error) {
 								console.error(
 									"간편 비밀번호 설정 실패:",
