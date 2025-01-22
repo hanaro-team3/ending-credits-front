@@ -7,6 +7,7 @@ type ButtonVariant = "large" | "medium" | "small";
 interface BlueButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
 	variant?: ButtonVariant;
+	disabled?: boolean;
 }
 
 interface StyledButtonProps {
@@ -48,15 +49,22 @@ const StyledBlueButton = styled.button<StyledButtonProps>`
 		background-color: #306394;
 		border: none;
 	}
+
+	&:disabled {
+		background-color: #cccccc;
+		cursor: not-allowed;
+		opacity: 0.7;
+	}
 `;
 
 const BlueButton = ({
 	children,
 	variant = "large",
+	disabled = false,
 	...props
 }: BlueButtonProps) => {
 	return (
-		<StyledBlueButton variant={variant} {...props}>
+		<StyledBlueButton variant={variant} disabled={disabled} {...props}>
 			<span>{children}</span>
 		</StyledBlueButton>
 	);

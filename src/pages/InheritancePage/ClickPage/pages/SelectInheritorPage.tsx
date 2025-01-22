@@ -25,15 +25,16 @@ export const SelectInheritorPage: React.FC<PageProps> = ({
 			}>;
 		};
 	}>({
-		asset1: {
-			inheritors: [],
-		},
+		asset1: { inheritors: [] },
+		asset2: { inheritors: [] },
+		stock1: { inheritors: [] }
 	});
 
-	const getRemainingRatio = (
-		assetId: string,
-		excludeInheritorId?: string
-	) => {
+	const getRemainingRatio = (assetId: string, excludeInheritorId?: string) => {
+		if (!inheritanceInfo[assetId]) {
+			return 100; // 해당 자산이 없으면 100% 반환
+		}
+
 		const totalRatio = inheritanceInfo[assetId].inheritors
 			.filter((inheritor) => inheritor.id !== excludeInheritorId)
 			.reduce((sum, inheritor) => sum + inheritor.ratio, 0);
