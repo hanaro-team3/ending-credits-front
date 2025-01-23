@@ -13,6 +13,9 @@ import { AssetItemType } from "../type"
 interface LoanItem {
     label: string;
     amount: string;
+    icon: string;
+    alt: string;
+    color?: string;
 }
 
 function AssetList({ items, showArrow }: { items: AssetItemType[], showArrow: boolean }) {

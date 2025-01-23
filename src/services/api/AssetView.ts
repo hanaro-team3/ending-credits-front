@@ -1,25 +1,8 @@
 import { request } from '../request.tsx';
 import { config } from '../../config/config.ts';
-import { RealEstatesResponseDTO, CarsResponseDTO, PensionsResponseDTO, ConnectAllRequestDTO, CarRequestDTO, CarResponseDTO, RealEstateRequestDTO, RealEstateResponseDTO} from '../dto/AssetView.ts';
+import { BanksResponseDTO,RealEstatesResponseDTO, CarsResponseDTO, PensionsResponseDTO, VirtualResponseDTO, CarRequestDTO, CarResponseDTO, RealEstateRequestDTO, RealEstateResponseDTO, ConnectSelectedRequestDTO, ConnectSelectedResponseDTO, SecuritiesResponseDTO, CashResponseDTO, CashRequestDTO} from '../dto/AssetView.ts';
 
 const BASE_URL = config.apiUrl;
-
-  /**
-   * 사용방법
-   * 1. /src/services/dto에 타입 정의
-   * 2. 아래와 같이 api 정의 (method(필수), url(필수), data, headers, params)
-   * 3. api를 사용할 페이지에서 아래와 같이 사용
-   * ```
-   * try {
-      const response = await userService.registerUser(data);
-      if (response?.data) {
-        setData(response.data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch:', error);
-    }
-    ```
-   */
   
 export const assetService = {
     getRealEstates: () => {
@@ -40,10 +23,16 @@ export const assetService = {
           url: `${BASE_URL}/asset/pensions`,
       });
     },
-    postConnectAll: (data: ConnectAllRequestDTO) => {
+    postConnectAll: () => {
       return request<void>({
           method: 'POST',
-          url: `${BASE_URL}/asset/connect-all`,
+          url: `${BASE_URL}/asset/connect/all`,
+      });
+    },
+    postConnectSelected: (data: ConnectSelectedRequestDTO) => {
+      return request<ConnectSelectedResponseDTO>({
+          method: 'POST',
+          url: `${BASE_URL}/asset/connect/selected`,
           data,
       });
     },
@@ -60,5 +49,37 @@ export const assetService = {
           url: `${BASE_URL}/asset/real-estate`,
           data,
       });
-    }
+    },
+    getVirtual: () => {
+      return request<VirtualResponseDTO>({
+          method: 'GET',
+          url: `${BASE_URL}/asset/virtual`,
+      });
+    },
+    getSecurities: () => {
+      return request<SecuritiesResponseDTO>({
+          method: 'GET',
+          url: `${BASE_URL}/asset/securities`,
+      });
+    },
+    getBanks: () => {
+      return request<BanksResponseDTO>({
+          method: 'GET',
+          url: `${BASE_URL}/asset/bank`,
+      });
+    },
+    getCash: () => {
+      return request<CashResponseDTO>({
+          method: 'GET',
+          url: `${BASE_URL}/asset/cash`,
+      });
+    },
+    patchCash: (data: CashRequestDTO) => {
+      return request<CashResponseDTO>({
+          method: 'PATCH',
+          url: `${BASE_URL}/asset/cash`,
+          data,
+      });
+    },
+
 }

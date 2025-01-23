@@ -12,6 +12,10 @@ import magicWand from "../../../assets/icon/magicWand.png";
 // constants
 import { BANK_DATA, TAB_DATA } from "../constants";
 
+// services
+import { assetService } from "../../../services/api/AssetView";
+import { ConnectSelectedRequestDTO } from "../../../services/dto/AssetView";
+
 function AssetRegisterPage() {
     const [activeTab, setActiveTab] = useState<typeof TAB_DATA[number]>("은행");
     const [selectedItems, setSelectedItems] = useState<Record<string, string[]>>(
@@ -50,6 +54,22 @@ function AssetRegisterPage() {
     const hasSelectedItems = Object.values(selectedItems).some(bank => bank.length > 0);
 
     const navigate = useNavigate();
+
+    const handleRegister = async () => {
+        try {
+                const data: ConnectSelectedRequestDTO = {
+                    bankNames: selectedItems.은행,
+                    securitiesCompanyNames: selectedItems.증권,
+                    exchangeNames: selectedItems.가상자산
+                };
+                const response = await assetService.postConnectSelected(data);
+                if(response.data.code === 'COMMON200') {
+                    navigate("/asset/list");
+                }
+            } catch (error) {
+                console.error('Failed to fetch:', error);
+        }
+    }
 
     return (
         <styled.Container>
@@ -96,7 +116,7 @@ function AssetRegisterPage() {
 
             {hasSelectedItems && (
                 <styled.ButtonWrapper>
-                    <BlueButton variant="large" onClick={() => navigate("/asset/list")}>연결하기</BlueButton>
+                    <BlueButton variant="large" onClick={handleRegister}>연결하기</BlueButton>
                 </styled.ButtonWrapper>
             )}
         </styled.Container>
