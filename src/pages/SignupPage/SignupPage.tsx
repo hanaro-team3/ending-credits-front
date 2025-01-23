@@ -125,15 +125,16 @@ const StepForm = () => {
 			};
 
 			const response = await userService.checkDuplicateId(checkData);
-			console.log(response);
 
-			// 중복 체크 성공 (중복되지 않은 아이디)
-			setIsUserIdChecked(true);
-			alert("사용 가능한 아이디입니다.");
+			if (response.data?.code === "MEMBER4001") {
+				setIsUserIdChecked(false);
+				alert("이미 사용중인 아이디입니다.");
+			} else {
+				setIsUserIdChecked(true);
+				alert("사용 가능한 아이디입니다.");
+			}
 		} catch (error) {
 			console.error("ID check failed:", error);
-
-			// 중복된 아이디인 경우
 			setIsUserIdChecked(false);
 			alert("이미 사용중인 아이디입니다.");
 		}
