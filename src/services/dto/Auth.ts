@@ -45,3 +45,16 @@ export interface ChangePasswordDTO {
 	phoneNumber: string;
 	password: string;
 }
+
+export interface ChangePhoneNumberDTO {
+	phoneNumber: string;
+	headers?: {
+		Authorization: string;
+	};
+}
+
+export interface GetMemberInfoDTO {
+	headers?: {
+		Authorization: string;
+	};
+}

@@ -107,21 +107,23 @@ export const CompareItem = styled.div`
 	gap: 10px;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
+`;
 
-	div {
-		background-color: white;
-		width: 100px;
-		height: 100px;
-		border-radius: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+export const CompareButton = styled.div`
+	background-color: white;
+	width: 100px;
+	height: 100px;
+	border-radius: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+`;
 
-	span {
-		font-size: 14px;
-		color: #878787;
-	}
+export const CompareButtonText = styled.span`
+	font-size: 14px;
+	color: #878787;
 `;
 
 export const TabContainer = styled.div`
@@ -139,9 +141,9 @@ export const TabText = styled.span<{ $active?: boolean }>`
 export const ProductList = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 12px;
 	background-color: white;
-	padding: 10px;
+	padding: 16px;
 	border-radius: 12px;
 	max-height: 500px;
 	overflow-y: scroll;
@@ -185,4 +187,35 @@ export const ButtonContainer = styled.div`
 	justify-content: center;
 	padding: 10px 0;
 `;
-	
+
+export const CompareItemContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+`;
+
+export const CompareItemText = styled.p`
+	background-color: #E3EDF7;
+	text-align: center;
+	padding: 4px 10px;
+	border-radius: 8px;
+`;
+
+export const CompareItemTextContainer = styled.div`
+	display: flex;
+	p{
+		width: 100%;
+		text-align: center;
+		div{
+			display: flex;
+			gap: 8px;
+			justify-content: center;
+
+			span:first-child{
+				font-weight: bold;
+			}	
+		}
+	}
+`;
+
+
