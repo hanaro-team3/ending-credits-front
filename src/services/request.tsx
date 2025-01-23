@@ -10,18 +10,18 @@ interface RequestConfig {
 }
 
 export const getAuthToken = (): string | null => {
-    return window.localStorage.getItem('authToken');
+    return window.localStorage.getItem('accessToken');
 };
 
 axios.defaults.baseURL = config.apiUrl;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export const request = async <T = unknown>({ method, url, data, headers, params }: RequestConfig): Promise<AxiosResponse<T>> => {
-    const authToken = getAuthToken();
+    const accessToken = getAuthToken();
     const defaultHeaders: Record<string, string> = {};
 
-    if (authToken && authToken !== 'null' && authToken !== 'undefined') {
-        defaultHeaders.Authorization = `Bearer ${authToken}`;
+    if (accessToken && accessToken !== 'null' && accessToken !== 'undefined') {
+        defaultHeaders.Authorization = `Bearer ${accessToken}`;
     }
 
     try {

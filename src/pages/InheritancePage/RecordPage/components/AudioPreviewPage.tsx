@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RecordingProps } from "../types/index";
 
 interface AudioPreviewPageProps extends Omit<RecordingProps, "setFormData"> {}
@@ -12,6 +12,19 @@ export const AudioPreviewPage: React.FC<AudioPreviewPageProps> = ({
 		if (!blob) return null;
 		return URL.createObjectURL(blob);
 	};
+
+	useEffect(() => {
+		const urls: string[] = [];
+		Object.values(formData.recordings).forEach((blob) => {
+			if (blob) {
+				urls.push(URL.createObjectURL(blob));
+			}
+		});
+
+		return () => {
+			urls.forEach(URL.revokeObjectURL);
+		};
+	}, [formData.recordings]);
 
 	const AudioSection = ({
 		title,

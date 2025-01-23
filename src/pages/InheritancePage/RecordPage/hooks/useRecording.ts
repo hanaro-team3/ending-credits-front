@@ -5,29 +5,27 @@ interface UseRecordingProps {
 }
 
 export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
-	const [isRecording, setIsRecording] = useState<boolean>(false);
-	const [showNav, setShowNav] = useState<boolean>(false);
-	const [error, setError] = useState<string>("");
-	const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
+	const [isRecording, setIsRecording] = useState(false);
+	const [showNav, setShowNav] = useState(false);
+	const [error, setError] = useState("");
+	const [permissionGranted, setPermissionGranted] = useState(false);
 
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const audioContextRef = useRef<AudioContext | null>(null);
 	const analyserRef = useRef<AnalyserNode | null>(null);
-	const animationFrameRef = useRef<number | null>(null);
 	const mediaStreamRef = useRef<MediaStream | null>(null);
+	const animationFrameRef = useRef<number | null>(null);
 	const chunksRef = useRef<Blob[]>([]);
 
 	useEffect(() => {
 		checkMicrophonePermission();
-		return () => {
-			cleanup();
-		};
+		return () => cleanup();
 	}, []);
 
 	useEffect(() => {
 		if (isRecording) {
-			requestAnimationFrame(draw);
+			draw();
 		}
 	}, [isRecording]);
 
@@ -52,31 +50,32 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 		if (mediaStreamRef.current) {
 			mediaStreamRef.current.getTracks().forEach((track) => track.stop());
 		}
-		if (audioContextRef.current) {
+		if (
+			audioContextRef.current &&
+			audioContextRef.current.state !== "closed"
+		) {
 			audioContextRef.current.close();
 		}
 	};
 
 	const draw = () => {
+		if (!isRecording) return;
+
 		const analyser = analyserRef.current;
 		const canvas = canvasRef.current;
 
-		if (!analyser || !canvas || !isRecording) {
-			return;
-		}
+		if (!analyser || !canvas) return;
 
 		const ctx = canvas.getContext("2d");
-		if (!ctx) {
-			return;
-		}
+		if (!ctx) return;
 
 		const bufferLength = analyser.frequencyBinCount;
 		const dataArray = new Uint8Array(bufferLength);
 		analyser.getByteTimeDomainData(dataArray);
 
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = "#f2f4f5";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 		ctx.lineWidth = 2;
 		ctx.strokeStyle = "#4792dc";
 		ctx.beginPath();
@@ -97,7 +96,9 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 			x += sliceWidth;
 		}
 
+		ctx.lineTo(canvas.width, canvas.height / 2);
 		ctx.stroke();
+
 		animationFrameRef.current = requestAnimationFrame(draw);
 	};
 
@@ -111,43 +112,38 @@ export const useRecording = ({ onRecordingComplete }: UseRecordingProps) => {
 				},
 			});
 
-			setPermissionGranted(true);
-			setError("");
-			mediaStreamRef.current = stream;
+			const audioContext = new AudioContext();
+			const source = audioContext.createMediaStreamSource(stream);
+			const analyser = audioContext.createAnalyser();
+			analyser.fftSize = 2048;
+			source.connect(analyser);
 
 			const mediaRecorder = new MediaRecorder(stream);
 			mediaRecorderRef.current = mediaRecorder;
+			mediaStreamRef.current = stream;
+			audioContextRef.current = audioContext;
+			analyserRef.current = analyser;
 			chunksRef.current = [];
 
-			mediaRecorder.addEventListener("dataavailable", (event) => {
-				if (event.data.size > 0) {
-					chunksRef.current.push(event.data);
+			mediaRecorder.ondataavailable = (e) => {
+				if (e.data.size > 0) {
+					chunksRef.current.push(e.data);
 				}
-			});
+			};
 
-			mediaRecorder.addEventListener("stop", () => {
+			mediaRecorder.onstop = () => {
 				const audioBlob = new Blob(chunksRef.current, {
-					type: "audio/webm",
+					type: "audio/mp3",
 				});
 				onRecordingComplete(audioBlob);
 				setShowNav(true);
-			});
-
-			const audioContext = new AudioContext();
-			audioContextRef.current = audioContext;
-
-			const analyser = audioContext.createAnalyser();
-			analyser.fftSize = 2048;
-			analyserRef.current = analyser;
-
-			const microphone = audioContext.createMediaStreamSource(stream);
-			microphone.connect(analyser);
+			};
 
 			mediaRecorder.start();
 			setIsRecording(true);
 			setShowNav(false);
 		} catch (err) {
-			console.error("Error accessing microphone:", err);
+			console.error("Error starting recording:", err);
 			setPermissionGranted(false);
 			setError("마이크 접근 권한이 필요합니다.");
 		}
