@@ -14,7 +14,7 @@ export function AssetCard({ label, value, highlight, onClick }: AssetCardProps) 
         <styled.CardColumn highlight={highlight}>
             <span>{label}</span>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                <span>{value}</span>
+                <span>{value}원</span>
                 {onClick && <img src={arrow} alt="arrow" onClick={onClick}/>}
             </div>
         </styled.CardColumn>

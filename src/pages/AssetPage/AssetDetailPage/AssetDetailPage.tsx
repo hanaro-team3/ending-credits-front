@@ -1,39 +1,19 @@
 import * as styled from "../styles"
-import Header from "../../../layout/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import { AssetCard } from "../components/AssetCard";
-import BlueButton from "../../../ui/BlueBtn";
+import { useState, useEffect } from "react";
+import { ASSET_DATA } from "../constants";
 
-const ASSET_DATA = [
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Classical%20Building.png",
-        label: "은행",
-    },
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Chart%20Increasing.png",
-        label: "증권",
-    },
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png",
-        label: "가상자산",
-    },
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Dollar%20Banknote.png",
-        label: "현금",
-    },
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/House%20with%20Garden.png",
-        label: "부동산",
-    },
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Automobile.png",
-        label: "자동차",
-    },
-    {
-        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Briefcase.png",
-        label: "연금",
-    }
-];
+//components
+import Header from "../../../layout/Header";
+import BlueButton from "../../../ui/BlueBtn";
+import { AssetCard } from "../components/AssetCard";
+
+//services
+import { assetService } from "../../../services/api/AssetView";
+import { CarsResponseDTO, PensionsResponseDTO, RealEstatesResponseDTO } from "../../../services/dto/AssetView";
+
+
+
 
 function Bank() {
     return(
@@ -83,7 +63,7 @@ function Bank() {
 function Stock() {
     return(
         <>
-          <styled.AccountSection>
+            <styled.AccountSection>
                 <styled.AccountTitle>국내</styled.AccountTitle>
                 <styled.AccountList>
                     <styled.AccountItem>
@@ -142,10 +122,10 @@ function Coin() {
     )
 }
 
-function Cash() {
+function Cash() {    
     return(
         <>
-          <styled.AccountSection>
+            <styled.AccountSection>
                 <styled.AccountTitle>보유한 돈</styled.AccountTitle>
                 <styled.AccountList>
                     <styled.AccountItem>
@@ -173,45 +153,78 @@ function Cash() {
 }
 
 function RealEstate() {
+    const [realEstates, setRealEstates] = useState<RealEstatesResponseDTO>();
+
+    useEffect(() => {
+        async function getRealEstates() {
+            try {
+                const response = await assetService.getRealEstates();
+                if (response?.data) {
+                    setRealEstates(response.data.result);
+                }
+            } catch (error) {
+                console.error('Failed to fetch:', error);
+            }
+        }
+
+        getRealEstates();
+
+    }, []);
     return(
         <>
-          <styled.AccountSection>
+            <styled.AccountSection>
                 <styled.AccountTitle>보유한 집</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank></styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>역삼동우정에쉐르II</styled.AccountName>
-                            <p>50,000,000원</p>
+                    {realEstates?.map((item) => (
+                        <styled.AccountItem key={item.realEstateId}>
+                            <styled.AccountBank></styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.realEstateName}</styled.AccountName>
+                            <p>{item.purchasePrice.toLocaleString()}원</p>
                         </styled.AccountRow>
                         <styled.AccountRow>
-                            <styled.AccountNumber>주소주소주소주소</styled.AccountNumber>
+                            <styled.AccountNumber>{item.address}</styled.AccountNumber>
                             <styled.AccountReturn></styled.AccountReturn>
                         </styled.AccountRow>
                     </styled.AccountItem>
+                    ))}
                 </styled.AccountList>
             </styled.AccountSection>
         </>
     )
 }
 
-function Automobile() {
+function Car() {
+    const [cars, setCars] = useState<CarsResponseDTO>();
+
+    useEffect(() => {
+        async function getCars() {
+            const response = await assetService.getCars();
+            if (response?.data) {
+                console.log(response.data);
+                setCars(response.data.result);
+            }
+        }
+        getCars();
+    }, []);
     return(
         <>
             <styled.AccountSection>
                 <styled.AccountTitle>보유한 차</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank></styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>17사 1932</styled.AccountName>
-                            <p>50,000,000원</p>
+                    {cars?.map((item) => (
+                        <styled.AccountItem key={item.carId}>
+                            <styled.AccountBank></styled.AccountBank>
+                            <styled.AccountRow>
+                                <styled.AccountName>{item.carNumber}</styled.AccountName>
+                            <p>{item.purchasePrice.toLocaleString()}원</p>
                         </styled.AccountRow>
                         <styled.AccountRow>
-                            <styled.AccountNumber>2.0 Cooper S Clubman</styled.AccountNumber>
+                            <styled.AccountNumber>{item.model}</styled.AccountNumber>
                             <styled.AccountReturn></styled.AccountReturn>
-                        </styled.AccountRow>
-                    </styled.AccountItem>
+                            </styled.AccountRow>
+                        </styled.AccountItem>
+                    ))}
                 </styled.AccountList>
             </styled.AccountSection>
         </>   
@@ -220,6 +233,27 @@ function Automobile() {
 
 function Pension() {
     const navigate = useNavigate(); 
+    const [pensions, setPensions] = useState<PensionsResponseDTO>();
+
+    useEffect(() => {
+        async function getPensions() {
+            const response = await assetService.getPensions();
+            if (response?.data) {
+                console.log(response.data);
+                setPensions(response.data.result);
+            }
+        }
+        getPensions();
+    }, []);
+
+    function getPensionAsset(pensionType: string) {
+        return pensions?.filter(item => item.pensionType === pensionType).reduce((acc, item) => acc + item.monthlyPayment, 0);
+    }
+
+    function getPensionTotalAsset() {
+        return pensions?.reduce((acc, item) => acc + item.monthlyPayment, 0);
+    }
+
     return(
         <>
             <styled.TitleContainer>
@@ -227,10 +261,10 @@ function Pension() {
             </styled.TitleContainer>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <AssetCard label="국민연금" value="8천 2백만원" />
-                <AssetCard label="퇴직연금" value="6천 2백만원" />
-                <AssetCard label="개인연금" value="2천만원" />
-                <AssetCard label="합계" value="2천만원" highlight='blue' />
+                <AssetCard label="국민연금" value={getPensionAsset("NATIONAL")?.toLocaleString() || "0"} />
+                <AssetCard label="퇴직연금" value={getPensionAsset("RETIREMENT")?.toLocaleString() || "0"} />
+                <AssetCard label="개인연금" value={getPensionAsset("PERSONAL")?.toLocaleString() || "0"} />
+                <AssetCard label="합계" value={getPensionTotalAsset()?.toLocaleString() || "0"} highlight='blue' />
 
                 <BlueButton variant="large" onClick={() => {navigate("/product")}}>투자로 돈 불리기</BlueButton>
             </div>
@@ -255,7 +289,7 @@ function AssetDetailPage() {
             {label === "가상자산" && <Coin />}
             {label === "현금" && <Cash />}
             {label === "부동산" && <RealEstate />}
-            {label === "자동차" && <Automobile />}
+            {label === "자동차" && <Car />}
             {label === "연금" && <Pension />}
         
         </styled.Container>

@@ -1,5 +1,36 @@
 import { BankDataType } from "./type";
 
+export const ASSET_DATA = [
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Classical%20Building.png",
+        label: "은행",
+    },
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Chart%20Increasing.png",
+        label: "증권",
+    },
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Coin.png",
+        label: "가상자산",
+    },
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Dollar%20Banknote.png",
+        label: "현금",
+    },
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/House%20with%20Garden.png",
+        label: "부동산",
+    },
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Automobile.png",
+        label: "자동차",
+    },
+    {
+        icon: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Briefcase.png",
+        label: "연금",
+    }
+];
+
 export const BANK_DATA: BankDataType[] = [
     {
         type: "은행",
