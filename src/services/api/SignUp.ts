@@ -9,6 +9,8 @@ import {
 	SendSMSDTO,
 	VerifySMSDTO,
 	ChangePasswordDTO,
+	ChangePhoneNumberDTO,
+	GetMemberInfoDTO,
 } from "../dto/Auth";
 
 const BASE_URL = config.apiUrl;
@@ -87,6 +89,26 @@ export const userService = {
 		return request<void>({
 			method: "PATCH",
 			url: `auth/password?phoneNumber=${data.phoneNumber}&password=${data.password}`,
+		});
+	},
+	changePhoneNumber: (
+		data: ChangePhoneNumberDTO,
+		config?: { headers: { Authorization: string } }
+	) => {
+		return request<void>({
+			method: "PATCH",
+			url: `member/me?phoneNumber=${data.phoneNumber}`,
+			headers: config?.headers,
+		});
+	},
+	getMemberInfo: (
+		data: GetMemberInfoDTO,
+		config?: { headers: { Authorization: string } }
+	) => {
+		return request<void>({
+			method: "GET",
+			url: `member/me`,
+			headers: config?.headers,
 		});
 	},
 };
