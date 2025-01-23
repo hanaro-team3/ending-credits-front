@@ -38,7 +38,7 @@ interface CheckboxState {
 }
 
 const StepForm = () => {
-	const [currentStep, setCurrentStep] = useState<number>(0);
+	const [currentStep, setCurrentStep] = useState<number>(-1);
 	const navigate = useNavigate();
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -728,9 +728,15 @@ const StepForm = () => {
 		</styled.Container>
 	);
 
-	const steps = [renderCameraStep, renderStep0, renderStep1, renderStep2];
-
-	return <styled.Container>{steps[currentStep]()}</styled.Container>;
+	// const steps = [renderCameraStep, renderStep0, renderStep1, renderStep2];
+	const steps = {
+		[-1]: renderCameraStep,
+		0: renderStep0,
+		1: renderStep1,
+		2: renderStep2,
+	};
+	// return <styled.Container>{steps[currentStep]()}</styled.Container>;
+	return <styled.Container>{steps[currentStep]?.()}</styled.Container>;
 };
 
 export default StepForm;
