@@ -312,101 +312,43 @@ export const Checkbox = styled.div`
 	}
 `;
 
-//------------------------
+//------------------------------
 
-export const CameraContainer = styled.div`
-	position: relative;
-	height: 100vh;
-	width: 100%;
-	background-color: #1a1a1a;
+export const SubTitle = styled.div`
+	font-family: "Pretendard";
+	font-size: 14px;
+	font-weight: 400;
+	color: #2b2b2b;
+	line-height: 1.2;
+	margin-top: 12px;
+`;
+
+export const CameraContainer = styled.img`
+	width: 352px;
+	height: auto;
+	margin-top: 28px;
+`;
+
+export const UploadIdCardDiv = styled.div`
+	width: 352px;
+	height: 195px;
+	margin-top: 60px;
+
+	border: 1.5px solid #4792dc;
+	border-radius: 12px;
+
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 `;
 
-export const CloseButton = styled.button`
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
-	color: white;
-	background: none;
-	border: none;
-	cursor: pointer;
+export const PlusButton = styled.img`
+	width: 42px;
+	height: 42px;
 `;
 
-export const CameraTitle = styled.h1`
-	color: white;
-	font-size: 1.125rem;
-	margin-top: 6rem;
-	margin-bottom: 1rem;
-	text-align: center;
-`;
-
-export const CameraViewContainer = styled.div`
-	position: relative;
-	width: 91.666667%;
-	aspect-ratio: 16/9;
-	background-color: black;
-	border-radius: 0.5rem;
-	overflow: hidden;
-	margin-top: 4rem;
-`;
-
-export const CameraVideo = styled.video`
-	position: absolute;
+export const UploadedImage = styled.img`
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-`;
-
-export const CameraCanvas = styled.canvas`
-	display: none;
-`;
-
-export const IdCardGuide = styled.div`
-	position: absolute;
-	inset: 0;
-	border: 2px solid rgba(255, 255, 255, 0.5);
-	border-radius: 0.5rem;
-`;
-
-export const CapturedImage = styled.img`
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-`;
-
-export const CameraErrorMessage = styled.div`
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: white;
-`;
-
-export const BottomGuide = styled.div`
-	position: absolute;
-	bottom: 10rem;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	gap: 4rem;
-`;
-
-export const GuideItem = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	color: white;
-`;
-
-export const GuideIcon = styled.div`
-	margin-bottom: 0.5rem;
-`;
-
-export const GuideText = styled.span`
-	font-size: 0.875rem;
-	text-align: center;
-	white-space: pre-line;
 `;
