@@ -13,8 +13,8 @@ import magicWand from "../../../assets/icon/magicWand.png";
 import { BANK_DATA, TAB_DATA } from "../constants";
 
 // services
-import { assetService } from "../../../services/api/AssetView";
-import { ConnectSelectedRequestDTO } from "../../../services/dto/AssetView";
+import { assetService } from "../../../services/api/Asset";
+import { ConnectSelectedRequestDTO } from "../../../services/dto/Asset";
 
 function AssetRegisterPage() {
     const [activeTab, setActiveTab] = useState<typeof TAB_DATA[number]>("은행");
