@@ -1,6 +1,5 @@
 import * as styled from "../styles";
 import { useParams } from "react-router-dom";
-import { assetService } from "../../../services/api/AssetView";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../../layout/Header";
 import BlueButton from "../../../ui/BlueBtn";
 import { Input } from "../../../ui/Input";
+
+// services
+import { assetService } from "../../../services/api/Asset";
 
 function AssetModifyPage() {
     const { label } = useParams(); 

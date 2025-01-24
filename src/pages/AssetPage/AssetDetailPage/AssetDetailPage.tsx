@@ -9,12 +9,12 @@ import BlueButton from "../../../ui/BlueBtn";
 import { AssetCard } from "../components/AssetCard";
 
 //services
-import { assetService } from "../../../services/api/AssetView";
-import { Banks,CarsResponseDTO, PensionsResponseDTO, RealEstatesResponseDTO, Securities, Virtual, VirtualResponseDTO } from "../../../services/dto/AssetView";
+import { assetService } from "../../../services/api/Asset";
+import * as dto from "../../../services/dto/Asset";
 
 function Bank() {
-    const [deposits, setDeposits] = useState<Banks[]>();
-    const [funds, setFunds] = useState<Banks[]>();
+    const [deposits, setDeposits] = useState<dto.Banks[]>();
+    const [funds, setFunds] = useState<dto.Banks[]>();
 
     useEffect(() => {
         async function getBanks() {
@@ -22,7 +22,6 @@ function Bank() {
             if (response?.data) {
                 setDeposits(response.data.result.filter(item => item.assetType === "예금"));
                 setFunds(response.data.result.filter(item => item.assetType === "펀드"));
-                console.log(response.data.result);
             }
         }
         getBanks();
@@ -65,8 +64,8 @@ function Bank() {
 }
 
 function Stock() {
-    const [domestic, setDomestic] = useState<Securities[]>();
-    const [foreign, setForeign] = useState<Securities[]>();
+    const [domestic, setDomestic] = useState<dto.Securities[]>();
+    const [foreign, setForeign] = useState<dto.Securities[]>();
 
     useEffect(() => {
         async function getSecurities() {
@@ -121,7 +120,7 @@ function Stock() {
 }
 
 function Coin() {
-    const [virtuals, setVirtuals] = useState<Virtual[]>();
+    const [virtuals, setVirtuals] = useState<dto.Virtual[]>();
 
     useEffect(() => {
         async function getVirtuals() {
@@ -188,7 +187,7 @@ function Cash() {
 }
 
 function RealEstate() {
-    const [realEstates, setRealEstates] = useState<RealEstatesResponseDTO>();
+    const [realEstates, setRealEstates] = useState<dto.RealEstate[]>([]);
 
     useEffect(() => {
         async function getRealEstates() {
@@ -230,13 +229,12 @@ function RealEstate() {
 }
 
 function Car() {
-    const [cars, setCars] = useState<CarsResponseDTO>();
+    const [cars, setCars] = useState<dto.Car[]>([]);
 
     useEffect(() => {
         async function getCars() {
             const response = await assetService.getCars();
             if (response?.data) {
-                console.log(response.data);
                 setCars(response.data.result);
             }
         }
@@ -268,13 +266,12 @@ function Car() {
 
 function Pension() {
     const navigate = useNavigate(); 
-    const [pensions, setPensions] = useState<PensionsResponseDTO>();
+    const [pensions, setPensions] = useState<dto.Pension[]>([]);
 
     useEffect(() => {
         async function getPensions() {
             const response = await assetService.getPensions();
             if (response?.data) {
-                console.log(response.data);
                 setPensions(response.data.result);
             }
         }

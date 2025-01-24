@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import * as styled from "../styles";
 import { useNavigate } from "react-router-dom";
+
+// assets
+import arrow from "../../../assets/icon/arrow.png";
+
+// types
+import { AssetItemType } from "../type"
+
+// services
+import { assetService } from "../../../services/api/Asset";
+import { DetailResponseDTO } from "../../../services/dto/Asset";
+
+//components
 import Header from "../../../layout/Header";
 import BlueButton from "../../../ui/BlueBtn";
 import HorizontalStackedBar from "../components/HorizontalStackedBar";
-import arrow from "../../../assets/icon/arrow.png";
-import { assetService } from "../../../services/api/Asset";
-import { DetailResponseDTO } from "../../../services/dto/Asset";
-import { AssetItemType } from "../type"
-
 
 interface LoanItem {
     label: string;
@@ -61,7 +68,7 @@ function AssetListPage() {
         const fetchAssetData = async () => {
             try {
                 setIsLoading(true);
-                const response = await assetService.detail();
+                const response = await assetService.getDetail();
                 const result: DetailResponseDTO = response.data.result;
                 const assetDetail = result.assetsDetail;
 
