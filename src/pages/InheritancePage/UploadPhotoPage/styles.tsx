@@ -588,6 +588,10 @@ export const InheritorPageContainer = styled.div`
     overflow-y: scroll;
     margin-top: 28px;
     padding-top: 30px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 export const InheritorPageSection = styled.div`
