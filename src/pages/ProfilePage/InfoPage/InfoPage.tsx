@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "../../../layout/Header";
 import * as styled from "../styles";
 import { useNavigate } from "react-router-dom";
-import { userService } from "../../../services/api/SignUp";
+import { memberService } from "../../../services/api/Member";
 
 export default function InfoPage() {
 	const navigate = useNavigate();
@@ -22,8 +22,7 @@ export default function InfoPage() {
 					return;
 				}
 
-				const response = await userService.getMemberInfo(
-					{},
+				const response = await memberService.getMemberInfo(
 					{
 						headers: {
 							Authorization: `Bearer ${accessToken}`,

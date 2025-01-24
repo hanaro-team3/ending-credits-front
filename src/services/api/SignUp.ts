@@ -10,9 +10,7 @@ import {
 	VerifySMSDTO,
 	ChangePasswordDTO,
 	ChangePhoneNumberDTO,
-	ChangeAddressDTO,
-	GetMemberInfoDTO,
-
+	ChangeAddressDTO
 } from "../dto/Auth";
 
 const BASE_URL = config.apiUrl;
@@ -110,16 +108,6 @@ export const userService = {
 		return request<void>({
 			method: "PATCH",
 			url: `member/me?address=${data.address}`,
-			headers: config?.headers,
-		});
-	},
-	getMemberInfo: (
-		data: GetMemberInfoDTO,
-		config?: { headers: { Authorization: string } }
-	) => {
-		return request<void>({
-			method: "GET",
-			url: `member/me`,
 			headers: config?.headers,
 		});
 	},

@@ -1,17 +1,5 @@
 import { request } from "../request";
 import { config } from "../../config/config";
-// import {
-// 	SignupDTO,
-// 	LoginDTO,
-// 	LoginResponse,
-// 	CheckDuplicateIdDTO,
-// 	ChangeSimplePasswordDTO,
-// 	SendSMSDTO,
-// 	VerifySMSDTO,
-// 	ChangePasswordDTO,
-// 	ChangePhoneNumberDTO,
-// 	GetMemberInfoDTO,
-// } from "../dto/Auth";
 
 const BASE_URL = config.apiUrl;
 

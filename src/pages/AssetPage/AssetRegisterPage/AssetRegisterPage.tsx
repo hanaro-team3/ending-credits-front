@@ -1,6 +1,7 @@
 import * as styled from "../styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { message } from 'antd';
 
 // components
 import Header from "../../../layout/Header";
@@ -65,8 +66,10 @@ function AssetRegisterPage() {
                 const response = await assetService.postConnectSelected(data);
                 if(response.data.code === 'COMMON200') {
                     navigate("/asset");
+                    message.success("자산 연결 성공!");
                 }
             } catch (error) {
+                message.error("자산 연결 실패");
                 console.error('Failed to fetch:', error);
         }
     }
@@ -76,8 +79,10 @@ function AssetRegisterPage() {
             const response = await assetService.postConnectAll();
             if(response.data.code === 'COMMON200') {
                 navigate("/asset");
+                message.success("자산 연결 성공!");
             }
         } catch (error) {
+            message.error("자산 연결 실패");
             console.error('Failed to fetch:', error)
         }
     }

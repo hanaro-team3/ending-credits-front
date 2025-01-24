@@ -60,12 +60,6 @@ export interface ChangeAddressDTO{
 	}
 }
 
-export interface GetMemberInfoDTO {
-	headers?: {
-		Authorization: string;
-	};
-}
-
 export interface UploadResponse {
 	url: string;
 	message: string;
