@@ -71,7 +71,7 @@ export interface Annuity{
     irpFundTotalCost?: number;
 }
 
-export interface AnnuityDetail {
+export interface earnRates {
     dbEarnRate: number;
     dbEarnRate3: number;
     dbEarnRate5: number;
@@ -87,6 +87,15 @@ export interface AnnuityDetail {
     irpEarnRate5: number;
     irpEarnRate7: number;
     irpEarnRate10: number;
+}
+
+export interface AnnuityDetail{   
+    company: string;
+    area: string;
+    earnRates: {
+        "원리금 비보장": earnRates,
+        "원리금 보장": earnRates,
+    } 
 }
 
 export interface Recommend {

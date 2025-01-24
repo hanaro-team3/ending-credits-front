@@ -1,21 +1,58 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+	padding: 20px;
 	display: flex;
 	flex-direction: column;
-	gap: 30px;
-	padding: 0 20px;
-	padding-bottom: 100px;
-	min-height: 100vh;
-	position: fixed;
-	top: 0;
-	left: 0;
+	gap: 20px;
+`;
+
+export const ProductInfoWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const ProductImage = styled.img`
+	width: 100px;
+	margin-bottom: 30px;
+`;
+
+export const ProductCompanyInfo = styled.p`
+	color: #888888;
+	margin-bottom: 10px;
+`;
+
+export const ProductName = styled.p`
+	font-size: 20px;
+	font-weight: 600;
+`;
+
+export const ProductDetailsCard = styled.div`
+	background-color: white;
+	border-radius: 10px;
+	padding: 10px;
 	width: 100%;
-	height: 100%;
-	overflow-y: auto;
-	&::-webkit-scrollbar {
-		display: none;
-	}
+`;
+
+export const DetailSection = styled.div<{ isBottom?: boolean }>`
+	${({ isBottom }) => !isBottom && 'border-bottom: 1px solid #E0E0E0;'}
+	padding: ${({ isBottom }) => isBottom ? '10px 0 0 0' : '0 0 10px 0'};
+	text-align: center;
+`;
+
+export const DetailLabel = styled.p`
+	color: #888888;
+	padding-bottom: 10px;
+`;
+
+export const ChartTitle = styled.h3`
+	margin: 0;
+`;
+
+export const ButtonContainer = styled.div`
+	margin-top: 20px;
 `;
 
 export const TitleContainer = styled.div`
@@ -161,12 +198,6 @@ export const ProductItemLeft = styled.div`
 	gap: 10px;
 `;
 
-export const ProductImage = styled.img`
-	padding: 4px;
-	width: 40px;
-	height: 40px;
-`;
-
 export const ProductInfo = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -179,13 +210,6 @@ export const ProductTitle = styled.span`
 export const ProductSubTitle = styled.span`
 	font-size: 12px;
 	color: #878787;
-`;
-
-export const ButtonContainer = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	padding: 10px 0;
 `;
 
 export const CompareItemContainer = styled.div`
