@@ -53,6 +53,13 @@ export interface ChangePhoneNumberDTO {
 	};
 }
 
+export interface ChangeAddressDTO{
+	address: string;
+	headers?:{
+		Authorization: string;
+	}
+}
+
 export interface GetMemberInfoDTO {
 	headers?: {
 		Authorization: string;
