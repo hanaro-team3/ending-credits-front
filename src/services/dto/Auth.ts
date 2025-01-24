@@ -58,3 +58,8 @@ export interface GetMemberInfoDTO {
 		Authorization: string;
 	};
 }
+
+export interface UploadResponse {
+	url: string;
+	message: string;
+}

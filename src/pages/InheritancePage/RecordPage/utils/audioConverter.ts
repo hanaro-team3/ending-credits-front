@@ -1,41 +1,38 @@
-import lamejs from "lamejs";
-
-export const convertWebMToMP3 = async (webmBlob: Blob): Promise<Blob> => {
-	// Convert WebM to PCM
+export const convertWebMToMP4 = async (webmBlob: Blob): Promise<Blob> => {
 	const audioContext = new AudioContext();
 	const arrayBuffer = await webmBlob.arrayBuffer();
 	const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-	// Get raw audio data
-	const channelData = audioBuffer.getChannelData(0);
-	const samples = new Int16Array(channelData.length);
+	const destination = audioContext.createMediaStreamDestination();
+	const source = audioContext.createBufferSource();
+	source.buffer = audioBuffer;
+	source.connect(destination);
 
-	// Convert float32 to int16
-	for (let i = 0; i < channelData.length; i++) {
-		const s = Math.max(-1, Math.min(1, channelData[i]));
-		samples[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
-	}
+	const mediaRecorder = new MediaRecorder(destination.stream, {
+		mimeType: "audio/mp4",
+		audioBitsPerSecond: 128000,
+	});
 
-	// Initialize MP3 encoder
-	const mp3encoder = new lamejs.Mp3Encoder(1, audioBuffer.sampleRate, 128);
-	const mp3Data = [];
+	const chunks: Blob[] = [];
 
-	// Encode to MP3
-	const blockSize = 1152;
-	for (let i = 0; i < samples.length; i += blockSize) {
-		const sampleChunk = samples.subarray(i, i + blockSize);
-		const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
-		if (mp3buf.length > 0) {
-			mp3Data.push(mp3buf);
-		}
-	}
+	return new Promise((resolve, reject) => {
+		mediaRecorder.ondataavailable = (e) => {
+			if (e.data.size > 0) {
+				chunks.push(e.data);
+			}
+		};
 
-	// Get the last chunk of MP3 data
-	const mp3buf = mp3encoder.flush();
-	if (mp3buf.length > 0) {
-		mp3Data.push(mp3buf);
-	}
+		mediaRecorder.onstop = () => {
+			const mp4Blob = new Blob(chunks, { type: "audio/mp4" });
+			resolve(mp4Blob);
+		};
 
-	// Combine chunks into a single Blob
-	return new Blob(mp3Data, { type: "audio/mp3" });
+		mediaRecorder.onerror = (err) => {
+			reject(err);
+		};
+
+		mediaRecorder.start();
+		source.start();
+		source.onended = () => mediaRecorder.stop();
+	});
 };
