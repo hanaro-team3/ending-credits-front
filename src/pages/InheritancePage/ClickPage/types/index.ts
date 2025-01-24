@@ -41,6 +41,7 @@ export interface FormData {
 	executor: {
 		name: string;
 		relationship: string;
+		priority: number;
 	};
 	messages: Array<{
 		relationship: string;
@@ -60,4 +61,10 @@ export interface InheritorModalProps {
 export interface Message {
 	relationship: string;
 	content: string;
+}
+
+export interface Executor {
+	name: string;
+	relationship: string;
+	priority: number;
 }
