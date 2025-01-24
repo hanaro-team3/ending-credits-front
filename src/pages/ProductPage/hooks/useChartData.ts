@@ -1,43 +1,72 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
+import { PensionSavingDetail } from '../../../services/dto/Product';
 
-export const useChartData = () => {
-    const [chartData] = useState({
-        series: [{
-            name: 'series1',
-            data: [31, 40, 28, 51, 42, 109, 100]
-        }, {
-        name: 'series2',
-        data: [11, 32, 45, 32, 34, 52, 41]
-        }],
-        options: {
-        chart: {
-            type: 'area',
-            toolbar: {
-                show: false,
-                tools: {
-                    download: false,
-                    selection: false,
-                    zoom: false,
-                    zoomin: false,
-                    zoomout: false,
-                    pan: false,
-                    reset: false
+export const useChartData = (productDetail?: PensionSavingDetail) => {
+    const chartData = useMemo(() => {
+        const earnRateData = [
+            productDetail?.threeYearsAgoEarnRate || 0,
+            productDetail?.twoYearsAgoEarnRate || 0,
+            productDetail?.previousYearEarnRate || 0,
+            productDetail?.currentEarnRate || 0
+        ];
+
+        const feeRateData = [
+            productDetail?.threeYearsAgoFeeRate || 0,
+            productDetail?.twoYearsAgoFeeRate || 0,
+            productDetail?.previousYearFeeRate || 0
+        ];
+
+        console.log(earnRateData);
+
+        return {
+            earnRate: {
+                series: [{
+                    name: '수익률',
+                    data: earnRateData
+                }],
+                options: {
+                    chart: {
+                        type: 'area',
+                        toolbar: { show: false,download: false,selection: false,zoom: false,zoomin: false,zoomout: false,pan: false,reset: false },
+                        zoom: { enabled: false },
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'smooth' },
+                    xaxis: {
+                        categories: ['3년 전', '2년 전', '1년 전', '현재']
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: (value: number) => `${value.toFixed(2)}%`
+                        }
+                    }
+                }
+            },
+            feeRate: {
+                series: [{
+                    name: '수수료',
+                    data: feeRateData
+                }],
+                options: {
+                    chart: {
+                        type: 'area',
+                        toolbar: { show: false,download: false,selection: false,zoom: false,zoomin: false,zoomout: false,pan: false,reset: false },
+                        zoom: { enabled: false },
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'smooth' },
+                    xaxis: {
+                        categories: ['3년 전', '2년 전', '1년 전']
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: (value: number) => `${value.toFixed(2)}%`
+                        }
+                    }
                 }
             }
-
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'smooth'
-        },
-        xaxis: {
-            type: 'datetime',
-            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-        }
-        },
-    });
+        };
+    }, [productDetail]);
 
     return { chartData };
 }; 
