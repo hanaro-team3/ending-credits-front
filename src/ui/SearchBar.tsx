@@ -32,8 +32,8 @@ const SearchIcon = styled.img`
 interface SearchBarProps {
 	placeholder?: string;
 	value?: string;
-	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-	onSearch: () => void;
+	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+	onSearch?: () => void;
 }
 
 const SearchBar = ({ 

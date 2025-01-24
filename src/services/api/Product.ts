@@ -6,11 +6,10 @@ const BASE_URL = config.apiUrl;
 
 export const productService = {
   // 투자 전략에 맞는 금융 상품 추천
-    getRecommend: (strategy:string) => {
+    getRecommend: () => {
         return request<dto.RecommendResponseDTO>({
         method: 'GET',
         url: `${BASE_URL}/product/recommend`,
-        params: { strategy },
         });
     },
     // 연금저축 상품 전체 조회
@@ -84,6 +83,21 @@ export const productService = {
         method: 'GET',
         url: `${BASE_URL}/product/annuity/search`,
         params: { keyword },
+        });
+    },
+    // 퇴직연금 기업 검색 목록
+    getProductAnnuity: (areaCode: string) => {
+        return request<dto.AnnuitySearchResponseDTO>({
+        method: 'GET',
+        url: `${BASE_URL}/product/annuity`,
+        params: { areaCode },
+        });
+    },
+    // 하나은행 상품 조회
+    getProductPensionSavingsDetailHana:()=>{
+        return request<dto.PensionSavingsDetailHanaResponseDTO>({
+        method: 'GET',
+        url: `${BASE_URL}/product/pension-savings/detail/hana`,
         });
     }
 };

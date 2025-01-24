@@ -178,5 +178,5 @@ export interface AnnuityDetailResponseDTO {
 export interface PensionSavingsDetailHanaResponseDTO {
     code: string;
     message: string;
-    result: PensionSaving;
+    result: PensionSaving[];
 }
