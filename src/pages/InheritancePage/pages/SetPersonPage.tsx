@@ -4,6 +4,7 @@ import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import { Executor } from "../ClickPage/types";
+import { message } from "antd";
 
 const SetPersonPage: React.FC<PageProps> = ({
     onNext,
@@ -15,21 +16,25 @@ const SetPersonPage: React.FC<PageProps> = ({
         { name: "", relationship: "", priority: 1 },
     ]);
 
+    const updateFormData = (newExecutors: Executor[]) => {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            executors: newExecutors,
+        }));
+    };
+
     const handleNameChange = (index: number, value: string) => {
         const newExecutors = [...executors];
         newExecutors[index].name = value;
         setExecutors(newExecutors);
+        updateFormData(newExecutors);
     };
 
     const handleRelationshipChange = (index: number, value: string) => {
         const newExecutors = [...executors];
         newExecutors[index].relationship = value;
         setExecutors(newExecutors);
-
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            executors: newExecutors,
-        }));
+        updateFormData(newExecutors);
     };
 
     const handleMoveUp = (index: number) => {
@@ -40,7 +45,7 @@ const SetPersonPage: React.FC<PageProps> = ({
             newExecutors[index],
         ];
         setExecutors(newExecutors);
-        setFormData({ ...formData, executors: newExecutors });
+        updateFormData(newExecutors);
     };
 
     const handleMoveDown = (index: number) => {
@@ -51,7 +56,7 @@ const SetPersonPage: React.FC<PageProps> = ({
             newExecutors[index],
         ];
         setExecutors(newExecutors);
-        setFormData({ ...formData, executors: newExecutors });
+        updateFormData(newExecutors);
     };
 
     const handleAddExecutor = () => {
@@ -60,24 +65,16 @@ const SetPersonPage: React.FC<PageProps> = ({
             { name: "", relationship: "", priority: 1 },
         ];
         setExecutors(newExecutors);
-
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            executors: newExecutors,
-        }));
+        updateFormData(newExecutors);
     };
 
     const handleRemoveExecutor = () => {
         if (executors.length > 1) {
             const newExecutors = executors.slice(0, -1); // 마지막 항목 삭제
             setExecutors(newExecutors);
-
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                executors: newExecutors,
-            }));
+            updateFormData(newExecutors);
         } else {
-            alert("첫 번째 항목은 삭제할 수 없습니다."); // TODO: 변경
+            message.success("첫 번째 항목은 삭제할 수 없습니다.");
         }
     };
 
@@ -220,7 +217,7 @@ const SetPersonPage: React.FC<PageProps> = ({
                 <WhiteButton
                     variant="medium"
                     onClick={() => {
-                        console.log("Page 6 - Going back:", formData.executor);
+                        console.log("Page 6 - Going back:", formData.executors);
                         onPrev();
                     }}
                     style={{ marginRight: "8px" }}
@@ -232,7 +229,7 @@ const SetPersonPage: React.FC<PageProps> = ({
                     onClick={() => {
                         console.log(
                             "Page 6 - Moving forward:",
-                            formData.executor
+                            formData.executors
                         );
                         onNext();
                     }}
