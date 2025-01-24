@@ -18,16 +18,10 @@ export interface FormData {
     uploadType: "album" | "camera" | null;
     // Page 3 - 재산 정보
     assets: {
-        realEstate: Array<{
+        [key: string]: Array<{
             id: string;
             type: string;
             address: string;
-            value: number;
-        }>;
-        stocks: Array<{
-            id: string;
-            type: string;
-            details: string;
             value: number;
         }>;
     };
@@ -45,13 +39,14 @@ export interface FormData {
         };
     };
     // Page 6 - 유언 집행자
-    executors: {
+    executors: Array<{
         name: string;
         relationship: string;
         priority: number;
-    }[];
+    }>;
     // Page 7 - 메시지
     messages: Array<{
+        name: string;
         relationship: string;
         content: string;
     }>;
