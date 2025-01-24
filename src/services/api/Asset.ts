@@ -30,13 +30,13 @@ export const assetService = {
     });
   },
   postConnectAll: () => {
-    return request<void>({
+    return request<dto.ConnectResponseDTO>({
       method: 'POST',
       url: `${BASE_URL}/asset/connect/all`,
     });
   },
   postConnectSelected: (data: dto.ConnectSelectedRequestDTO) => {
-    return request<dto.ConnectSelectedResponseDTO>({
+    return request<dto.ConnectResponseDTO>({
       method: 'POST',
       url: `${BASE_URL}/asset/connect/selected`,
       data,

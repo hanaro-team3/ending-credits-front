@@ -104,7 +104,7 @@ export interface ConnectSelectedRequestDTO {
     exchangeNames: string[]
 }
 
-export interface ConnectSelectedResponseDTO {
+export interface ConnectResponseDTO {
     code: string;
     message: string;
 }

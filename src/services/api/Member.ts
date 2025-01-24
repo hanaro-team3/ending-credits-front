@@ -1,6 +1,6 @@
 import { request } from '../request';
 import { config } from '../../config/config';
-import { MemberConnectedResponseDTO } from '../dto/Member';
+import { MemberConnectedResponseDTO, MemberWishResponseDTO } from '../dto/Member';
 
 const BASE_URL = config.apiUrl;
 
@@ -11,4 +11,10 @@ export const memberService = {
             url: `${BASE_URL}/member/connected`,
         });
     },
+    getMemberWish: () => {
+        return request<MemberWishResponseDTO>({
+            method: 'GET',
+            url: `${BASE_URL}/member/wish`,
+        })
+    }
 };

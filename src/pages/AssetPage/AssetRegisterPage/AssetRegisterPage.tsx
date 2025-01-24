@@ -64,10 +64,21 @@ function AssetRegisterPage() {
                 };
                 const response = await assetService.postConnectSelected(data);
                 if(response.data.code === 'COMMON200') {
-                    navigate("/asset/list");
+                    navigate("/asset");
                 }
             } catch (error) {
                 console.error('Failed to fetch:', error);
+        }
+    }
+
+    const handleRegisterAll = async () => {
+        try {
+            const response = await assetService.postConnectAll();
+            if(response.data.code === 'COMMON200') {
+                navigate("/asset");
+            }
+        } catch (error) {
+            console.error('Failed to fetch:', error)
         }
     }
 
@@ -75,7 +86,7 @@ function AssetRegisterPage() {
         <styled.Container>
             <Header title="자산 연결" showClose={true} />
 
-            <styled.MagicButton>
+            <styled.MagicButton onClick={handleRegisterAll}>
                 <img src={magicWand} alt="요술봉" width={34} />
                 <span>모든 자산을 한 번에 연결해 보세요</span>
             </styled.MagicButton>
