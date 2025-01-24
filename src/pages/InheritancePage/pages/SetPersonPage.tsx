@@ -59,10 +59,10 @@ const SetPersonPage: React.FC<PageProps> = ({
         updateFormData(newExecutors);
     };
 
-    const handleAddExecutor = () => {
+    const handleAddExecutor = (prevPriority: number) => {
         const newExecutors = [
             ...executors,
-            { name: "", relationship: "", priority: 1 },
+            { name: "", relationship: "", priority: prevPriority + 1 },
         ];
         setExecutors(newExecutors);
         updateFormData(newExecutors);
@@ -93,12 +93,6 @@ const SetPersonPage: React.FC<PageProps> = ({
                 <styled.InheritorPageContainer>
                     {executors.map((executor, index) => (
                         <styled.InheritorPageSection key={index}>
-                            {/* <styled.Page6InputDiv
-								style={{
-									marginTop: index === 0 ? "0" : "20px",
-								}}
-							> */}
-
                             <styled.Page6InputDiv
                                 style={{
                                     marginTop: index === 0 ? "0" : "50px",
@@ -176,7 +170,6 @@ const SetPersonPage: React.FC<PageProps> = ({
                                     </BlueButton>
                                 </div>
                             </styled.Page6InputDiv>
-                            {/* </styled.Page6InputDiv> */}
                         </styled.InheritorPageSection>
                     ))}
                     <styled.ButtonSection>
@@ -190,7 +183,7 @@ const SetPersonPage: React.FC<PageProps> = ({
                                 marginRight: "5px",
                                 outline: "none",
                             }}
-                            onClick={handleAddExecutor}
+                            onClick={() => handleAddExecutor(executors.length)}
                         >
                             추가하기
                         </BlueButton>
