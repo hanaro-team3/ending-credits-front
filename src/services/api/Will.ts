@@ -11,4 +11,14 @@ export const willService = {
             url: `${BASE_URL}/member/me`,
         });
     },
+
+    updateMemberAddress: (address: string) => {
+        return request<dto.BasicResponseDTO>({
+            method: "PATCH",
+            url: `${BASE_URL}/member/me`,
+            params: {
+                address: address,
+            },
+        });
+    },
 };

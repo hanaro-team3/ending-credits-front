@@ -74,7 +74,7 @@ const SetPersonPage: React.FC<PageProps> = ({
             setExecutors(newExecutors);
             updateFormData(newExecutors);
         } else {
-            message.success("첫 번째 항목은 삭제할 수 없습니다.");
+            message.error("첫 번째 항목은 삭제할 수 없습니다.");
         }
     };
 

@@ -4,6 +4,11 @@ export interface ResponseDTO<T> {
     result: T;
 }
 
+export interface BasicResponseDTO {
+    code: string;
+    message: string;
+}
+
 export interface MemberDetail {
     birthDate: string;
     phoneNumber: string;
