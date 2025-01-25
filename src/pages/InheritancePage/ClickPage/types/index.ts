@@ -38,11 +38,11 @@ export interface FormData {
             }>;
         };
     };
-    executors: {
+    executors: Array<{
         name: string;
         relationship: string;
         priority: number;
-    };
+    }>;
     messages: Array<{
         name: string;
         relationship: string;

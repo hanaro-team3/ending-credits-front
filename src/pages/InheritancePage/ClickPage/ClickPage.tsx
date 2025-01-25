@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as styled from "./styles";
 import { FormData } from "./types";
 import { Header } from "./components/Header";
@@ -13,50 +13,92 @@ import SetPersonPage from "../pages/SetPersonPage"; //페이지 6 - 유언 집�
 import ShareTimePage from "../pages/ShareTimePage"; // 페이지 7 - 내용 공유 시점 설정
 import WillPage from "../pages/WillPage"; // 페이지 8 - 유언장 완성
 
+// service
+import { willService } from "../../../services/api/Will";
+
 const ClickPage: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [formData, setFormData] = useState<FormData>({
-        // Page 1 data
         personalInfo: {
-            name: "홍길동",
-            birthDate: "19OO. OO. OO.",
-            address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
+            name: "",
+            birthDate: "",
+            address: "",
         },
         assets: {
-            realEstate: [
-                {
-                    id: "asset1",
-                    type: "아파트",
-                    address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
-                    value: 3000000000,
-                },
-                {
-                    id: "asset2",
-                    type: "빌라",
-                    address: "서울특별시 OO구 OO동 OO빌라",
-                    value: 2000000000,
-                },
-                {
-                    id: "asset3",
-                    type: "토지",
-                    address: "서울특별시 OO구 OO동 OO-OO",
-                    value: 1000000000,
-                },
-            ],
-            stocks: [
-                {
-                    id: "stock1",
-                    type: "주식",
-                    details: "삼성전자",
-                    value: 1000000000,
-                },
-            ],
+            realEstate: [],
+            stocks: [],
         },
         inheritanceInfo: {},
         executors: [],
         messages: [],
         shareTimingChoice: null,
+        // Page 1 data
+        // personalInfo: {
+        //     name: "홍길동",
+        //     birthDate: "19OO. OO. OO.",
+        //     address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
+        // },
+        // assets: {
+        //     realEstate: [
+        //         {
+        //             id: "asset1",
+        //             type: "아파트",
+        //             address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
+        //             value: 3000000000,
+        //         },
+        //         {
+        //             id: "asset2",
+        //             type: "빌라",
+        //             address: "서울특별시 OO구 OO동 OO빌라",
+        //             value: 2000000000,
+        //         },
+        //         {
+        //             id: "asset3",
+        //             type: "토지",
+        //             address: "서울특별시 OO구 OO동 OO-OO",
+        //             value: 1000000000,
+        //         },
+        //     ],
+        //     stocks: [
+        //         {
+        //             id: "stock1",
+        //             type: "주식",
+        //             details: "삼성전자",
+        //             value: 1000000000,
+        //         },
+        //     ],
+        // },
+        // inheritanceInfo: {},
+        // executors: [],
+        // messages: [],
+        // shareTimingChoice: null,
     });
+
+    useEffect(() => {
+        async function getMemberDetail() {
+            try {
+                const response = await willService.getMemberDetail();
+                if (response?.data?.result) {
+                    const personalInfo = {
+                        name: response.data.result.name,
+                        birthDate: response.data.result.birthDate.replace(
+                            /-/g,
+                            "."
+                        ),
+                        address: response.data.result.address,
+                    };
+
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        personalInfo,
+                    }));
+                }
+            } catch (error) {
+                console.error("Failed to fetch:", error);
+            }
+        }
+        getMemberDetail();
+    }, []);
 
     const handleNext = () => {
         console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
