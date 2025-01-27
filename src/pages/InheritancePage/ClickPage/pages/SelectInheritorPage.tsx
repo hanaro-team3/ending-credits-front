@@ -24,24 +24,7 @@ export const SelectInheritorPage: React.FC<PageProps> = ({
                 ratio: number;
             }>;
         };
-    }>({});
-
-    // useEffect(() => {
-    //     const initialInheritanceInfo: Record<string, { inheritors: [] }> = {};
-    //     formData.assets.realEstate.forEach((asset) => {
-    //         initialInheritanceInfo[asset.id] = { inheritors: [] };
-    //     });
-
-    //     formData.assets.finance.forEach((asset) => {
-    //         initialInheritanceInfo[asset.id] = { inheritors: [] };
-    //     });
-
-    //     formData.assets.others.forEach((asset) => {
-    //         initialInheritanceInfo[asset.id] = { inheritors: [] };
-    //     });
-
-    //     setInheritanceInfo(initialInheritanceInfo);
-    // }, []);
+    }>(formData.inheritanceInfo);
 
     const getRemainingRatio = (
         assetId: string,

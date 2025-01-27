@@ -10,9 +10,11 @@ export const WritePage: React.FC<PageProps> = ({
     formData,
     setFormData,
 }): JSX.Element => {
-    const [messages, setMessages] = useState<Message[]>([
-        { name: "", relationship: "", content: "" },
-    ]);
+    const [messages, setMessages] = useState<Message[]>(
+        formData.messages.length > 0
+            ? formData.messages
+            : [{ name: "", relationship: "", content: "" }]
+    );
 
     const handleNameChange = (index: number, value: string) => {
         const newMessages = [...messages];

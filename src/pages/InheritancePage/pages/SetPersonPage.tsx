@@ -12,9 +12,11 @@ const SetPersonPage: React.FC<PageProps> = ({
     formData,
     setFormData,
 }): JSX.Element => {
-    const [executors, setExecutors] = useState<Executor[]>([
-        { name: "", relationship: "", priority: 1 },
-    ]);
+    const [executors, setExecutors] = useState<Executor[]>(
+        formData.executors.length > 0
+            ? formData.executors
+            : [{ name: "", relationship: "", priority: 1 }]
+    );
 
     const updateFormData = (newExecutors: Executor[]) => {
         setFormData((prevFormData) => ({
@@ -38,25 +40,35 @@ const SetPersonPage: React.FC<PageProps> = ({
     };
 
     const handleMoveUp = (index: number) => {
-        if (index === 0) return; // 이미 첫 번째 항목이면 이동 불가
+        if (index === 0) return; // 첫 번째 항목이면 이동 불가
         const newExecutors = [...executors];
         [newExecutors[index], newExecutors[index - 1]] = [
             newExecutors[index - 1],
             newExecutors[index],
         ];
-        setExecutors(newExecutors);
-        updateFormData(newExecutors);
+        // 우선순위 재정렬
+        const updatedExecutors = newExecutors.map((executor, i) => ({
+            ...executor,
+            priority: i + 1,
+        }));
+        setExecutors(updatedExecutors);
+        updateFormData(updatedExecutors);
     };
 
     const handleMoveDown = (index: number) => {
-        if (index === executors.length - 1) return; // 이미 마지막 항목이면 이동 불가
+        if (index === executors.length - 1) return; // 마지막 항목이면 이동 불가
         const newExecutors = [...executors];
         [newExecutors[index], newExecutors[index + 1]] = [
             newExecutors[index + 1],
             newExecutors[index],
         ];
-        setExecutors(newExecutors);
-        updateFormData(newExecutors);
+        // 우선순위 재정렬
+        const updatedExecutors = newExecutors.map((executor, i) => ({
+            ...executor,
+            priority: i + 1,
+        }));
+        setExecutors(updatedExecutors);
+        updateFormData(updatedExecutors);
     };
 
     const handleAddExecutor = (prevPriority: number) => {

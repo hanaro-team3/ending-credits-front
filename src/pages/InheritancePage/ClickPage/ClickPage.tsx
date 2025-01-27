@@ -34,46 +34,6 @@ const ClickPage: React.FC = () => {
         executors: [],
         messages: [],
         shareTimingChoice: null,
-        // Page 1 data
-        // personalInfo: {
-        //     name: "홍길동",
-        //     birthDate: "19OO. OO. OO.",
-        //     address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
-        // },
-        // assets: {
-        //     realEstate: [
-        //         {
-        //             id: "asset1",
-        //             type: "아파트",
-        //             address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
-        //             value: 3000000000,
-        //         },
-        //         {
-        //             id: "asset2",
-        //             type: "빌라",
-        //             address: "서울특별시 OO구 OO동 OO빌라",
-        //             value: 2000000000,
-        //         },
-        //         {
-        //             id: "asset3",
-        //             type: "토지",
-        //             address: "서울특별시 OO구 OO동 OO-OO",
-        //             value: 1000000000,
-        //         },
-        //     ],
-        //     stocks: [
-        //         {
-        //             id: "stock1",
-        //             type: "주식",
-        //             details: "삼성전자",
-        //             value: 1000000000,
-        //         },
-        //     ],
-        // },
-        // inheritanceInfo: {},
-        // executors: [],
-        // messages: [],
-        // shareTimingChoice: null,
     });
 
     useEffect(() => {
