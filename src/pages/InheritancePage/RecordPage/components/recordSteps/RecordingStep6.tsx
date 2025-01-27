@@ -1,12 +1,13 @@
 import React from "react";
-import { RecordingProps } from "../../types/index";
+import { RecordingProps2 } from "../../types/index";
 import { RecordingStep } from "../RecordingStep";
 
-export const RecordingStep6: React.FC<RecordingProps> = ({
+export const RecordingStep6: React.FC<RecordingProps2> = ({
 	onNext,
 	onPrev,
 	formData,
 	setFormData,
+	apiService,
 }) => {
 	const handleRecordingComplete = (blob: Blob) => {
 		setFormData({
@@ -22,6 +23,7 @@ export const RecordingStep6: React.FC<RecordingProps> = ({
 		<RecordingStep
 			onNext={onNext}
 			onPrev={onPrev}
+			apiService={apiService}
 			title={
 				<>
 					이제 <span style={{ color: "#4792dc" }}>마지막</span>이에요.
@@ -34,7 +36,7 @@ export const RecordingStep6: React.FC<RecordingProps> = ({
 					<br />
 					저의 유언장을
 					<br />
-					설망하는 데 사용되며,
+					설명하는 데 사용되며,
 					<br />
 					다른 모든 이전의 유언장을 <br />
 					무효화 합니다.

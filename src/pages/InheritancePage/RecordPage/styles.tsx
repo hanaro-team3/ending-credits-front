@@ -194,3 +194,67 @@ export const RecordButton = styled.img`
 	position: relative;
 	top: 30px;
 `;
+
+//----------------------------------------
+
+export const Card = styled.div`
+	width: 330px;
+	height: auto;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 16px;
+`;
+
+export const CardContent = styled.div`
+	width: 330px;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+`;
+
+export const VerificationStepContainer = styled.div`
+	width: 330px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+`;
+
+export const CardContainer = styled.div`
+	width: 330px;
+	height: 500px;
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+
+	overflow-y: scroll;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`;
+
+export const AccountInfo = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+export const AccountInfoTitle = styled.div`
+	font-family: "Pretendard";
+	font-weight: 600;
+	font-size: 16px;
+	color: #2b2b2b;
+`;
+
+export const AccountInfoValue = styled.div`
+	font-family: "Pretendard";
+	font-weight: 500;
+	font-size: 16px;
+	color: #2b2b2b;
+`;

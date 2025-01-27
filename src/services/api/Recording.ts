@@ -20,4 +20,34 @@ export const audioService = {
 			url: `${BASE_URL}/will/speech/purpose?fileUrl=${fileUrl}`,
 		});
 	},
+	setWillInheritanceRealEstate: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/inheritance?fileUrl=${fileUrl}&type=etc`,
+		});
+	},
+	setWillInheritanceBank: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/inheritance?fileUrl=${fileUrl}&type=bank`,
+		});
+	},
+	setWillInheritanceEtc: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/inheritance?fileUrl=${fileUrl}&type=etc`,
+		});
+	},
+	setWillInheritanceLastWords: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/final-message?fileUrl=${fileUrl}`,
+		});
+	},
+	setWillInheritanceConfirm: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/confirmation?fileUrl=${fileUrl}`,
+		});
+	},
 };

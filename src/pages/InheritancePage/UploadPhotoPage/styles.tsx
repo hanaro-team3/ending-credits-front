@@ -577,3 +577,43 @@ export const EditInfoPageInput = styled.input`
 
 	padding: 18px 20px;
 `;
+
+// ------------------------------------
+
+export const WillContent = styled.div`
+	padding: 20px;
+	text-align: left;
+
+	h2 {
+		text-align: center;
+		margin-bottom: 10px;
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+	h3 {
+		color: #4792dc;
+		margin-top: 20px;
+		margin-bottom: 10px;
+		font-size: 18px;
+	}
+`;
+
+export const WillSection = styled.div`
+	margin: 20px 0;
+	padding: 15px;
+	border-bottom: 1px solid #eee;
+
+	div {
+		margin-bottom: 15px;
+		padding: 10px;
+		background-color: #f8f9fa;
+		border-radius: 8px;
+	}
+
+	p {
+		margin: 5px 0;
+		font-size: 14px;
+		line-height: 1.5;
+	}
+`;
