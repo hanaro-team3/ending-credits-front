@@ -187,6 +187,8 @@ export const AssetInfoAddress = styled.div`
     color: #2b2b2b;
     margin-top: 6px;
     margin-left: 14px;
+    margin-bottom: 14px;
+    white-space: pre-wrap;
 
     > span {
         margin-top: 4px;

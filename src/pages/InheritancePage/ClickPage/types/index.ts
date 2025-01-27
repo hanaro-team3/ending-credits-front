@@ -17,14 +17,20 @@ export interface FormData {
     assets: {
         realEstate: Array<{
             id: string;
-            type: string;
+            type: string; // 아파트, 빌라, 오피스텔, ...
             address: string;
             value: number;
         }>;
-        stocks: Array<{
+        finance: Array<{
             id: string;
-            type: string;
-            details: string;
+            type: string; // 예적금, 주식, 채권, 펀드, ...
+            detail: string;
+            value: number;
+        }>;
+        others: Array<{
+            id: string;
+            type: string; // 자동차, 귀금속, ...
+            detail: string;
             value: number;
         }>;
     };

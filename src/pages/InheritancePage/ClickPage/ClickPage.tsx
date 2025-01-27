@@ -15,6 +15,7 @@ import WillPage from "../pages/WillPage"; // 페이지 8 - 유언장 완성
 
 // service
 import { willService } from "../../../services/api/Will";
+import { RealEstate } from "../../../services/dto/Asset";
 
 const ClickPage: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -26,7 +27,8 @@ const ClickPage: React.FC = () => {
         },
         assets: {
             realEstate: [],
-            stocks: [],
+            finance: [],
+            others: [],
         },
         inheritanceInfo: {},
         executors: [],
@@ -94,11 +96,106 @@ const ClickPage: React.FC = () => {
                     }));
                 }
             } catch (error) {
-                console.error("Failed to fetch:", error);
+                console.error("Failed to fetch: ", error);
             }
         }
+
+        async function getMemberAssets() {
+            try {
+                const assets = await getAssetDetail();
+                setFormData((prev) => ({
+                    ...prev,
+                    assets,
+                }));
+            } catch (error) {
+                console.error("Failed to fetch: ", error);
+            }
+        }
+
         getMemberDetail();
+        getMemberAssets();
     }, []);
+
+    async function getAssetDetail() {
+        try {
+            const realEstateAssets = await willService.getRealEstateAssets();
+            const financeAssets = await willService.getFinanceAssets();
+            const otherAssets = await willService.getOtherAssets();
+
+            const assets: FormData["assets"] = {
+                realEstate: (realEstateAssets.data?.result || []).map(
+                    (item: RealEstate) => ({
+                        id: item.realEstateId,
+                        type: item.realEstateType,
+                        address: item.address,
+                        value: item.currentPrice,
+                    })
+                ),
+                finance: [
+                    ...financeAssets.bank.map((bank) => ({
+                        id: bank.accountNumber,
+                        type: "예적금",
+                        detail: `${bank.bankName} - ${bank.accountName}`,
+                        value: bank.amount,
+                    })),
+                    ...financeAssets.virtual.map((virtual) => ({
+                        id: `${virtual.exchangeName}-${virtual.virtualAssetName}`,
+                        type: "가상자산",
+                        detail: `${virtual.exchangeName} - ${virtual.virtualAssetName}`,
+                        value: virtual.totalValue,
+                    })),
+                    ...financeAssets.securities.map((security) => ({
+                        id: security.accountNumber,
+                        type: "증권",
+                        detail: `${security.securitiesCompanyName} - ${security.stockName}`,
+                        value: security.amount,
+                    })),
+                    ...financeAssets.pensions.map((pension) => ({
+                        id: pension.pensionId,
+                        type: "연금",
+                        detail: `${
+                            pensionTypeMap[pension.pensionType] ||
+                            pension.pensionType
+                        }\n연금 나이: ${pension.pensionAge}, 월 지급액: ${
+                            pension.monthlyPayment
+                        }`,
+                        value: pension.totalExpectedAmount,
+                    })),
+                ],
+                others: [
+                    // 자동차 자산
+                    ...otherAssets.cars.map((car) => ({
+                        id: car.carId,
+                        type: "자동차",
+                        detail: `${car.model} ${car.carNumber} (${car.year}년식)`,
+                        value:
+                            car.currentPurchasePrice || car.purchasePrice || 0,
+                    })),
+                    // 현금 자산
+                    ...(otherAssets.cash
+                        ? [
+                              {
+                                  id: "dd",
+                                  type: "현금",
+                                  detail: "소지 현금",
+                                  value: otherAssets.cash || 0,
+                              },
+                          ]
+                        : []),
+                ],
+            };
+            return assets;
+        } catch (error) {
+            console.error("Failed to fetch: ", error);
+            throw error;
+        }
+    }
+
+    const pensionTypeMap: Record<string, string> = {
+        NATIONAL: "국민연금",
+        RETIREMENT: "퇴직연금",
+        PERSONAL: "개인연금",
+    };
 
     const handleNext = () => {
         console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
