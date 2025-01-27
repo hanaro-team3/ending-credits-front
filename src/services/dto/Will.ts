@@ -15,3 +15,14 @@ export interface MemberDetail {
     address: string;
     name: string;
 }
+
+export interface Cash {
+    cashId: string;
+    amount: number;
+}
+
+export interface CashResponseDTO {
+    code: string;
+    message: string;
+    result: Cash[];
+}

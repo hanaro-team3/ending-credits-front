@@ -64,7 +64,7 @@ export const willService = {
 
     // 기타 자산 조회
     getOtherAssets: async () => {
-        const cashResponse = await request<dto.ResponseDTO<number>>({
+        const cashResponse = await request<dto.CashResponseDTO>({
             method: "GET",
             url: "/asset/cash",
         });
@@ -75,7 +75,7 @@ export const willService = {
         });
 
         return {
-            cash: cashResponse.data?.result || 0,
+            cash: cashResponse.data?.result || [],
             cars: carsResponse.data?.result || [],
         };
     },

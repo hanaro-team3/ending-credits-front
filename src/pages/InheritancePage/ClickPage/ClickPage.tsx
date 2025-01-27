@@ -139,13 +139,13 @@ const ClickPage: React.FC = () => {
                         value: bank.amount,
                     })),
                     ...financeAssets.virtual.map((virtual) => ({
-                        id: `${virtual.exchangeName}-${virtual.virtualAssetName}`,
+                        id: virtual.virtualAssetId,
                         type: "가상자산",
                         detail: `${virtual.exchangeName} - ${virtual.virtualAssetName}`,
                         value: virtual.totalValue,
                     })),
                     ...financeAssets.securities.map((security) => ({
-                        id: security.accountNumber,
+                        id: security.securitiesAssetId,
                         type: "증권",
                         detail: `${security.securitiesCompanyName} - ${security.stockName}`,
                         value: security.amount,
@@ -175,10 +175,10 @@ const ClickPage: React.FC = () => {
                     ...(otherAssets.cash
                         ? [
                               {
-                                  id: "dd",
+                                  id: otherAssets.cash.id,
                                   type: "현금",
                                   detail: "소지 현금",
-                                  value: otherAssets.cash || 0,
+                                  value: otherAssets.cash.amount || 0,
                               },
                           ]
                         : []),

@@ -54,6 +54,7 @@ export interface Pension {
 }
 
 export interface Virtual {
+    virtualAssetId: string;
     exchangeName: string;
     virtualAssetName: string;
     currentPrice: number;
@@ -64,6 +65,7 @@ export interface Virtual {
 }
 
 export interface Securities {
+    securitiesAssetId: string;
     securitiesCompanyName: string;
     stockName: string;
     accountNumber: string;
