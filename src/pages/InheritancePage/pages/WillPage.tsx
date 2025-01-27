@@ -6,6 +6,10 @@ import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import willdeco from "../../../images/will-decoration.png";
 import { AssetsDetail } from "../../../services/dto/Asset";
+import { message } from "antd";
+
+// service
+import { willService } from "../../../services/api/Will";
 
 interface Page8Props extends PageProps {
     setCurrentPage: (page: number) => void;
@@ -139,7 +143,27 @@ const WillPage: React.FC<Page8Props> = ({
         return requestBody;
     };
 
-    transformFormDataToRequestBody(formData);
+    const onSubmit = async () => {
+        try {
+            const requestBody = transformFormDataToRequestBody(formData);
+
+            const response = await willService.createWill(requestBody);
+
+            if (response?.result?.willId) {
+                console.log(response);
+                console.log(response.result.willId + " 유언장 생성 성공");
+                onNext();
+            } else {
+                message.error(
+                    "유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."
+                );
+            }
+        } catch (error) {
+            console.error("Failed to fetch: ", error);
+            message.error("오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+    };
+
     return (
         <styled.UploadPageContainer>
             <styled.TopContainer>
@@ -187,7 +211,7 @@ const WillPage: React.FC<Page8Props> = ({
                         variant="medium"
                         onClick={() => {
                             console.log("Page 8 - 제출하기:", formData);
-                            onNext();
+                            onSubmit();
                         }}
                     >
                         제출하기

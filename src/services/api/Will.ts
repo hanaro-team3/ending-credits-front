@@ -1,3 +1,4 @@
+import axios from "axios";
 import { request } from "../request";
 import { config } from "../../config/config";
 import * as dto from "../dto/Will";
@@ -78,5 +79,27 @@ export const willService = {
             cash: cashResponse.data?.result || [],
             cars: carsResponse.data?.result || [],
         };
+    },
+
+    // 유언장 생성
+    createWill: async (
+        data: dto.WillRequestDTO
+    ): Promise<dto.WillResponseDTO> => {
+        try {
+            const response = await axios.post<dto.WillResponseDTO>(
+                "http://localhost:3000/wills",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Error creating will:", error);
+            throw new Error("Unable to create will");
+        }
     },
 };
