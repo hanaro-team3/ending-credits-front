@@ -13,10 +13,11 @@ export const productService = {
         });
     },
     // 연금저축 상품 전체 조회
-    getPensionSavingsAll: () => {
+    getPensionSavingsAll: (page: string, size: string, sort: string) => {
         return request<dto.PensionSavingsAllResponseDTO>({
         method: 'GET',
         url: `${BASE_URL}/product/pension-savings/all`,
+        params: { page, size, sort },
         });
     },
     // 연금저축 상품 상세 조회
@@ -64,10 +65,11 @@ export const productService = {
         });
     },
     // 퇴직연금 기업 전체 조회
-    getProductAnnuityAll: () => {
-        return request<dto.AnnuitySearchResponseDTO>({
+    getProductAnnuityAll: (page: string, size: string, sort: string) => {
+        return request<dto.AnnuityAllResponseDTO>({
         method: 'GET',
         url: `${BASE_URL}/product/annuity/all`,
+        params: { page, size, sort },
         });
     },
     // 퇴직연금 기업별 상세 조회

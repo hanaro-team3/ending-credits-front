@@ -1,3 +1,5 @@
+// 연금저축 ==============================
+
 export interface PensionSaving {
     productId: string;
     company: string;
@@ -48,12 +50,86 @@ export interface PensionSavingComparison {
     threeYearsAgoFeeRate: number;
 }
 
+export interface Recommend {
+    productId: string;
+    strategyType: string;
+}
 
+export interface PensionSavingsCalculate {
+    expectedProfit: number; //5110352
+    annualAdditionalUsage: number; //511035
+    monthlyAdditionalUsage: number; //42586
+    expectedEarnRate: number; //7.88
+}
+
+export interface PensionSavingsAllResponseDTO {
+    code: string;
+    message: string;
+    result: {
+        content: PensionSaving[];
+        currentPage: number; // 현재 페이지
+        size: number; // 조회할 데이터의 개수
+        first: boolean; // 첫번째 페이지의 여부
+        last: boolean; // 마지막 페이지의 여부
+    }
+}
+
+export interface PensionSavingsDetailResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSavingDetail;
+}
+
+export interface PensionSavingsSearchParamsDTO {
+    keyword: string;
+    areaCode: string;
+}
+
+export interface PensionSavingsSearchResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSaving[];
+}
+
+export interface PensionSavingsResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSaving[];
+}
+
+export interface PensionSavingsComparisonResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSavingComparison;
+}
+
+export interface PensionSavingsCalculateResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSavingsCalculate
+}
+
+export interface PensionSavingsDetailHanaResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSaving[];
+}
+
+
+export interface RecommendResponseDTO {
+    code: string;
+    message: string;
+    result: Recommend[];
+}
+
+
+
+// 퇴직연금 ==============================
 
 export interface Annuity{
     companyId: string;
-    area?: string;
     company: string;
+    area?: string;
     dbTotalCostRate?: number;
     dbTotalFee?: number;
     dbOprtMngFee?: number;
@@ -98,59 +174,6 @@ export interface AnnuityDetail{
     } 
 }
 
-export interface Recommend {
-    productId: string;
-    strategyType: string;
-}
-
-export interface PensionSavingsCalculate {
-    expectedProfit: number; //5110352
-    annualAdditionalUsage: number; //511035
-    monthlyAdditionalUsage: number; //42586
-    expectedEarnRate: number; //7.88
-}
-
-export interface PensionSavingsAllResponseDTO {
-    code: string;
-    message: string;
-    result: PensionSaving[];
-}
-
-export interface PensionSavingsDetailResponseDTO {
-    code: string;
-    message: string;
-    result: PensionSavingDetail;
-}
-
-export interface PensionSavingsSearchParamsDTO {
-    keyword: string;
-    areaCode: string;
-}
-
-export interface PensionSavingsSearchResponseDTO {
-    code: string;
-    message: string;
-    result: PensionSaving[];
-}
-
-export interface PensionSavingsResponseDTO {
-    code: string;
-    message: string;
-    result: PensionSaving[];
-}
-
-export interface PensionSavingsComparisonResponseDTO {
-    code: string;
-    message: string;
-    result: PensionSavingComparison;
-}
-
-export interface PensionSavingsCalculateResponseDTO {
-    code: string;
-    message: string;
-    result: PensionSavingsCalculate
-}
-
 export interface AnnuityComparisonResponseDTO {
     code: string;
     message: string;
@@ -163,11 +186,6 @@ export interface AnnuitySearchResponseDTO {
     result: Annuity[];
 }
 
-export interface RecommendResponseDTO {
-    code: string;
-    message: string;
-    result: Recommend[];
-}
 
 export interface AnnuityDetailResponseDTO {
     code: string;
@@ -175,8 +193,15 @@ export interface AnnuityDetailResponseDTO {
     result: AnnuityDetail;
 }
 
-export interface PensionSavingsDetailHanaResponseDTO {
+
+export interface AnnuityAllResponseDTO {
     code: string;
     message: string;
-    result: PensionSaving[];
+    result: {
+        content: Annuity[];
+        currentPage: number; // 현재 페이지
+        size: number; // 조회할 데이터의 개수
+        first: boolean; // 첫번째 페이지의 여부
+        last: boolean; // 마지막 페이지의 여부
+    }
 }

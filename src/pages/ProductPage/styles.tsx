@@ -78,10 +78,7 @@ export const ProductCarousel = styled.div`
 	overflow-x: scroll;
 	overflow-y: hidden;
 	scrollbar-width: none;
-	-ms-overflow-style: none;
-	padding: 1.5rem 0;
 	align-items: center;
-	min-height: 300px;
 
 	&::-webkit-scrollbar {
 		display: none;

@@ -1,69 +1,47 @@
 import * as styled from "./styles";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { COLOR_LIST, RECOMMEND_PRODUCTS } from "./constants";
+import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
 
 //component
 import Header from "../../layout/Header";
 import SearchBar from "../../ui/SearchBar";
 import BlueButton from "../../ui/BlueBtn"
 import WhiteButton from "../../ui/WhiteBtn"
+import { Tabs, Tab } from "../../ui/Tab"
 import { message } from "antd";
 
 //services
 import { productService } from "../../services/api/Product";
-import { PensionSaving, Recommend } from "../../services/dto/Product";
-
-const COLOR_LIST = ["#C4F1D9", "#D6DEFF", "#C1F3FE"];
-
-const RECOMMEND_PRODUCTS = [
-	{
-		title: "공격적인 투자를\n좋아한다면?",
-		strategyType: "공격적"
-	},
-	{
-		title: "안정적인 투자를\n좋아한다면?",
-		strategyType: "안정적"
-	},
-	{
-		title: "짧고 강력한 투자를\n좋아한다면?",
-		strategyType: "단기"
-	},
-	{
-		title: "길고 안정적인 투자를\n좋아한다면?",
-		strategyType: "장기"
-	},
-	{
-		title: "적은 금액으로 투자를\n좋아한다면?",
-		strategyType: "저비용"
-	},
-	{
-		title: "공격적인 투자를\n좋아한다면?",
-		strategyType: "공격적"
-	},
-	{
-		title: "안정적인 투자를\n좋아한다면?",
-		strategyType: "수익 안정성"
-	},
-	{
-		title: "위험을 감수하는 투자를\n좋아한다면?",
-		strategyType: "위험 감수형"
-	},
-];
+import { PensionSaving, Recommend, Annuity } from "../../services/dto/Product";
 
 function ProductPage() {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [recommendProducts, setRecommendProducts] = useState<Recommend[]>();
 	const [hanaProducts, setHanaProducts] = useState<PensionSaving[]>();
-	const [allProducts, setAllProducts] = useState<PensionSaving[]>();
+	const [allPensionProducts, setAllPensionProducts] = useState<PensionSaving[]>();
+	const [allAnnuityProducts, setAllAnnuityProducts] = useState<Annuity[]>();
+	const [page, setPage] = useState(0);
+	const [size] = useState(8);
+	const [sort] = useState("asc");
+	const [hasMore, setHasMore] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [activeTab, setActiveTab] = useState('연금저축');
+
 
 	const carouselRef = useRef<HTMLDivElement>(null);
 	const observerRef = useRef<IntersectionObserver | null>(null);
 	const navigate = useNavigate();
 
+	const TAB_DATA = [
+		{ id: "연금저축", label: "연금저축" },
+		{ id: "퇴직연금", label: "퇴직연금" }
+	] as const;
+
 	useEffect(() => {
 		getProductRecommend();
 		getProductHana();
-		getProductAll();
 	}, [])
 
 	async function getProductRecommend() {
@@ -91,18 +69,54 @@ function ProductPage() {
 		}
 	}
 
-	async function getProductAll() {
+	const loadMoreProducts = useCallback(async () => {
+		if (loading || !hasMore) return;
+		
 		try {
-			const response = await productService.getPensionSavingsAll();
+		  setLoading(true);
+		  let response;
 
-			if (response?.data) {
-				setAllProducts(response.data.result);
-			}
+		  if(activeTab=='연금저축'){
+			response = await productService.getPensionSavingsAll(
+				(page + 1).toString(), 
+				size.toString(), 
+				sort
+			  );
+	
+		  if (response?.data) {
+			const newProducts = response.data.result.content;
+			setAllPensionProducts(prev => prev ? [...prev, ...newProducts] : newProducts);
+			setPage(prev => prev + 1);
+			setHasMore(newProducts.length === size);
+		  }
+		  }else{
+			response = await productService.getProductAnnuityAll(
+				(page + 1).toString(), 
+				size.toString(), 
+				sort
+			  );
+	
+		  if (response?.data) {
+			const newProducts = response.data.result.content;
+			setAllAnnuityProducts(prev => prev ? [...prev, ...newProducts] : newProducts);
+			setPage(prev => prev + 1);
+			setHasMore(newProducts.length === size);
+		  }
+		  }
+
+		   
 		} catch (error) {
-			console.error('Failed to fetch:', error);
-			message.error('상품 정보 조회에 실패했습니다.');
+		  console.error('Failed to fetch:', error);
+		  message.error('상품 정보 조회에 실패했습니다.');
+		} finally {
+		  setLoading(false);
 		}
-	}
+	  }, [page, size, sort, loading, hasMore, activeTab]);
+
+	  const targetRef = useInfiniteScroll({
+		threshold: 0.5,
+		onIntersect: loadMoreProducts
+	  });
 
 
 	useEffect(() => {
@@ -181,12 +195,30 @@ function ProductPage() {
 			</styled.GridContainer>
 
 			<h3>전체 상품</h3>
+			{(<Tabs>
+				{TAB_DATA.map((tab, index) => (
+					<Tab
+						key={index}
+						id={tab.id}
+						label={tab.label}
+						isActive={activeTab === tab.id}
+						onClick={() => setActiveTab(tab.id)}
+					/>
+				))}
+			</Tabs>)}
 			<styled.GridContainer>
-				{allProducts?.map((product, index) => (
+				
+				{activeTab=='연금저축'? allPensionProducts?.map((product, index) => (
 					<styled.GridItem key={index}>
 						{product.productName}
 					</styled.GridItem>
+				)): allAnnuityProducts?.map((product, index) => (
+					<styled.GridItem key={index}>
+						{product.company}
+					</styled.GridItem>
 				))}
+				 <div ref={targetRef} style={{ height: '10px' }} />
+				 {loading && <div>로딩 중...</div>}
 			</styled.GridContainer>
 		</styled.Container>
 	);

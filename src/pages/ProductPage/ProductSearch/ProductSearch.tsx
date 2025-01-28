@@ -30,7 +30,10 @@ function ProductSearch() {
 	const [activeAreaCode, setActiveAreaCode] = useState<string>('1');
 	const [dataNone, setDataNone] = useState<boolean>(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
-
+	const [page, setPage] = useState(0);
+	const [size, setSize] = useState(50);
+	const [sort, setSort] = useState("asc");
+	const [productList, setProductList] = useState<PensionSaving[]|Annuity[]>();
 	const navigate = useNavigate();
 	const searchParams = new URLSearchParams(window.location.search);
 	const action = searchParams.get('action');
@@ -38,25 +41,32 @@ function ProductSearch() {
 	const secondProduct = searchParams.get('secondProduct');
 	const activeType = searchParams.get('activeType');
 
-	const [productList, setProductList] = useState<PensionSaving[]|Annuity[]>();
 	useEffect(()=>{
 		async function getPensionSavings(){
 			try{
 				let response;
 				if(activeTab === '퇴직연금'){
-					response = await productService.getProductAnnuityAll()
-				}else{
-					response = await productService.getPensionSavings(activeAreaCode);
-				}
-				if(response?.data){
-					setProductList(response.data.result);
-					if(response.data.result.length === 0){
-						setDataNone(true);
-					}else{
-						setDataNone(false);
+					response = await productService.getProductAnnuityAll(page.toString(), size.toString(), sort);
+				
+					if(response?.data){
+						setProductList(response.data.result.content);
+						if(response.data.result.content.length === 0){
+							setDataNone(true);
+						}else{
+							setDataNone(false);
+						}
 					}
 				}else{
-					message.error('상품 목록 조회 실패');
+					response = await productService.getPensionSavings(activeAreaCode);
+				
+					if(response?.data){
+						setProductList(response.data.result);
+						if(response.data.result.length === 0){
+							setDataNone(true);
+						}else{
+							setDataNone(false);
+						}
+					}
 				}
 			}catch(error){
 				console.error(error);
