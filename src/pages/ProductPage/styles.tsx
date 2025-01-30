@@ -100,7 +100,7 @@ export const ProductCard = styled.div<{ $active?: boolean }>`
 
 	p {
 		width: 100%;
-		font-size: ${props => props.$active ? '18px' : '14px'};
+		font-size: ${props => props.$active ? '20px' : '14px'};
 		font-weight: bold;
 		line-height: 1.4;
 		white-space: pre-line;
@@ -114,16 +114,24 @@ export const GridContainer = styled.div`
 	width: 100%;
 `;
 
-export const GridItem = styled.div`
-	background-color: #e7e7e7;
-	border-radius: 12px;
+export const BackgroundItem = styled.div<{ $backgroundImage?: string }>`
+	border-radius: 16px;
 	width: 100%;
 	height: 100px;
+	background-image: ${props => props.$backgroundImage ? `url(${props.$backgroundImage})` : 'none'};
+	background-size: cover;
+	background-position: center;
+`;
 
+export const GridItem = styled.div`
 	display:flex;
-	justify-content: center;
-	align-items: center;
-	text-align:center;
+	align-items: end;
+	border-radius: 16px;
+	background-color: rgba(160, 165, 166, 0.2);
+	height: 100%;
+	color: white;
+	padding: 10px;
+	font-weight: 800;
 `;
 
 export const CompareContainer = styled.div`

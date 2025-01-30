@@ -16,6 +16,10 @@ import { message } from "antd";
 import { productService } from "../../services/api/Product";
 import { PensionSaving, Recommend, Annuity } from "../../services/dto/Product";
 
+// assets
+import arrow from "../../assets/icon/arrow.png";
+import hana1 from "../../assets/img/hana1.jpg";
+import hana2 from "../../assets/img/hana2.jpg";
 const INITIAL_PAGE_SIZE = 8;
 const INITIAL_SORT = "asc";
 
@@ -51,10 +55,11 @@ function ProductPage() {
 	}, []);
 
 	const fetchHanaProducts = useCallback(async () => {
+		const images = [hana1, hana2];
 		try {
 			const response = await productService.getProductPensionSavingsDetailHana();
 			if (response?.data) {
-				setHanaProducts(response.data.result);
+				setHanaProducts(response.data.result.slice(0, 2).map((item, index)=>({...item, image: images[index]})));
 			}
 		} catch (error) {
 			console.error('Failed to fetch Hana products:', error);
@@ -134,6 +139,22 @@ function ProductPage() {
 		};
 	}, [recommendProducts]);
 
+	const handleTabClick = (tabId: string) => {
+		setActiveTab(tabId);
+		setPage(0);
+		setHasMore(true);
+		setAllPensionProducts([]);
+		setAllAnnuityProducts([]);
+	};
+
+	const handleItemClick = (id: string, type?: string) => {
+		if(type === "hana") {
+			navigate(`/product/detail/${id}?activeType=연금저축`);
+		} else {
+			navigate(`/product/detail/${id}?activeType=${activeTab}`);
+		}
+	};
+
 	// 초기 데이터 로드
 	useEffect(() => {
 		fetchRecommendProducts();
@@ -176,15 +197,22 @@ function ProductPage() {
 	const renderProductList = () => {
 		const products = activeTab === '연금저축' ? allPensionProducts : allAnnuityProducts;
 		return (
-			<styled.GridContainer>
+			<styled.ProductList>
 				{products?.map((product, index) => (
-					<styled.GridItem key={index}>
-						{isPensionSaving(product) ? product.productName : product.company}
-					</styled.GridItem>
+					<styled.ProductItem key={index} onClick={() => handleItemClick(isPensionSaving(product) ? product.productId : product.companyId)}>
+						<styled.ProductItemLeft>
+						<styled.ProductInfo>
+								<styled.ProductSubTitle>{isPensionSaving(product) ? product.company : "IRPㆍDCㆍDB"}</styled.ProductSubTitle>
+								<styled.ProductTitle>{isPensionSaving(product) ? product.productName : product.company}</styled.ProductTitle>
+							</styled.ProductInfo>
+						
+						</styled.ProductItemLeft>
+						<img src={arrow} alt="arrow" />
+					</styled.ProductItem>
 				))}
 				<div ref={targetRef} style={{ height: '10px' }} />
 				{loading && <div>로딩 중...</div>}
-			</styled.GridContainer>
+			</styled.ProductList>
 		);
 	};
 
@@ -206,13 +234,15 @@ function ProductPage() {
 			<h3>하나은행 상품</h3>
 			<styled.GridContainer>
 				{hanaProducts?.map((product, index) => (
-					<styled.GridItem key={index}>
+					<styled.BackgroundItem key={index} style={{ backgroundImage: `url(${product.image})` }} onClick={() => handleItemClick(product.productId, "hana")}>
+						<styled.GridItem key={index}>
 						{product.productName}
-					</styled.GridItem>
+						</styled.GridItem>
+					</styled.BackgroundItem>
 				))}
 			</styled.GridContainer>
 
-			<h3>전체 상품</h3>
+			<h3>전체 상품</h3> 
 			<Tabs>
 				{TAB_DATA.map((tab, index) => (
 					<Tab
@@ -220,7 +250,7 @@ function ProductPage() {
 						id={tab.id}
 						label={tab.label}
 						isActive={activeTab === tab.id}
-						onClick={() => setActiveTab(tab.id)}
+						onClick={() => handleTabClick(tab.id)}
 					/>
 				))}
 			</Tabs>

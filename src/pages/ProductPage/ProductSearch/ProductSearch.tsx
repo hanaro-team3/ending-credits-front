@@ -1,6 +1,7 @@
 import * as styled from "../styles";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TAB_DATA } from "../constants";
 
 // components
 import Header from "../../../layout/Header";
@@ -16,23 +17,16 @@ import arrow from "../../../assets/icon/arrow.png";
 import { productService } from "../../../services/api/Product";
 import { PensionSaving,Annuity } from "../../../services/dto/Product";
 
-const TAB_DATA = [
-	{ id: "연금저축", label: "연금저축" },
-	{ id: "퇴직연금", label: "퇴직연금" }
-] as const;
-
 const AREA_CODES = ["은행(신탁)", "자산운용(펀드)", "생명보험", "손해보험"];
-
-type ActiveTab = '연금저축' | '퇴직연금';
+const page = 0;
+const size = 50;
+const sort = "asc";
 
 function ProductSearch() {
-	const [activeTab, setActiveTab] = useState<ActiveTab>('연금저축');
+	const [activeTab, setActiveTab] = useState<typeof TAB_DATA[number]['id']>('연금저축');
 	const [activeAreaCode, setActiveAreaCode] = useState<string>('1');
 	const [dataNone, setDataNone] = useState<boolean>(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
-	const [page, setPage] = useState(0);
-	const [size, setSize] = useState(50);
-	const [sort, setSort] = useState("asc");
 	const [productList, setProductList] = useState<PensionSaving[]|Annuity[]>();
 	const navigate = useNavigate();
 	const searchParams = new URLSearchParams(window.location.search);
@@ -78,7 +72,7 @@ function ProductSearch() {
 
 	useEffect(() => {
 		if (activeType) {
-			setActiveTab(activeType as ActiveTab);
+			setActiveTab(activeType);
 		}
 	}, [activeType]);
 
@@ -131,6 +125,11 @@ function ProductSearch() {
 		const area = AREA_CODES.findIndex(area => area === areaCode);
 		setActiveAreaCode((area+1).toString());
 	}
+
+	const isPensionSaving = (product: PensionSaving | Annuity): product is PensionSaving => {
+		return 'productName' in product;
+	};
+
 	return (
 		<styled.Container>
 			<Header title="상품 검색" />
@@ -165,11 +164,11 @@ function ProductSearch() {
 					</styled.ProductItemLeft>
 				</styled.ProductItem>}
 				{productList?.map((product, index) => (
-					<styled.ProductItem key={index} onClick={() => handleItemClick(product.productId||product.companyId)}>
+					<styled.ProductItem key={index} onClick={() => handleItemClick(isPensionSaving(product) ? product.productId : product.companyId)}>
 						<styled.ProductItemLeft>
 							<styled.ProductInfo>
 								{activeTab === '연금저축' && <styled.ProductSubTitle>{product.company}</styled.ProductSubTitle>}
-								<styled.ProductTitle>{product.productName||product.company}</styled.ProductTitle>
+								<styled.ProductTitle>{isPensionSaving(product) ? product.productName : product.company}</styled.ProductTitle>
 							</styled.ProductInfo>
 						</styled.ProductItemLeft>
 						<img src={arrow} alt="arrow" />

@@ -5,6 +5,7 @@ export interface PensionSaving {
     company: string;
     productName: string;
     areaCode?: string;
+    image?: string;
 }
 
 export interface PensionSavingDetail {

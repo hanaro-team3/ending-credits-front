@@ -31,7 +31,7 @@ export const RECOMMEND_PRODUCTS = [
 		strategyType: "공격적"
 	},
 	{
-		title: "안정적인 투자를\n좋아한다면?",
+		title: "안정적인 수익률을\n좋아한다면?",
 		strategyType: "수익 안정성"
 	},
 	{
