@@ -1,7 +1,7 @@
 import * as styled from "./styles";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { COLOR_LIST, RECOMMEND_PRODUCTS } from "./constants";
+import { COLOR_LIST, RECOMMEND_PRODUCTS, TAB_DATA } from "./constants";
 import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
 
 //components
@@ -16,113 +16,98 @@ import { message } from "antd";
 import { productService } from "../../services/api/Product";
 import { PensionSaving, Recommend, Annuity } from "../../services/dto/Product";
 
+const INITIAL_PAGE_SIZE = 8;
+const INITIAL_SORT = "asc";
+
 function ProductPage() {
+	// 상태 관리
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [recommendProducts, setRecommendProducts] = useState<Recommend[]>();
 	const [hanaProducts, setHanaProducts] = useState<PensionSaving[]>();
 	const [allPensionProducts, setAllPensionProducts] = useState<PensionSaving[]>();
 	const [allAnnuityProducts, setAllAnnuityProducts] = useState<Annuity[]>();
 	const [page, setPage] = useState(0);
-	const [size] = useState(8);
-	const [sort] = useState("asc");
 	const [hasMore, setHasMore] = useState(true);
 	const [loading, setLoading] = useState(false);
-	const [activeTab, setActiveTab] = useState('연금저축');
+	const [activeTab, setActiveTab] = useState<typeof TAB_DATA[number]['id']>('연금저축');
 
-
+	// refs
 	const carouselRef = useRef<HTMLDivElement>(null);
 	const observerRef = useRef<IntersectionObserver | null>(null);
+	
 	const navigate = useNavigate();
 
-	const TAB_DATA = [
-		{ id: "연금저축", label: "연금저축" },
-		{ id: "퇴직연금", label: "퇴직연금" }
-	] as const;
-
-	useEffect(() => {
-		getProductRecommend();
-		getProductHana();
-	}, [])
-
-	async function getProductRecommend() {
+	// API 호출 함수들
+	const fetchRecommendProducts = useCallback(async () => {
 		try {
 			const response = await productService.getRecommend();
 			if (response?.data) {
 				setRecommendProducts(response.data.result);
 			}
 		} catch (error) {
-			console.error('Failed to fetch:', error);
-			message.error('상품 정보 조회에 실패했습니다.');
+			console.error('Failed to fetch recommend products:', error);
+			message.error('상품 추천 정보 조회에 실패했습니다.');
 		}
-	}
+	}, []);
 
-	async function getProductHana() {
+	const fetchHanaProducts = useCallback(async () => {
 		try {
 			const response = await productService.getProductPensionSavingsDetailHana();
-
 			if (response?.data) {
 				setHanaProducts(response.data.result);
 			}
 		} catch (error) {
-			console.error('Failed to fetch:', error);
-			message.error('상품 정보 조회에 실패했습니다.');
+			console.error('Failed to fetch Hana products:', error);
+			message.error('하나은행 상품 정보 조회에 실패했습니다.');
 		}
-	}
+	}, []);
 
 	const loadMoreProducts = useCallback(async () => {
 		if (loading || !hasMore) return;
 		
 		try {
-		  setLoading(true);
-		  let response;
+			setLoading(true);
+			const nextPage = (page + 1).toString();
+			const size = INITIAL_PAGE_SIZE.toString();
+			
+			const response = await (activeTab === '연금저축' 
+				? productService.getPensionSavingsAll(nextPage, size, INITIAL_SORT)
+				: productService.getProductAnnuityAll(nextPage, size, INITIAL_SORT));
 
-		  if(activeTab=='연금저축'){
-			response = await productService.getPensionSavingsAll(
-				(page + 1).toString(), 
-				size.toString(), 
-				sort
-			  );
-	
-		  if (response?.data) {
-			const newProducts = response.data.result.content;
-			setAllPensionProducts(prev => prev ? [...prev, ...newProducts] : newProducts);
-			setPage(prev => prev + 1);
-			setHasMore(newProducts.length === size);
-		  }
-		  }else{
-			response = await productService.getProductAnnuityAll(
-				(page + 1).toString(), 
-				size.toString(), 
-				sort
-			  );
-	
-		  if (response?.data) {
-			const newProducts = response.data.result.content;
-			setAllAnnuityProducts(prev => prev ? [...prev, ...newProducts] : newProducts);
-			setPage(prev => prev + 1);
-			setHasMore(newProducts.length === size);
-		  }
-		  }
-
-		   
+			if (response?.data) {
+				const newProducts = response.data.result.content;
+				if (activeTab === '연금저축') {
+					const newPensionProducts = newProducts as PensionSaving[];
+					setAllPensionProducts((prev) => 
+						prev ? [...prev, ...newPensionProducts] : newPensionProducts
+					);
+				} else {
+					const newAnnuityProducts = newProducts as Annuity[];
+					setAllAnnuityProducts((prev) => 
+						prev ? [...prev, ...newAnnuityProducts] : newAnnuityProducts
+					);
+				}
+				setPage(prev => prev + 1);
+				setHasMore(newProducts.length === INITIAL_PAGE_SIZE);
+			}
 		} catch (error) {
-		  console.error('Failed to fetch:', error);
-		  message.error('상품 정보 조회에 실패했습니다.');
+			console.error('Failed to fetch products:', error);
+			message.error('상품 정보 조회에 실패했습니다.');
 		} finally {
-		  setLoading(false);
+			setLoading(false);
 		}
-	  }, [page, size, sort, loading, hasMore, activeTab]);
+	}, [page, loading, hasMore, activeTab]);
 
-	  const targetRef = useInfiniteScroll({
+	// Infinite Scroll
+	const targetRef = useInfiniteScroll({
 		threshold: 0.5,
 		onIntersect: loadMoreProducts
-	  });
+	});
 
-
+	// Carousel Observer 설정
 	useEffect(() => {
-		if (!recommendProducts?.length) return; // 상품이 없으면 실행하지 않음
+		if (!recommendProducts?.length) return;
 		
-		// Intersection Observer 설정
 		observerRef.current = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
@@ -139,27 +124,25 @@ function ProductPage() {
 			}
 		);
 
-		// 각 카드에 observer 연결
 		const cards = document.querySelectorAll('.product-card');
 		cards.forEach((card) => {
-			if (observerRef.current) {
-				observerRef.current.observe(card);
-			}
+			observerRef.current?.observe(card);
 		});
 
 		return () => {
-			if (observerRef.current) {
-				observerRef.current.disconnect();
-			}
+			observerRef.current?.disconnect();
 		};
 	}, [recommendProducts]);
 
-	return (
-		<styled.Container>
-			<Header title="상품 목록" />
-			<div onClick={() => navigate('/product/search')}>
-				<SearchBar placeholder="상품을 검색해 보세요!" />
-			</div>
+	// 초기 데이터 로드
+	useEffect(() => {
+		fetchRecommendProducts();
+		fetchHanaProducts();
+	}, [fetchRecommendProducts, fetchHanaProducts]);
+
+	// 렌더링 컴포넌트들
+	const renderRecommendSection = () => (
+		<>
 			<styled.TitleContainer style={{ alignItems: 'center' }}>
 				<styled.Title>이런 상품은 어떠세요?</styled.Title>
 				<styled.Title>홍길동님을 위한 맞춤 상품 추천</styled.Title>
@@ -173,13 +156,46 @@ function ProductPage() {
 						$active={index === activeIndex}
 						style={{ backgroundColor: COLOR_LIST[index % COLOR_LIST.length] }}
 					>
-						<p>{RECOMMEND_PRODUCTS.find((item)=>item.strategyType===product.strategyType)?.title}</p>
-						<WhiteButton style={{ width: '100%' }}
+						<p>{RECOMMEND_PRODUCTS.find((item) => item.strategyType === product.strategyType)?.title}</p>
+						<WhiteButton 
+							style={{ width: '100%' }}
 							onClick={() => navigate(`/product/detail/${product.productId}`)}
-						>상품 알아보기</WhiteButton>
+						>
+							상품 알아보기
+						</WhiteButton>
 					</styled.ProductCard>
 				))}
 			</styled.ProductCarousel>
+		</>
+	);
+
+	const isPensionSaving = (product: PensionSaving | Annuity): product is PensionSaving => {
+		return 'productName' in product;
+	};
+
+	const renderProductList = () => {
+		const products = activeTab === '연금저축' ? allPensionProducts : allAnnuityProducts;
+		return (
+			<styled.GridContainer>
+				{products?.map((product, index) => (
+					<styled.GridItem key={index}>
+						{isPensionSaving(product) ? product.productName : product.company}
+					</styled.GridItem>
+				))}
+				<div ref={targetRef} style={{ height: '10px' }} />
+				{loading && <div>로딩 중...</div>}
+			</styled.GridContainer>
+		);
+	};
+
+	return (
+		<styled.Container>
+			<Header title="상품 목록" />
+			<div onClick={() => navigate('/product/search')}>
+				<SearchBar placeholder="상품을 검색해 보세요!" />
+			</div>
+			
+			{renderRecommendSection()}
 
 			<styled.ButtonContainer>
 				<BlueButton onClick={() => navigate('/product/compare')}>
@@ -197,7 +213,7 @@ function ProductPage() {
 			</styled.GridContainer>
 
 			<h3>전체 상품</h3>
-			{(<Tabs>
+			<Tabs>
 				{TAB_DATA.map((tab, index) => (
 					<Tab
 						key={index}
@@ -207,21 +223,9 @@ function ProductPage() {
 						onClick={() => setActiveTab(tab.id)}
 					/>
 				))}
-			</Tabs>)}
-			<styled.GridContainer>
-				
-				{activeTab=='연금저축'? allPensionProducts?.map((product, index) => (
-					<styled.GridItem key={index}>
-						{product.productName}
-					</styled.GridItem>
-				)): allAnnuityProducts?.map((product, index) => (
-					<styled.GridItem key={index}>
-						{product.company}
-					</styled.GridItem>
-				))}
-				 <div ref={targetRef} style={{ height: '10px' }} />
-				 {loading && <div>로딩 중...</div>}
-			</styled.GridContainer>
+			</Tabs>
+			
+			{renderProductList()}
 		</styled.Container>
 	);
 }

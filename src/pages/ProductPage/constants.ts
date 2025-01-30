@@ -1,3 +1,8 @@
+export const TAB_DATA = [
+	{ id: "연금저축", label: "연금저축" },
+	{ id: "퇴직연금", label: "퇴직연금" }
+];
+
 export const COLOR_LIST = ["#C4F1D9", "#D6DEFF", "#C1F3FE"];
 
 export const RECOMMEND_PRODUCTS = [
