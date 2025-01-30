@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { COLOR_LIST, RECOMMEND_PRODUCTS } from "./constants";
 import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
 
-//component
+//components
 import Header from "../../layout/Header";
 import SearchBar from "../../ui/SearchBar";
 import BlueButton from "../../ui/BlueBtn"
@@ -120,6 +120,8 @@ function ProductPage() {
 
 
 	useEffect(() => {
+		if (!recommendProducts?.length) return; // 상품이 없으면 실행하지 않음
+		
 		// Intersection Observer 설정
 		observerRef.current = new IntersectionObserver(
 			(entries) => {
@@ -132,8 +134,8 @@ function ProductPage() {
 			},
 			{
 				root: carouselRef.current,
-				threshold: 0.6,  // 60% 이상 보일 때 활성화
-				rootMargin: '0px'
+				threshold: 0.6,
+				rootMargin: '-20px 0px'
 			}
 		);
 
@@ -150,7 +152,7 @@ function ProductPage() {
 				observerRef.current.disconnect();
 			}
 		};
-	}, []);
+	}, [recommendProducts]);
 
 	return (
 		<styled.Container>

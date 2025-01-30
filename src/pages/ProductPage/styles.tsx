@@ -77,9 +77,8 @@ export const ProductCarousel = styled.div`
 	width: 100%;
 	overflow-x: scroll;
 	overflow-y: hidden;
-	scrollbar-width: none;
 	align-items: center;
-
+	height: 280px;
 	&::-webkit-scrollbar {
 		display: none;
 	}
@@ -96,9 +95,8 @@ export const ProductCard = styled.div<{ $active?: boolean }>`
 	gap: 25px;
 	justify-content: flex-end;
 	align-items: center;
-	transition: all 0.3s ease;
+	transition: all 0.2s ease;
 	opacity: ${props => props.$active ? 1 : 0.7};
-	transform: ${props => props.$active ? 'scale(1.05)' : 'scale(1)'};
 
 	p {
 		width: 100%;
