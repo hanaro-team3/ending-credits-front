@@ -59,8 +59,27 @@ export interface ChangeAddressDTO{
 		Authorization: string;
 	}
 }
-
 export interface UploadResponse {
 	url: string;
 	message: string;
 }
+
+export interface GetMemberInfoDTO {
+	headers?: {
+		Authorization: string;
+	};
+}
+
+export interface IdCardResponse {
+	code: string;
+	message: string;
+	result: {
+	  name: string;
+	  address: string;
+	  idNumber: string;  // 주민번호 형식 (예: 000111-3)
+	};
+  }
+  
+  export interface IdCardUploadDTO {
+	file: File;
+  }
