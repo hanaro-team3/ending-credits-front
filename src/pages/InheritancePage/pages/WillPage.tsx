@@ -5,32 +5,9 @@ import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import willdeco from "../../../images/will-decoration.png";
-
-interface WillData {
-	inheritances: {
-		type: string;
-		subType: string;
-		financialInstitution: string | null;
-		asset: string;
-		amount: string;
-		ancestors: {
-			name: string;
-			relation: string;
-			ratio: number;
-		}[];
-	}[];
-	executors: {
-		name: string;
-		relation: string;
-		priority: number;
-	}[];
-	finalMessages: {
-		name: string;
-		relation: string;
-		message: string;
-	}[];
-	shareAt: number;
-}
+import { willService } from "../../../services/api/Will";
+import { WillData } from "../../../services/dto/Will";
+import { message } from "antd";
 
 interface WillPageProps extends PageProps {
 	setCurrentPage: (page: number) => void;
@@ -171,13 +148,12 @@ const WillPage: React.FC<WillPageProps> = ({
 
 	const saveWillData = async () => {
 		try {
-			// Here you would typically make an API call to save the data
 			console.log("Saving will data:", JSON.stringify(willData, null, 2));
 
-			// You can add your API call here
-			// await api.saveWillData(willData);
-
-			return true;
+			const response = await willService.postWill(willData);
+            if(response.data.result) {
+				return true;
+            }
 		} catch (error) {
 			console.error("Error saving will data:", error);
 			return false;
@@ -187,10 +163,10 @@ const WillPage: React.FC<WillPageProps> = ({
 	const handleSubmit = async () => {
 		const saved = await saveWillData();
 		if (saved) {
-			console.log("Will data saved successfully");
+			message.success("유언장 생성 성공!");
 			onNext();
 		} else {
-			console.error("Failed to save will data");
+			message.error("유언장 생성 실패");
 		}
 	};
 
@@ -611,6 +587,7 @@ const WillPage: React.FC<WillPageProps> = ({
 								etcData,
 								lastWordsData,
 							});
+							handleSubmit();
 							onNext();
 						}}
 					>
