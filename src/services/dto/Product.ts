@@ -5,6 +5,7 @@ export interface PensionSaving {
     company: string;
     productName: string;
     areaCode?: string;
+    image?: string;
 }
 
 export interface PensionSavingDetail {
@@ -48,6 +49,7 @@ export interface PensionSavingComparison {
     previousYearFeeRate: number;
     twoYearsAgoFeeRate: number;
     threeYearsAgoFeeRate: number;
+    [key: string]: string | number;
 }
 
 export interface Recommend {
@@ -126,7 +128,7 @@ export interface RecommendResponseDTO {
 
 // 퇴직연금 ==============================
 
-export interface Annuity{
+export interface Annuity {
     companyId: string;
     company: string;
     area?: string;
@@ -145,6 +147,7 @@ export interface Annuity{
     irpOprtMngFee?: number;
     irpAsstMngFee?: number;
     irpFundTotalCost?: number;
+    [key: string]: string | number | undefined;
 }
 
 export interface earnRates {
