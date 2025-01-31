@@ -10,6 +10,7 @@ import {
 	VerifySMSDTO,
 	ChangePasswordDTO,
 	ChangePhoneNumberDTO,
+	ChangeAddressDTO,
 	GetMemberInfoDTO,
 	IdCardUploadDTO,
 	IdCardResponse
@@ -100,6 +101,16 @@ export const userService = {
 		return request<void>({
 			method: "PATCH",
 			url: `member/me?phoneNumber=${data.phoneNumber}`,
+			headers: config?.headers,
+		});
+	},
+	changeAddress:(
+		data: ChangeAddressDTO,
+		config?: { headers: { Authorization: string } }
+	)=>{
+		return request<void>({
+			method: "PATCH",
+			url: `member/me?address=${data.address}`,
 			headers: config?.headers,
 		});
 	},

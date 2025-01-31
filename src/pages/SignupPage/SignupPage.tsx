@@ -11,7 +11,6 @@ import { userService } from "../../services/api/SignUp";
 import { CheckDuplicateIdDTO, SignupDTO } from "../../services/dto/Auth";
 import { IdCardResponse } from "../../services/dto/Auth"; // 이 줄 추가
 
-
 interface FormData {
 	phoneNumber: string;
 	carrier: string;
@@ -120,7 +119,6 @@ const StepForm = () => {
 			alert("아이디를 입력해주세요.");
 			return;
 		}
-
 		try {
 			const checkData: CheckDuplicateIdDTO = {
 				identifier: formData.userid,
@@ -179,24 +177,44 @@ const StepForm = () => {
 		);
 	}, [checkboxes]);
 
+	const formatBirthDate = (idNumber: string | undefined): string => {
+		if (!idNumber) return '';
+		
+		// 주민번호 앞 6자리 추출
+		const birthDate = idNumber.split('-')[0];
+		if (birthDate.length !== 6) return '';
+		
+		const year = birthDate.substring(0, 2);
+		const month = birthDate.substring(2, 4);
+		const day = birthDate.substring(4, 6);
+		
+		// 현재 연도의 끝 두 자리
+		const currentYearLast2 = 25;  // 2025년
+		
+		// 연도 처리 (00~25 -> 2000~2025, 26~99 -> 1926~1999)
+		const fullYear = parseInt(year) <= currentYearLast2 ? `20${year}` : `19${year}`;
+		
+		return `${fullYear}-${month}-${day}`;
+	};
+	
 	const handleSignup = async () => {
 		try {
 			const signupData: SignupDTO = {
 				identifier: formData.userid,
 				password: formData.password,
 				loginType: "NORMAL",
-				birthDate: "1999-07-28",
+				birthDate: formatBirthDate(ocrData?.idNumber),  // 형식 변환 적용
 				phoneNumber: formData.phoneNumber,
-				address: "서울시 성동구 성수동",
-				name: "홍소희",
+				address: ocrData?.address || '',
+				name: ocrData?.name || '',
 				email: formData.email,
 			};
-
-			console.log("Sending signup data:", signupData);
-
-			const response = await userService.registerUser(signupData);
-			console.log("Signup successful:", response); // 성공 응답 로깅
-
+	
+			console.log("OCR Data:", ocrData);
+			console.log("Form Data:", formData);
+			console.log("Signup Data to be sent:", signupData);
+	
+			await userService.registerUser(signupData);
 			navigate("/simplelogin", { state: { userid: formData.userid } });
 		} catch (error) {
 			console.error("Signup failed:", error);
