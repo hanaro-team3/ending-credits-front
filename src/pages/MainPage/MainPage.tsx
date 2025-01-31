@@ -1,6 +1,4 @@
-import ReactApexChart from "react-apexcharts";
 import * as styled from "./styles";
-import { useChartData } from "./hooks/useChartData";
 import { Link, useNavigate } from "react-router-dom";
 
 // assets
@@ -13,6 +11,7 @@ import dove from "../../assets/icon/dove.png";
 // components
 import Navbar from "../../layout/Navbar";
 import SearchBar from "../../ui/SearchBar";
+import AssetChart from "../AssetPage/components/AssetChart";
 
 const StatusSection = () => (
 	<styled.Section>
@@ -32,25 +31,13 @@ const StatusSection = () => (
 );
 
 const AssetSection = () => {
-	const { chartData } = useChartData();
 	const navigate = useNavigate();
 
 	return (
 		<styled.AssetSection>
 			<styled.Title>자산 한눈에 보기</styled.Title>
-			<styled.AssetCard>
-				<ReactApexChart
-					options={chartData.options}
-					series={chartData.series}
-					type="pie"
-				/>
-				<styled.AssetButton
-					onClick={() => {
-						navigate("/asset");
-					}}
-				>
-					상세보기
-				</styled.AssetButton>
+			<styled.AssetCard onClick={() => { navigate("/asset");}}>
+				<AssetChart  />
 			</styled.AssetCard>
 		</styled.AssetSection>
 	);
