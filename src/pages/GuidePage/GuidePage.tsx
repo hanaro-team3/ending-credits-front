@@ -13,21 +13,17 @@ const TAB_DATA = [
 
 function GuidePage() {
     const [activeTab, setActiveTab] = useState<TabType>("상속");
-    const [isLeaving, setIsLeaving] = useState(false);
 
     useLayoutEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    const handleBack = () => {
-        setIsLeaving(true);
-    };
+  
 
     return (
-        <styled.Container $isLeaving={isLeaving}>
+        <styled.Container>
             <Header 
                 title="작성 가이드" 
-                onClose={handleBack} 
             />
             
             {/* 타이틀 섹션 */}

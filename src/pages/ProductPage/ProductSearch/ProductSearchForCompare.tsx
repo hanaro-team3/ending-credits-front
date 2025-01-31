@@ -1,16 +1,12 @@
 import * as styled from "../styles";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { TAB_DATA } from "../constants";
 
 // components
 import Header from "../../../layout/Header";
 import SearchBar from "../../../ui/SearchBar";
 import Select from "../../../ui/Select";
-import { Tab, Tabs } from "../../../ui/Tab";
 import { message } from "antd";
-
-// assets
 import arrow from "../../../assets/icon/arrow.png";
 
 // services
@@ -22,22 +18,21 @@ const page = 0;
 const size = 50;
 const sort = "asc";
 
-function ProductSearch() {
+function ProductSearchForCompare() {
 	const navigate = useNavigate();
-	const [activeTab, setActiveTab] = useState<typeof TAB_DATA[number]['id']>('연금저축');
+	const [activeTab, setActiveTab] = useState<string>();
 	const [activeAreaCode, setActiveAreaCode] = useState<string>('1');
 	const [dataNone, setDataNone] = useState<boolean>(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [productList, setProductList] = useState<PensionSaving[]|Annuity[]>();
 
-	useEffect(() => {
-		loadProducts();
-	}, [activeTab, activeAreaCode]);
-
-	const loadProducts = async () => {
+	const loadProducts = useCallback(async () => {
 		try {
 			let response;
-			if (activeTab === '퇴직연금') {
+			// activeTab이 undefined일 때는 storedActiveTab을 확인
+			const currentTab = activeTab || localStorage.getItem('compareActiveTab');
+			
+			if (currentTab === '퇴직연금') {
 				response = await productService.getProductAnnuityAll(page.toString(), size.toString(), sort);
 				if (response?.data) {
 					setProductList(response.data.result.content);
@@ -54,7 +49,15 @@ function ProductSearch() {
 			console.error(error);
 			message.error('상품 목록 조회 실패');
 		}
-	};
+	}, [activeTab, activeAreaCode]);
+
+	useEffect(() => {
+		const storedActiveTab = localStorage.getItem('compareActiveTab');
+		if(storedActiveTab){
+			setActiveTab(storedActiveTab);
+			loadProducts();
+		}
+	}, [loadProducts]);
 
 	const handleSearch = async () => {
 		try {
@@ -75,13 +78,31 @@ function ProductSearch() {
 		}
 	};
 
-	const handleItemClick = (id: string) => {
-		navigate(`/product/detail/${id}?activeType=${activeTab}`);
-	};
-
-	const handleTabSelect = (type: string) => {
-		setActiveTab(type);
-		setActiveAreaCode('1');
+	const handleItemClick = async (id: string) => {
+		const compareSelectMode = localStorage.getItem('compareSelectMode');
+		
+		if (activeTab === '퇴직연금') {
+			try {
+				const response = await productService.getAnnuityComparison(id);
+				if (response?.data) {
+					localStorage.setItem(
+						compareSelectMode === 'first' ? 'compareFirstProduct' : 'compareSecondProduct',
+						id
+					);
+				}
+			} catch (error) {
+				console.error(error);
+				message.error('상품 비교 정보 조회 실패');
+				return;
+			}
+		} else {
+			localStorage.setItem(
+				compareSelectMode === 'first' ? 'compareFirstProduct' : 'compareSecondProduct',
+				id
+			);
+		}
+		localStorage.removeItem('compareSelectMode');
+		navigate('/product/compare');
 	};
 
 	const handleAreaChange = (areaCode: string) => {
@@ -95,7 +116,10 @@ function ProductSearch() {
 
 	return (
 		<styled.Container>
-			<Header title="상품 검색" onClose={() => navigate('/product')} />
+			<Header 
+				title="상품 검색" 
+				onClose={() => navigate('/product/compare')}
+			/>
 
 			<SearchBar
 				placeholder="상품을 검색해 보세요!"
@@ -103,18 +127,6 @@ function ProductSearch() {
 				onChange={(e) => setSearchKeyword(e.target.value)}
 				onSearch={handleSearch}
 			/>
-
-			<Tabs>
-				{TAB_DATA.map((tab, index) => (
-					<Tab
-						key={index}
-						id={tab.id}
-						label={tab.label}
-						isActive={activeTab === tab.id}
-						onClick={() => handleTabSelect(tab.id)}
-					/>
-				))}
-			</Tabs>
 
 			{activeTab === '연금저축' && <Select items={AREA_CODES} onSelect={handleAreaChange} />}
 
@@ -151,4 +163,4 @@ function ProductSearch() {
 	);
 }
 
-export default ProductSearch;
+export default ProductSearchForCompare;

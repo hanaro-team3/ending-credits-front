@@ -137,7 +137,18 @@ export const GridItem = styled.div`
 export const CompareContainer = styled.div`
 	display: flex;
 	width: 100%;
+`;
+
+export const CompareSubTitle = styled.div`
+`;
+
+export const CompareButtonContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 	height: 350px;
+	justify-content: center;
+	align-items: center;
 `;
 
 export const CompareItem = styled.div`

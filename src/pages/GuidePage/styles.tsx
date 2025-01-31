@@ -1,16 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-const slideOut = keyframes`
-	from {
-		transform: translateX(0);
-		opacity: 1;
-	}
-	to {
-		transform: translateX(100%);
-		opacity: 0;
-	}
-`;
-
 const slideLeft = keyframes`
 	from {
 		transform: translateX(100%);
@@ -29,12 +18,11 @@ const slideRight = keyframes`
 	}
 `;
 
-export const Container = styled.div<{ $isLeaving: boolean }>`
+export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
 	padding: 0 1.5rem 6rem 1.5rem;
-	animation: ${props => props.$isLeaving ? slideOut : 'none'} 0.3s ease-in-out;
 	min-height: 100vh;
 	position: fixed;
 	top: 0;
