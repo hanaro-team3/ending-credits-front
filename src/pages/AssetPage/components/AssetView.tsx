@@ -11,18 +11,21 @@ import { AssetCard } from "./AssetCard";
 
 //services
 import { memberService } from "../../../services/api/Member";
-import { MemberWishDTO } from "../../../services/dto/Member";
 
 export function AssetView() {
     const { chartData } = useChartData();
     const navigate = useNavigate();
-    const [wishAndAssets, setWishAndAssets] = useState<MemberWishDTO>();
+    const [wish, setWish] = useState("");
+    const [asset, setAsset] = useState("");
+    const [calculated, setCalculated] = useState(0);
 
     useEffect(() => {
         async function getMemberWish() {
             const response = await memberService.getMemberWish();
             if(response?.data) {
-                setWishAndAssets(response.data.result);
+                setWish(response.data.result.wishFund);
+                setAsset(response.data.result.assetsDetail.assetTotal);
+                setCalculated(Number(wish.replace(/,/g, ''))-Number(asset.replace(/,/g, '')));
             };
         }
         getMemberWish();
@@ -31,13 +34,14 @@ export function AssetView() {
     return (
         <>
             <styled.TitleContainer>
-                <styled.Title>홍길동님의 자산 현황</styled.Title>
+                <styled.Title>고객님의 자산 현황</styled.Title>
             </styled.TitleContainer>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <AssetCard label="희망하는 노후 자금" value={wishAndAssets?.wishFund || ""} onClick={() => {navigate("/asset/calculate")}}  />
-                <AssetCard label="보유한 자금" value={wishAndAssets?.assetsDetail.assetTotal || ""} onClick={() => {navigate("/asset/list")}} />
-                <AssetCard label="부족한 자금" value="" highlight="red" />
+                <AssetCard label="희망하는 노후 자금" value={wish} onClick={() => {navigate("/asset/calculate")}}  />
+                <AssetCard label="보유한 자금" value={asset} onClick={() => {navigate("/asset/list")}} />
+                {calculated>0?(<AssetCard label="부족한 자금" value={calculated.toLocaleString()} highlight="red" />):(<AssetCard label="여유 자금" value={Math.abs(calculated).toLocaleString()} highlight="blue" />)}
+                
                 <div>
                     <ReactApexChart
                         options={chartData.options}

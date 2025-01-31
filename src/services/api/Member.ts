@@ -21,6 +21,13 @@ export const memberService = {
 			url: `${BASE_URL}/member/wish`,
 		});
 	},
+	patchMemberWish: (total:string) => {
+		return request<MemberWishResponseDTO>({
+			method: "PATCH",
+			url: `${BASE_URL}/member/wish`,
+			params: {wishFund:total}
+		});
+	},
 	getMemberInfo: (config?: { headers: { Authorization: string } }) => {
 		return request<MemberInfoResponseDTO>({
 			method: "GET",
