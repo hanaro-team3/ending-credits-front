@@ -163,7 +163,7 @@ function Cash() {
         async function getCash() {
             const response = await assetService.getCash();
             if (response?.data) {
-                setCash(response.data.result);
+                setCash(response.data.result.amount);
             }
         }
         getCash();
@@ -306,9 +306,11 @@ function Pension() {
 
 function AssetDetailPage() {
     const { label } = useParams();
+    const navigate = useNavigate();
+    
     return (
         <styled.Container>
-            <Header title={label || ""} showClose={true} />
+            <Header title={label || ""} showClose={true} onClose={()=>navigate("/asset/list")} />
             <styled.IconWrapper>
                 <img 
                     src={ASSET_DATA.find(item => item.label === label)?.icon} 

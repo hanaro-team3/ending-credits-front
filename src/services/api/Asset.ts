@@ -80,8 +80,8 @@ export const assetService = {
       url: `${BASE_URL}/asset/cash`,
     });
   },
-  patchCash: (data: dto.CashRequestDTO) => {
-    return request<dto.CashResponseDTO>({
+  patchCash: (data: dto.PatchCashRequestDTO) => {
+    return request<dto.PatchCashResponstDTO>({
       method: 'PATCH',
       url: `${BASE_URL}/asset/cash`,
       data,
