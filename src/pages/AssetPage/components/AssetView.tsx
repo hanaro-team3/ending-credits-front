@@ -21,9 +21,12 @@ export function AssetView() {
         async function getMemberWish() {
             const response = await memberService.getMemberWish();
             if(response?.data) {
-                setWish(response.data.result.wishFund);
-                setAssetTotal(response.data.result.assetsDetail.assetTotal);
-                setCalculated(Number(wish.replace(/,/g, ''))-Number(assetTotal.replace(/,/g, '')));
+                const wishAmount = response.data.result.wishFund;
+                const totalAmount = response.data.result.assetsDetail.assetTotal;
+                
+                setWish(wishAmount);
+                setAssetTotal(totalAmount);
+                setCalculated(Number(wishAmount.replace(/,/g, '')) - Number(totalAmount.replace(/,/g, '')));
             };
         }
         getMemberWish();
@@ -38,7 +41,7 @@ export function AssetView() {
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 <AssetCard label="희망하는 노후 자금" value={wish} onClick={() => {navigate("/asset/calculate")}}  />
                 <AssetCard label="보유한 자금" value={assetTotal} onClick={() => {navigate("/asset/list")}} />
-                { calculated > 0 ?
+                { calculated >= 0 ?
                     (<AssetCard label="부족한 자금" value={calculated.toLocaleString()} highlight="red" />)
                     : (<AssetCard label="여유 자금" value={Math.abs(calculated).toLocaleString()} highlight="blue" />)
                 }
