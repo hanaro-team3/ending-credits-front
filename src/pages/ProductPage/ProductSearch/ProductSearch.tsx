@@ -17,7 +17,7 @@ import arrow from "../../../assets/icon/arrow.png";
 import { productService } from "../../../services/api/Product";
 import { PensionSaving, Annuity } from "../../../services/dto/Product";
 
-const AREA_CODES = ["은행(신탁)", "자산운용(펀드)", "생명보험", "손해보험"];
+const AREA_CODES = [{code:"1", label:"은행(신탁)"},{code:"3", label:"자산운용(펀드)"},{code:"4", label:"생명보험"},{code:"5", label:"손해보험"},]
 const page = 0;
 const size = 50;
 const sort = "asc";
@@ -111,9 +111,9 @@ function ProductSearch() {
 		setActiveAreaCode('1');
 	};
 
-	const handleAreaChange = (areaCode: string) => {
-		const area = AREA_CODES.findIndex(area => area === areaCode);
-		setActiveAreaCode((area + 1).toString());
+	const handleAreaChange = (areaLabel: string) => {
+		const area = AREA_CODES.find(area => area.label === areaLabel);
+		if(area) setActiveAreaCode(area?.code);
 	};
 
 	const isPensionSaving = (product: PensionSaving | Annuity): product is PensionSaving => {
@@ -143,7 +143,7 @@ function ProductSearch() {
 				))}
 			</Tabs>
 
-			{activeTab === '연금저축' && <Select items={AREA_CODES} onSelect={handleAreaChange} />}
+			{activeTab === '연금저축' && <Select items={AREA_CODES.map((item)=>item.label)} onSelect={handleAreaChange} />}
 
 			<styled.ProductList>
 				{dataNone && (
