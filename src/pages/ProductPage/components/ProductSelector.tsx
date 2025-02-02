@@ -26,7 +26,7 @@ function ProductSelector({ product, onClick }: ProductSelectorProps) {
                     <p style={{ width: "100%", wordBreak: "keep-all", overflowWrap: "break-word", height: "70px" }}>
                         {'product' in product ? product.product : product.company}
                     </p>
-                    <BlueButton variant="small" style={{ width: "100px" }} onClick={() => navigate(`/product/detail/${product?.productId || product?.companyId}`)}>
+                    <BlueButton variant="small" style={{ width: "100px" }} onClick={() => navigate(`/product/detail/${product?.productId || product?.companyId}?activeType=${'product' in product ?'연금저축':'퇴직연금'}`)}>
                         상품 상세
                     </BlueButton>
                 </>
