@@ -1,5 +1,5 @@
 import * as styled from "../styles";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { TAB_DATA } from "../constants";
 
@@ -56,6 +56,33 @@ function ProductSearch() {
 		}
 	};
 
+	const handleSearchChange = async (e: ChangeEvent<HTMLInputElement>) => {
+		const keyword = e.target.value;
+		setSearchKeyword(keyword);
+		
+		if (keyword.trim() === '') {
+			loadProducts();  // 검색어가 비어있으면 전체 목록 로드
+			return;
+		}
+
+		try {
+			let response;
+			if (activeTab === '연금저축') {
+				response = await productService.getPensionSavingsSearch(keyword, activeAreaCode);
+			} else {
+				response = await productService.getProductAnnuitySearch(keyword);
+			}
+			
+			if (response?.data?.result) {
+				setProductList(response.data.result);
+				setDataNone(response.data.result.length === 0);
+			}
+		} catch (error) {
+			console.error(error);
+			message.error('상품 검색 실패');
+		}
+	};
+
 	const handleSearch = async () => {
 		try {
 			let response;
@@ -100,7 +127,7 @@ function ProductSearch() {
 			<SearchBar
 				placeholder="상품을 검색해 보세요!"
 				value={searchKeyword}
-				onChange={(e) => setSearchKeyword(e.target.value)}
+				onChange={handleSearchChange}
 				onSearch={handleSearch}
 			/>
 
