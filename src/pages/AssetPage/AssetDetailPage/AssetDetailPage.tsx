@@ -120,13 +120,15 @@ function Stock() {
 }
 
 function Coin() {
-    const [virtuals, setVirtuals] = useState<dto.Virtual[]>();
+    const [domestic, setDomestic] = useState<dto.Virtual[]>();
+    const [foreign, setForeign] = useState<dto.Virtual[]>();
 
     useEffect(() => {
         async function getVirtuals() {
             const response = await assetService.getVirtual();
             if(response.data) {
-                setVirtuals(response.data.result);
+                setDomestic(response.data.result.filter(item => item.currencyCode === "KRW"));
+                setForeign(response.data.result.filter(item => item.currencyCode !== "KRW"));
             }
         }
         getVirtuals();
@@ -134,14 +136,30 @@ function Coin() {
     return(
         <>
             <styled.AccountSection>
-                <styled.AccountTitle>보유한 가상자산</styled.AccountTitle>
+                <styled.AccountTitle>원화</styled.AccountTitle>
                 <styled.AccountList>
-                    {virtuals?.map((item, index) => (
+                    {domestic?.map((item, index) => (
                         <styled.AccountItem key={index}>
                             <styled.AccountBank>{item.exchangeName}</styled.AccountBank>
                             <styled.AccountRow>
                             <styled.AccountName>{item.virtualAssetName}</styled.AccountName>
                             <p>{item.totalValue.toLocaleString()}원</p>
+                        </styled.AccountRow>
+                        <styled.AccountRow>
+                            <styled.AccountNumber></styled.AccountNumber>
+                            <styled.AccountReturn>+{item.profitRatio}%</styled.AccountReturn>
+                        </styled.AccountRow>
+                    </styled.AccountItem>
+                    ))} 
+                </styled.AccountList>
+                <styled.AccountTitle>외화</styled.AccountTitle>
+                <styled.AccountList>
+                    {foreign?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.exchangeName}</styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.virtualAssetName}</styled.AccountName>
+                            <p>${item.totalValue.toLocaleString()}</p>
                         </styled.AccountRow>
                         <styled.AccountRow>
                             <styled.AccountNumber></styled.AccountNumber>

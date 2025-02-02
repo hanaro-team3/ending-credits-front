@@ -62,6 +62,7 @@ export interface Virtual {
     profitRatio: number;
     quantity: number;
     totalValue: number;
+	currencyCode: string;
 }
 
 export interface Securities {
