@@ -9,166 +9,158 @@ import { willService } from "../../../services/api/Will";
 import { WillData } from "../../../services/dto/Will";
 import { message } from "antd";
 
-interface WillPageProps extends PageProps {
-	setCurrentPage: (page: number) => void;
-	bankData: any[];
-	realEstateData: any[];
-	etcData: any[];
-	lastWordsData: any[];
+interface Page8Props extends PageProps {
+    setCurrentPage: (page: number) => void;
 }
 
-const WillPage: React.FC<WillPageProps> = ({
-	onNext,
-	formData,
-	setFormData,
-	setCurrentPage,
-	bankData = [],
-	realEstateData = [],
-	etcData = [],
-	lastWordsData = [],
+const WillPage: React.FC<Page8Props> = ({
+    onNext,
+    formData,
+    setFormData,
+    setCurrentPage,
 }) => {
-	const [willData, setWillData] = useState<WillData>({
-		inheritances: [],
-		executors: [],
-		finalMessages: [],
-		shareAt: 0,
-	});
+    const handleReset = () => {
+        // formData를 초기 상태로 리셋
+        const resetData = {
+            uploadType: null,
+            uploadedPhotos: [],
+            inheritanceInfo: {},
+            executors: [],
+            messages: [],
+            shareTimingChoice: null,
+        };
 
-	useEffect(() => {
-		// Process and combine all inheritance data
-		const processedInheritances = [
-			...realEstateData.map((item) => ({
-				type: "부동산",
-				subType: item.subType,
-				financialInstitution: null,
-				asset: item.asset,
-				amount: item.amount.toString(),
-				ancestors: item.ancestors.map((ancestor) => ({
-					name: ancestor.name,
-					relation: ancestor.relation,
-					ratio: ancestor.ratio,
-				})),
-			})),
-			...bankData.map((item) => ({
-				type: "금융",
-				subType: item.subType,
-				financialInstitution: item.financialInstitution,
-				asset: item.asset,
-				amount: item.amount.toString(),
-				ancestors: item.ancestors.map((ancestor) => ({
-					name: ancestor.name,
-					relation: ancestor.relation,
-					ratio: ancestor.ratio,
-				})),
-			})),
-			...etcData.map((item) => ({
-				type: "기타",
-				subType: item.subType,
-				financialInstitution: null,
-				asset: item.asset,
-				amount: item.amount.toString(),
-				ancestors: item.ancestors.map((ancestor) => ({
-					name: ancestor.name,
-					relation: ancestor.relation,
-					ratio: ancestor.ratio,
-				})),
-			})),
-		];
+        setFormData((prevState) => ({
+            ...prevState,
+            ...resetData,
+        }));
 
-		// Process executor data
-		const processedExecutors = [
-			{
-				name: formData.executor.name,
-				relation: formData.executor.relationship,
-				priority: 1,
-			},
-		];
+        // 첫 페이지(0)로 이동
+        setCurrentPage(0);
+    };
 
-		// Process final messages
-		const processedMessages = lastWordsData.map((item) => ({
-			name: item.name,
-			relation: item.relation,
-			message: item.message,
-		}));
+    const transformFormDataToRequestBody = (formData: FormData) => {
+        const {
+            assets,
+            inheritanceInfo,
+            executors,
+            messages,
+            shareTimingChoice,
+        } = formData;
 
-		// Process share timing
-		const shareAt = (() => {
-			switch (formData.shareTimingChoice) {
-				case "anytime":
-					return 0;
-				case "sickness":
-					return 1;
-				case "death":
-					return 2;
-				default:
-					return 0;
-			}
-		})();
-
-		// Set all processed data
-		setWillData({
-			inheritances: processedInheritances,
-			executors: processedExecutors,
-			finalMessages: processedMessages,
-			shareAt,
-		});
-	}, [bankData, realEstateData, etcData, lastWordsData, formData]);
-
-	console.log(willData);
-
-	const formatAmount = (amount: number) => {
-		return new Intl.NumberFormat("ko-KR").format(amount);
-	};
-
-	const calculateTotalAmount = () => {
-		const total = [...bankData, ...realEstateData, ...etcData].reduce(
-			(sum, item) => sum + item.amount,
-			0
-		);
-		return formatAmount(total);
-	};
-
-	const handleReset = () => {
-		setFormData({
-			personalInfo: {
-				name: "홍길동",
-				birthDate: "19OO. OO. OO.",
-				address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
-			},
-			uploadType: null,
-			uploadedPhotos: [],
-			executor: {
-				name: "",
-				relationship: "",
-			},
-			shareTimingChoice: null,
-		});
-		setCurrentPage(0);
-	};
-
-	const saveWillData = async () => {
-		try {
-			console.log("Saving will data:", JSON.stringify(willData, null, 2));
-
-			const response = await willService.postWill(willData);
-            if(response.data.result) {
-				return true;
+        // 자산 정보
+        const getFinancialInstitution = (
+            assetCategory: string,
+            asset: any
+        ): string | null => {
+            if (assetCategory === "finance") {
+                return asset.detail?.split(" - ")[0] || null;
             }
-		} catch (error) {
-			console.error("Error saving will data:", error);
-			return false;
-		}
-	};
+            return null; // 기본값
+        };
 
-	const handleSubmit = async () => {
-		const saved = await saveWillData();
-		if (saved) {
-			message.success("유언장 생성 성공!");
-			onNext();
-		} else {
-			message.error("유언장 생성 실패");
-		}
-	};
+        const getType = (assetCategory: string): string => {
+            switch (assetCategory) {
+                case "realEstate":
+                    return "부동산";
+                case "finance":
+                    return "금융";
+                default:
+                    return "기타";
+            }
+        };
+
+        const inheritances = Object.entries(assets).flatMap(
+            ([assetCategory, assetList]) => {
+                return assetList.flatMap((asset) => {
+                    const inheritanceInfoForAsset = inheritanceInfo[asset.id]; // inheritanceInfo에서 id로 상속자 정보 가져오기
+
+                    if (inheritanceInfoForAsset) {
+                        const detailParts = asset.detail?.split(" - ") || [];
+                        return {
+                            type: getType(assetCategory),
+                            subType: asset.type,
+                            financialInstitution: getFinancialInstitution(
+                                assetCategory,
+                                asset
+                            ),
+                            asset: asset.address || detailParts[1] || null,
+                            amount: asset.value.toString(),
+                            ancestors: inheritanceInfoForAsset.inheritors.map(
+                                (inheritor) => ({
+                                    name: inheritor.name,
+                                    relation: inheritor.relation,
+                                    ratio: inheritor.ratio,
+                                })
+                            ),
+                        };
+                    }
+
+                    return []; // 상속자 정보가 없는 경우 빈 배열 반환
+                });
+            }
+        );
+
+      // 유언 집행자
+      const transformedExecutors = executors.map((exec) => ({
+          name: exec.name,
+          relation: exec.relationship,
+          priority: exec.priority,
+      }));
+
+      // 마지막 메시지
+      const finalMessages = messages.map((msg) => ({
+          name: msg.name,
+          relation: msg.relationship,
+          message: msg.content,
+      }));
+
+      // 공유 시점
+      const shareAt = (() => {
+          switch (shareTimingChoice) {
+              case "anytime":
+                  return 0; // 0: 일상
+              case "sickness":
+                  return 1; // 1: 병환 중
+              case "death":
+                  return 2; // 2: 사망 후
+              default:
+                  return null;
+          }
+      })();
+
+      const requestBody = {
+          inheritances,
+          executors: transformedExecutors,
+          finalMessages,
+          shareAt,
+      };
+
+      console.log("requestBody:", requestBody);
+
+      return requestBody;
+  };
+
+  const onSubmit = async () => {
+      try {
+          const requestBody = transformFormDataToRequestBody(formData);
+
+          const response = await willService.createWill(requestBody);
+
+          if (response?.result?.willId) {
+              console.log(response);
+              console.log(response.result.willId + " 유언장 생성 성공");
+              onNext();
+          } else {
+              message.error(
+                  "유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."
+              );
+          }
+      } catch (error) {
+          console.error("Failed to fetch: ", error);
+          message.error("오류가 발생했습니다. 다시 시도해 주세요.");
+      }
+  };
 
 	return (
 		<styled.UploadPageContainer>

@@ -26,34 +26,36 @@ export interface AssetsDetail {
 }
 
 export interface RealEstate {
-	realEstateId: string;
-	realEstateName: string;
-	address: string;
-	purchasePrice: number;
-	currentPrice: number;
+    realEstateId: string;
+    realEstateName: string;
+    realEstateType: string;
+    address: string;
+    purchasePrice: number;
+    currentPrice: number;
 }
 
 export interface Car {
-	carId: string;
-	model: string;
-	carNumber: string;
-	purchasePrice: number;
-	currentPurchasePrice: number;
-	mileage: number;
-	year: number;
+    carId: string;
+    model: string;
+    carNumber: string;
+    purchasePrice: number;
+    currentPurchasePrice: number;
+    mileage: number;
+    year: number;
 }
 
 export interface Pension {
-	pensionId: string;
-	pensionType: string;
-	pensionAge: number;
-	monthlyPayment: number;
-	paymentDuration: number;
-	totalExpectedAmount: number;
+    pensionId: string;
+    pensionType: string;
+    pensionAge: number;
+    monthlyPayment: number;
+    paymentDuration: number;
+    totalExpectedAmount: number;
 }
 
 export interface Virtual {
-	exchangeName: string;
+    virtualAssetId: string;
+    exchangeName: string;
     virtualAssetName: string;
     currentPrice: number;
     purchasePrice: number;
@@ -63,21 +65,22 @@ export interface Virtual {
 }
 
 export interface Securities {
-	securitiesCompanyName: string;
-	stockName: string;
-	accountNumber: string;
-	amount: number;
-	profitRate: number;
-	currencyCode: string;
+    securitiesAssetId: string;
+    securitiesCompanyName: string;
+    stockName: string;
+    accountNumber: string;
+    amount: number;
+    profitRate: number;
+    currencyCode: string;
 }
 
 export interface Banks {
-	bankName: string;
-	assetType: string;
-	accountName: string;
-	accountNumber: string;
-	amount: number;
-	profitRate: number;
+    bankName: string;
+    assetType: string;
+    accountName: string;
+    accountNumber: string;
+    amount: number;
+    profitRate: number;
 }
 export interface RealEstatesResponseDTO {
     code: string;
@@ -97,11 +100,10 @@ export interface PensionsResponseDTO {
     result: Pension[];
 }
 
-
 export interface ConnectSelectedRequestDTO {
-    bankNames: string[],
-    securitiesCompanyNames: string[],
-    exchangeNames: string[]
+    bankNames: string[];
+    securitiesCompanyNames: string[];
+    exchangeNames: string[];
 }
 
 export interface ConnectResponseDTO {
@@ -110,54 +112,54 @@ export interface ConnectResponseDTO {
 }
 
 export interface CarRequestDTO {
-	model: string;
-	carNumber: string;
-	purchasePrice: number;
-	currentPurchasePrice: number;
-	mileage: number;
-	year: number;
+    model: string;
+    carNumber: string;
+    purchasePrice: number;
+    currentPurchasePrice: number;
+    mileage: number;
+    year: number;
 }
 
 export interface CarResponseDTO {
-	carId: string;
-	model: string;
-	carNumber: string;
-	purchasePrice: number;
-	currentPurchasePrice: number;
-	mileage: number;
-	year: number;
+    carId: string;
+    model: string;
+    carNumber: string;
+    purchasePrice: number;
+    currentPurchasePrice: number;
+    mileage: number;
+    year: number;
 }
 
 export interface RealEstateRequestDTO {
-	name: string;
-	address: string;
-	purchasePrice: number;
-	currentPrice: number;
+    name: string;
+    address: string;
+    purchasePrice: number;
+    currentPrice: number;
 }
 
 export interface RealEstateResponseDTO {
-	realEstateId: string;
-	realEstateName: string;
-	address: string;
-	purchasePrice: number;
-	currentPrice: number;
+    realEstateId: string;
+    realEstateName: string;
+    address: string;
+    purchasePrice: number;
+    currentPrice: number;
 }
 
 export interface VirtualResponseDTO {
     code: string;
     message: string;
-	result: Virtual[];
+    result: Virtual[];
 }
 export interface SecuritiesResponseDTO {
     code: string;
     message: string;
-	result: Securities[];
+    result: Securities[];
 }
 
 export interface BanksResponseDTO {
     code: string;
     message: string;
-	result: Banks[];
+    result: Banks[];
 }
 
 export interface CashResponseDTO {
@@ -173,6 +175,7 @@ export interface PatchCashResponstDTO{
     message: string;
 	result: number;
 }
+
 export interface PatchCashRequestDTO {
     amount: number;
 }
