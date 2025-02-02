@@ -14,7 +14,6 @@ import { DetailResponseDTO } from "../../../services/dto/Asset";
 
 //components
 import Header from "../../../layout/Header";
-import BlueButton from "../../../ui/BlueBtn";
 import HorizontalStackedBar from "../components/HorizontalStackedBar";
 
 interface LoanItem {
@@ -153,7 +152,7 @@ function AssetListPage() {
 
     return (
         <styled.Container>
-            <Header title="자산 상세" showClose={true} />
+            <Header title="자산 상세" showClose={true} onClose={()=>navigate("/asset")} />
             
             <styled.TitleContainer>
                 <styled.SubTitle>총 자산</styled.SubTitle>
@@ -175,10 +174,6 @@ function AssetListPage() {
             <styled.AssetContainer>
                 <AssetList items={loanData} showArrow={false} />
             </styled.AssetContainer>
-
-            <BlueButton variant="large" onClick={() => navigate("/asset/register")}>
-                <p>자산 연결 추가하기</p>
-            </BlueButton>
         </styled.Container>
     );
 }

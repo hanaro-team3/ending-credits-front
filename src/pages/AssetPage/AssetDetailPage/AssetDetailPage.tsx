@@ -105,7 +105,7 @@ function Stock() {
                             <styled.AccountBank>{item.securitiesCompanyName}</styled.AccountBank>
                             <styled.AccountRow>
                                 <styled.AccountName>{item.stockName}</styled.AccountName>
-                                <p>{item.amount.toLocaleString()}원</p>
+                                <p>${item.amount.toLocaleString()}</p>
                             </styled.AccountRow>
                             <styled.AccountRow>
                                 <styled.AccountNumber>{item.accountNumber}</styled.AccountNumber>
