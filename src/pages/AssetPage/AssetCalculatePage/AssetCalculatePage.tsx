@@ -1,10 +1,14 @@
 import * as styled from "../styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
 import Header from "../../../layout/Header";
 import BlueButton from "../../../ui/BlueBtn";
+import {message} from "antd"
+
+// services
+import { memberService } from "../../../services/api/Member";
 
 
 function AssetCalculatePage() {
@@ -29,6 +33,23 @@ function AssetCalculatePage() {
             setTotal(monthlyExpense * 12 * (numValue - retirementAge));
         }
     }
+
+    useEffect(()=>{
+        if(total > 0){
+            patchMemberWith(total.toString());
+        }
+    },[monthlyExpense, retirementAge, expectedLife, total])
+
+    const patchMemberWith = async (total:string) => {
+        try {
+            const response = await  memberService.patchMemberWish(total);
+            return response.data.result;
+        } catch (error) {
+            console.error(error);
+            message.error('희망 자산 저장 실패');
+            return null;
+        }
+    };
 
     const formatKoreanNumber = (num: number) => {
         if (num === 0) return "0";

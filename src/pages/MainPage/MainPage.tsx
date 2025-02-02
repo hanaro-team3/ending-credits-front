@@ -1,7 +1,6 @@
-import ReactApexChart from "react-apexcharts";
 import * as styled from "./styles";
-import { useChartData } from "./hooks/useChartData";
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
 
 // assets
 import logoInline from "../../assets/logo/logoInline.svg";
@@ -9,10 +8,15 @@ import moneyBag from "../../assets/icon/moneyBag.png";
 import book from "../../assets/icon/book.png";
 import plant from "../../assets/icon/plant.png";
 import dove from "../../assets/icon/dove.png";
+import coin from "../../assets/icon/coin.png";
 
 // components
 import Navbar from "../../layout/Navbar";
 import SearchBar from "../../ui/SearchBar";
+import AssetChart from "../AssetPage/components/AssetChart";
+
+//services
+import { memberService } from "../../services/api/Member";
 
 const StatusSection = () => (
 	<styled.Section>
@@ -32,26 +36,34 @@ const StatusSection = () => (
 );
 
 const AssetSection = () => {
-	const { chartData } = useChartData();
 	const navigate = useNavigate();
+	const [hasAssets, setHasAssets] = useState(true);
+
+    useEffect(() => {
+        memberService.getMemberConnected().then((response) => {
+            setHasAssets(response.data.result);
+        });
+    }, []);
 
 	return (
-		<styled.AssetSection>
-			<styled.Title>자산 한눈에 보기</styled.Title>
-			<styled.AssetCard>
-				<ReactApexChart
-					options={chartData.options}
-					series={chartData.series}
-					type="pie"
-				/>
-				<styled.AssetButton
-					onClick={() => {
-						navigate("/asset");
-					}}
-				>
-					상세보기
-				</styled.AssetButton>
+    <styled.AssetSection>
+		<styled.Title>자산 한눈에 보기</styled.Title>
+		{hasAssets ? (
+			<styled.AssetCard onClick={() => { navigate('/asset'); }}>
+				<AssetChart />
 			</styled.AssetCard>
+		) : (
+			<styled.StatusCard onClick={() => { navigate('/asset'); }}>
+				<styled.StatusContent>
+					<styled.StatusTitle>자산 미연결</styled.StatusTitle>
+					<styled.StatusDescription>
+					1분 내로 자산을 연결하고 <br />
+					상품 추천을 받아보세요.
+					</styled.StatusDescription>
+				</styled.StatusContent>
+				<img src={coin} alt="Dove" width="100" height="100" />
+			</styled.StatusCard>
+		)}
 		</styled.AssetSection>
 	);
 };

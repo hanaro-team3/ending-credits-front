@@ -25,3 +25,11 @@ export interface RecordingProps {
 	formData: FormData;
 	setFormData: (data: FormData) => void;
 }
+
+export interface RecordingProps2 {
+	onNext: () => void;
+	onPrev: () => void;
+	formData: FormData;
+	setFormData: (data: FormData) => void;
+	apiService: (fileUrl: string) => Promise<any>;
+}

@@ -165,9 +165,17 @@ export interface BanksResponseDTO {
 export interface CashResponseDTO {
     code: string;
     message: string;
-    result: number;
+	result: {
+		id: string;
+		amount: number;
+	};
+}
+export interface PatchCashResponstDTO{
+	code: string;
+    message: string;
+	result: number;
 }
 
-export interface CashRequestDTO {
+export interface PatchCashRequestDTO {
     amount: number;
 }

@@ -16,14 +16,12 @@ function Header({
     const navigate = useNavigate();
 
     const handleBack = () => {
-        // 페이지 이동 애니메이션 등을 위해 추가
         if (onClose) {
             onClose();
-        }
-        // 위의 함수가 끝난 후 실행하기 위해 딜레이 추가
-        setTimeout(() => {
+        }else{
             navigate(-1);
-        }, 280);
+        }
+            
     };
 
     return (

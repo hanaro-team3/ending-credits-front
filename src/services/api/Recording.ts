@@ -1,17 +1,5 @@
 import { request } from "../request";
 import { config } from "../../config/config";
-// import {
-// 	SignupDTO,
-// 	LoginDTO,
-// 	LoginResponse,
-// 	CheckDuplicateIdDTO,
-// 	ChangeSimplePasswordDTO,
-// 	SendSMSDTO,
-// 	VerifySMSDTO,
-// 	ChangePasswordDTO,
-// 	ChangePhoneNumberDTO,
-// 	GetMemberInfoDTO,
-// } from "../dto/Auth";
 
 const BASE_URL = config.apiUrl;
 
@@ -30,6 +18,36 @@ export const audioService = {
 		return request({
 			method: "POST",
 			url: `${BASE_URL}/will/speech/purpose?fileUrl=${fileUrl}`,
+		});
+	},
+	setWillInheritanceRealEstate: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/inheritance?fileUrl=${fileUrl}&type=etc`,
+		});
+	},
+	setWillInheritanceBank: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/inheritance?fileUrl=${fileUrl}&type=bank`,
+		});
+	},
+	setWillInheritanceEtc: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/inheritance?fileUrl=${fileUrl}&type=etc`,
+		});
+	},
+	setWillInheritanceLastWords: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/final-message?fileUrl=${fileUrl}`,
+		});
+	},
+	setWillInheritanceConfirm: (fileUrl: string) => {
+		return request({
+			method: "POST",
+			url: `${BASE_URL}/will/speech/confirmation?fileUrl=${fileUrl}`,
 		});
 	},
 };

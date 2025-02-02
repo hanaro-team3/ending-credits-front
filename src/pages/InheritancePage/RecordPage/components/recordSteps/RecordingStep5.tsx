@@ -1,12 +1,13 @@
 import React from "react";
-import { RecordingProps } from "../../types/index";
+import { RecordingProps2 } from "../../types/index";
 import { RecordingStep } from "../RecordingStep";
 
-export const RecordingStep5: React.FC<RecordingProps> = ({
+export const RecordingStep5: React.FC<RecordingProps2> = ({
 	onNext,
 	onPrev,
 	formData,
 	setFormData,
+	apiService,
 }) => {
 	const handleRecordingComplete = (blob: Blob) => {
 		setFormData({
@@ -22,6 +23,7 @@ export const RecordingStep5: React.FC<RecordingProps> = ({
 		<RecordingStep
 			onNext={onNext}
 			onPrev={onPrev}
+			apiService={apiService}
 			title={
 				<>
 					선택 사항으로{" "}
@@ -37,7 +39,7 @@ export const RecordingStep5: React.FC<RecordingProps> = ({
 						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
-						textAlign: "center",
+						textAlign: "left",
 					}}
 				>
 					자유롭게

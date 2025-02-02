@@ -5,8 +5,24 @@ import * as dto from "../dto/Will";
 import * as assetDto from "../dto/Asset";
 
 const BASE_URL = config.apiUrl;
+const BLOCK_BASE_URL = config.blockapiUrl;
 
 export const willService = {
+     getWill: (willId: string) => {
+        return request<WillResponseDTO>({
+            method: 'GET',
+            url: `${BLOCK_BASE_URL}/wills/${willId}`,
+        });
+    },
+
+    postWill: (data: WillData) => {
+        return request<WillPostResponseDTO>({
+            method: 'POST',
+            url: `${BLOCK_BASE_URL}/wills`,
+            data
+        })
+    },
+  
     getMemberDetail: () => {
         return request<dto.ResponseDTO<dto.MemberDetail>>({
             method: "GET",

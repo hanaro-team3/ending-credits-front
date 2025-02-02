@@ -1,8 +1,11 @@
+// 연금저축 ==============================
+
 export interface PensionSaving {
     productId: string;
     company: string;
     productName: string;
     areaCode?: string;
+    image?: string;
 }
 
 export interface PensionSavingDetail {
@@ -46,47 +49,7 @@ export interface PensionSavingComparison {
     previousYearFeeRate: number;
     twoYearsAgoFeeRate: number;
     threeYearsAgoFeeRate: number;
-}
-
-
-
-export interface Annuity{
-    companyId: string;
-    area?: string;
-    company: string;
-    dbTotalCostRate?: number;
-    dbTotalFee?: number;
-    dbOprtMngFee?: number;
-    dbAsstMngFee?: number;
-    dbFundTotalCost?: number;
-    dcTotalCostRate?: number;
-    dcTotalFee?: number;
-    dcOprtMngFee?: number;
-    dcAsstMngFee?: number;
-    dcFundTotalCost?: number;
-    irpTotalCostRate?: number;
-    irpTotalFee?: number;
-    irpOprtMngFee?: number;
-    irpAsstMngFee?: number;
-    irpFundTotalCost?: number;
-}
-
-export interface AnnuityDetail {
-    dbEarnRate: number;
-    dbEarnRate3: number;
-    dbEarnRate5: number;
-    dbEarnRate7: number;
-    dbEarnRate10: number;
-    dcEarnRate: number;
-    dcEarnRate3: number;
-    dcEarnRate5: number;
-    dcEarnRate7: number;
-    dcEarnRate10: number;
-    irpEarnRate: number;
-    irpEarnRate3: number;
-    irpEarnRate5: number;
-    irpEarnRate7: number;
-    irpEarnRate10: number;
+    [key: string]: string | number;
 }
 
 export interface Recommend {
@@ -104,7 +67,13 @@ export interface PensionSavingsCalculate {
 export interface PensionSavingsAllResponseDTO {
     code: string;
     message: string;
-    result: PensionSaving[];
+    result: {
+        content: PensionSaving[];
+        currentPage: number; // 현재 페이지
+        size: number; // 조회할 데이터의 개수
+        first: boolean; // 첫번째 페이지의 여부
+        last: boolean; // 마지막 페이지의 여부
+    }
 }
 
 export interface PensionSavingsDetailResponseDTO {
@@ -142,6 +111,72 @@ export interface PensionSavingsCalculateResponseDTO {
     result: PensionSavingsCalculate
 }
 
+export interface PensionSavingsDetailHanaResponseDTO {
+    code: string;
+    message: string;
+    result: PensionSaving[];
+}
+
+
+export interface RecommendResponseDTO {
+    code: string;
+    message: string;
+    result: Recommend[];
+}
+
+
+
+// 퇴직연금 ==============================
+
+export interface Annuity {
+    companyId: string;
+    company: string;
+    area?: string;
+    dbTotalCostRate?: number;
+    dbTotalFee?: number;
+    dbOprtMngFee?: number;
+    dbAsstMngFee?: number;
+    dbFundTotalCost?: number;
+    dcTotalCostRate?: number;
+    dcTotalFee?: number;
+    dcOprtMngFee?: number;
+    dcAsstMngFee?: number;
+    dcFundTotalCost?: number;
+    irpTotalCostRate?: number;
+    irpTotalFee?: number;
+    irpOprtMngFee?: number;
+    irpAsstMngFee?: number;
+    irpFundTotalCost?: number;
+    [key: string]: string | number | undefined;
+}
+
+export interface earnRates {
+    dbEarnRate: number;
+    dbEarnRate3: number;
+    dbEarnRate5: number;
+    dbEarnRate7: number;
+    dbEarnRate10: number;
+    dcEarnRate: number;
+    dcEarnRate3: number;
+    dcEarnRate5: number;
+    dcEarnRate7: number;
+    dcEarnRate10: number;
+    irpEarnRate: number;
+    irpEarnRate3: number;
+    irpEarnRate5: number;
+    irpEarnRate7: number;
+    irpEarnRate10: number;
+}
+
+export interface AnnuityDetail{   
+    company: string;
+    area: string;
+    earnRates: {
+        "원리금 비보장": earnRates,
+        "원리금 보장": earnRates,
+    } 
+}
+
 export interface AnnuityComparisonResponseDTO {
     code: string;
     message: string;
@@ -154,11 +189,6 @@ export interface AnnuitySearchResponseDTO {
     result: Annuity[];
 }
 
-export interface RecommendResponseDTO {
-    code: string;
-    message: string;
-    result: Recommend[];
-}
 
 export interface AnnuityDetailResponseDTO {
     code: string;
@@ -166,8 +196,15 @@ export interface AnnuityDetailResponseDTO {
     result: AnnuityDetail;
 }
 
-export interface PensionSavingsDetailHanaResponseDTO {
+
+export interface AnnuityAllResponseDTO {
     code: string;
     message: string;
-    result: PensionSaving;
+    result: {
+        content: Annuity[];
+        currentPage: number; // 현재 페이지
+        size: number; // 조회할 데이터의 개수
+        first: boolean; // 첫번째 페이지의 여부
+        last: boolean; // 마지막 페이지의 여부
+    }
 }

@@ -19,13 +19,13 @@ interface RegisterModalProps {
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     const [productDetail, setProductDetail] = useState<PensionSavingsCalculate>();
     const {id} = useParams();
+    const searchParams = new URLSearchParams(window.location.search);
+    const activeType = searchParams.get('activeType');
 
     useEffect(() => {
         async function getPensionSavingsCalculate() {
-            if (!id) {
-                message.error("존재하지 않는 상품입니다");
-                return;
-            }
+            if (!id || activeType !== '연금저축') return;
+            
             try{
                 const response = await productService.getPensionSavingsCalculate(id);
                 if (response?.data) {
@@ -39,7 +39,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             }
         }
         getPensionSavingsCalculate();
-    }, [id]);
+    }, [id, activeType]);
 
     const handleRegister = () => {
         message.success('상품 가입 신청 완료!');
@@ -63,11 +63,11 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
                         loop
                         autoplay
                     />
-                    <p>2천 만원으로 3년 가입 시<br />{Number(productDetail?.expectedProfit).toLocaleString()}원의 수익을 예상해요.</p>
+                    {activeType === '연금저축' && <p>2천 만원으로 3년 가입 시<br />{Number(productDetail?.expectedProfit).toLocaleString()}원의 수익을 예상해요.</p>}
                 </div>
-                <p style={{fontWeight: '600'}}>
+                {activeType === '연금저축' && <p style={{fontWeight: '600'}}>
                     3년 후에는 1년에 {Number(productDetail?.annualAdditionalUsage).toLocaleString()}원,<br />한달에 {Number(productDetail?.monthlyAdditionalUsage).toLocaleString()}원 더 사용할 수 있어요.
-                </p>
+                </p>}
                 <BlueButton onClick={handleRegister}>가입하기</BlueButton>
             </div>
         </Modal>
