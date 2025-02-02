@@ -9,35 +9,66 @@ import book from "../../assets/icon/book.png";
 import plant from "../../assets/icon/plant.png";
 import dove from "../../assets/icon/dove.png";
 import coin from "../../assets/icon/coin.png";
+import pen from "../../assets/icon/pen.png"
 
 // components
 import Navbar from "../../layout/Navbar";
 import SearchBar from "../../ui/SearchBar";
 import AssetChart from "../AssetPage/components/AssetChart";
 
+
 //services
+import { willBeService } from "../../services/api/WillFromBE";
 import { memberService } from "../../services/api/Member";
 
-const StatusSection = () => (
-	<styled.Section>
-		<styled.Title>홍길동님의 유언 및 상속 현황</styled.Title>
-		<styled.StatusCard>
-			<styled.StatusContent>
-				<styled.StatusTitle>작성완료</styled.StatusTitle>
+const StatusSection = () => {
+	const [hasWill, setHasWill] = useState(false);
+	const navigate = useNavigate();
+
+    useEffect(() => {
+        willBeService.getWill().then((response) => {
+			if(response?.data?.code){
+				setHasWill(response.data.code == "COMMON200")
+			}
+        });
+    }, []);
+
+	return (
+    <styled.Section>
+		<styled.Title>홍길동님의 상속 설계 현황</styled.Title>
+		<styled.StatusCard onClick={() => { navigate('/inheritance')}}>
+			{hasWill ? (
+			<>
+				<styled.StatusContent>
+				<styled.StatusTitle>"작성완료"</styled.StatusTitle>
 				<styled.StatusDescription>
 					<span className="highlight">사망 후</span>유언집행자에 의해
 					<br />
 					해당 유언장이 공유됩니다.
 				</styled.StatusDescription>
-			</styled.StatusContent>
-			<img src={dove} alt="Dove" width="100" height="100" />
+				</styled.StatusContent>
+				<img src={dove} alt="Dove" width="100" height="100" />
+			</>
+			) : (
+			<>
+				<styled.StatusContent>
+				<styled.StatusTitle>미작성</styled.StatusTitle>
+				<styled.StatusDescription>
+					음성, 클릭, 자필로 <br />
+					간편하게 상속을 준비하세요.
+				</styled.StatusDescription>
+				</styled.StatusContent>
+				<img src={pen} alt="Pen" width="100" height="100" />
+			</>
+			)}
 		</styled.StatusCard>
-	</styled.Section>
-);
+		</styled.Section>
+	);
+};
 
 const AssetSection = () => {
 	const navigate = useNavigate();
-	const [hasAssets, setHasAssets] = useState(true);
+	const [hasAssets, setHasAssets] = useState(false);
 
     useEffect(() => {
         memberService.getMemberConnected().then((response) => {
@@ -61,7 +92,7 @@ const AssetSection = () => {
 					상품 추천을 받아보세요.
 					</styled.StatusDescription>
 				</styled.StatusContent>
-				<img src={coin} alt="Dove" width="100" height="100" />
+				<img src={coin} alt="Coin" width="100" height="100" />
 			</styled.StatusCard>
 		)}
 		</styled.AssetSection>
