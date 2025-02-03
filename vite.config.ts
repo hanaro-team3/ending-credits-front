@@ -1,10 +1,15 @@
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
+import fs from 'fs';
 
 // https://vite.dev/config/
 export default defineConfig({
     server: {
+        https: {
+            key: fs.readFileSync('./certs/localhost-key.pem'),  // 백엔드 인증서 사용
+            cert: fs.readFileSync('./certs/localhost.pem'),     // 백엔드 인증서 사용
+        },
         proxy: {
             "/wills": {
                 target: "http://localhost:3000",
