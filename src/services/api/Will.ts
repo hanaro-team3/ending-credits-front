@@ -1,4 +1,3 @@
-import axios from "axios";
 import { request } from "../request";
 import { config } from "../../config/config";
 import * as dto from "../dto/Will";
@@ -7,16 +6,10 @@ import * as assetDto from "../dto/Asset";
 const BASE_URL = config.apiUrl;
 const BLOCK_BASE_URL = config.blockapiUrl;
 
-export const willService = {
-     getWill: (willId: string) => {
-        return request<WillResponseDTO>({
-            method: 'GET',
-            url: `${BLOCK_BASE_URL}/wills/${willId}`,
-        });
-    },
-
-    postWill: (data: WillData) => {
-        return request<WillPostResponseDTO>({
+export const willService = {    
+    // 유언장 생성
+    postWill: (data: dto.WillRequestDTO) => {
+        return request<dto.WillPostResponseDTO>({
             method: 'POST',
             url: `${BLOCK_BASE_URL}/wills`,
             data
@@ -95,27 +88,5 @@ export const willService = {
             cash: cashResponse.data?.result || [],
             cars: carsResponse.data?.result || [],
         };
-    },
-
-    // 유언장 생성
-    createWill: async (
-        data: dto.WillRequestDTO
-    ): Promise<dto.WillResponseDTO> => {
-        try {
-            const response = await axios.post<dto.WillResponseDTO>(
-                "http://localhost:3000/wills",
-                data,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                    },
-                }
-            );
-            return response.data;
-        } catch (error) {
-            console.error("Error creating will:", error);
-            throw new Error("Unable to create will");
-        }
     },
 };

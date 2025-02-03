@@ -1,28 +1,3 @@
-export interface WillResponseDTO {
-    result: Will;
-}
-
-export interface Will {
-    willId: string;
-    inheritances: Inheritance[];
-    executors: Executor[];
-    finalMessages: FinalMessage[];
-    shareAt: number;
-}
-
-export interface WillData {
-    inheritances: Inheritance[];
-    executors: Executor[];
-    finalMessages: FinalMessage[];
-    shareAt: number;
-}
-
-export interface WillPostResponseDTO {
-    result: {
-        willId: string;
-    };
-}
-
 // 기본 응답 DTO
 export interface ResponseDTO<T> {
     code: string;
@@ -60,8 +35,8 @@ export interface CashResponseDTO {
 export interface Inheritance {
     type: string;
     subType: string;
-    financialInstitution: string;
-    asset: string;
+    financialInstitution: string | null;
+    asset: string | null;
     amount: string;
     ancestors: Ancestor[];
 }
@@ -91,8 +66,23 @@ export interface WillRequestDTO {
     shareAt: number | null;
 }
 
-export interface WillResponseDTO {
+export interface WillPostResponseDTO {
     result: {
         willId: string;
     };
+}
+
+export interface Will {
+    willId: string;
+    inheritances: Inheritance[];
+    executors: Executor[];
+    finalMessages: FinalMessage[];
+    shareAt: number;
+}
+
+export interface WillData {
+    inheritances: Inheritance[];
+    executors: Executor[];
+    finalMessages: FinalMessage[];
+    shareAt: number | null;
 }
