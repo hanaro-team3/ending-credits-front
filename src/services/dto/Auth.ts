@@ -18,12 +18,17 @@ export interface CheckDuplicateIdDTO {
 	identifier: string;
 }
 
+export interface TokenPairResponseDto{
+	accessToken: string;
+	refreshToken: string;
+}
+
 export interface LoginResponse {
 	code: string;
 	message: string;
 	result: {
-		accessToken: string;
-		refreshToken: string;
+		name: string;
+		tokenPair: TokenPairResponseDto;
 	};
 }
 

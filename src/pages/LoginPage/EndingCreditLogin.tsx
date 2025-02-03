@@ -43,12 +43,13 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
 				// 토큰 저장
 				localStorage.setItem(
 					"accessToken",
-					response.data.result.accessToken
+					response.data.result.tokenPair.accessToken
 				);
 				localStorage.setItem(
 					"refreshToken",
-					response.data.result.refreshToken
+					response.data.result.tokenPair.refreshToken
 				);
+				localStorage.setItem("name", response.data.result.name);
 				localStorage.setItem("username", formData.username);
 
 				// 최근 접속 정보 저장

@@ -155,7 +155,7 @@ function ProductPage() {
 		<>
 			<styled.TitleContainer style={{ alignItems: 'center' }}>
 				<styled.Title>이런 상품은 어떠세요?</styled.Title>
-				<styled.Title>고객님을 위한 맞춤 상품 추천</styled.Title>
+				<styled.Title>{localStorage.getItem("name")}님을 위한 맞춤 상품 추천</styled.Title>
 			</styled.TitleContainer>
 			<styled.ProductCarousel ref={carouselRef}>
 				{recommendProducts?.map((product, index) => (

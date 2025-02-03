@@ -35,7 +35,7 @@ const StatusSection = () => {
 
 	return (
     <styled.Section>
-		<styled.Title>홍길동님의 상속 설계 현황</styled.Title>
+		<styled.Title>{localStorage.getItem("name")}님의 상속 설계 현황</styled.Title>
 		<styled.StatusCard onClick={() => { navigate('/inheritance')}}>
 			{hasWill ? (
 			<>

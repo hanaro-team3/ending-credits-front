@@ -35,7 +35,7 @@ export function AssetView() {
     return (
         <>
             <styled.TitleContainer>
-                <styled.Title>고객님의 자산 현황</styled.Title>
+                <styled.Title>{localStorage.getItem("name")}님의 자산 현황</styled.Title>
             </styled.TitleContainer>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>

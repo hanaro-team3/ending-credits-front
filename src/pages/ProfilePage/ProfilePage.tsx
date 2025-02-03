@@ -50,7 +50,7 @@ export default function ProfilePage() {
 			<styled.BaseContainer>
 				<styled.LabelContainer>
 					<styled.FlexContainer>
-						<styled.Label $myInfo={true}>홍길동</styled.Label>
+						<styled.Label $myInfo={true}>{localStorage.getItem("name")}</styled.Label>
 						<styled.LoginTypeBadge loginType="kakao"></styled.LoginTypeBadge>
 					</styled.FlexContainer>
 					<styled.LogoutButton onClick={openLogoutModal}>
