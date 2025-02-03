@@ -7,7 +7,10 @@ import upload from "../../images/inheritance-photo.png";
 import law from "../../images/law-icon.png";
 import book from "../../images/book-icon.png";
 import backbutton from "../../images/back-icon2.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+//service
+import { willBeService } from "../../services/api/WillFromBE";
 
 const Header = () => (
 	<styled.HeaderContainer>
@@ -147,6 +150,15 @@ const SelectSection = () => (
 
 function InheritancePage() {
 	const [showSelectSection, setShowSelectSection] = useState(false);
+	const [hasWill, setHasWill] = useState(false);
+
+    useEffect(() => {
+        willBeService.getWill().then((response) => {
+			if(response?.data?.code){
+				setHasWill(response.data.code == "COMMON200") // 유언장 작성 완료 상태
+			}
+        });
+    }, []);
 
 	const handleRewriteClick = () => {
 		setShowSelectSection(true);
@@ -156,7 +168,7 @@ function InheritancePage() {
 		<styled.Container>
 			<Header />
 
-			{showSelectSection ? (
+			{ !hasWill || showSelectSection ? (
 				<SelectSection />
 			) : (
 				<FinishInheritancePage onRewriteClick={handleRewriteClick} />
