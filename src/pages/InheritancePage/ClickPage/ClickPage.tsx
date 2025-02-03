@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import * as styled from "./styles";
 import { FormData } from "./types";
+import { useNavigate } from "react-router-dom";
 import { Header } from "./components/Header";
+import Modal, { ModalOverlay } from "../../../ui/Modal";
 
 // pages
 import AssetsViewPage from "./pages/AssetsViewPage";
@@ -16,9 +18,12 @@ import WillPage from "../pages/WillPage"; // 페이지 8 - 유언장 완성
 // service
 import { willService } from "../../../services/api/Will";
 import { RealEstate } from "../../../services/dto/Asset";
+import { memberService } from "../../../services/api/Member";
 
 const ClickPage: React.FC = () => {
+    const navigate = useNavigate()
     const [currentPage, setCurrentPage] = useState(0);
+    const [openModal, setOpenModal] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         personalInfo: {
             name: "",
@@ -134,13 +139,13 @@ const ClickPage: React.FC = () => {
                     // 현금 자산
                     ...(otherAssets.cash
                         ? [
-                              {
-                                  id: otherAssets.cash.id,
-                                  type: "현금",
-                                  detail: "소지 현금",
-                                  value: otherAssets.cash.amount || 0,
-                              },
-                          ]
+                                {
+                                    id: otherAssets.cash.id,
+                                    type: "현금",
+                                    detail: "소지 현금",
+                                    value: otherAssets.cash.amount || 0,
+                                },
+                            ]
                         : []),
                 ],
             };
@@ -157,7 +162,20 @@ const ClickPage: React.FC = () => {
         PERSONAL: "개인연금",
     };
 
-    const handleNext = () => {
+    const handleNextForInitialPage = async () => {
+        const response = await memberService.getMemberConnected();
+        const hasAssets = response.data.result;
+
+        if(hasAssets){
+            console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
+            console.log("Current form data:", formData);
+            setCurrentPage((prev) => prev + 1);
+        }else{
+            setOpenModal(true);    
+        }
+    };
+
+    const handleNext = async () => {
         console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
         console.log("Current form data:", formData);
         setCurrentPage((prev) => prev + 1);
@@ -179,7 +197,22 @@ const ClickPage: React.FC = () => {
 
         switch (currentPage) {
             case 0:
-                return <InitialPage onStartUpload={handleNext} />;
+                return (<>
+                <InitialPage onStartUpload={handleNextForInitialPage} />
+                {openModal && (
+				<>
+					<Modal
+						mainText="자산이 연결되지 않았습니다." subText="연결하시겠습니까?"
+						onConfirm={() => {
+							setOpenModal(false);
+							navigate("/asset/register");
+						}}
+						onCancel={()=>setOpenModal(false)}
+					/>
+					<ModalOverlay onClick={()=>setOpenModal(false)}></ModalOverlay>
+				</>
+			)}
+                </>);
             case 1:
                 return <ProfileViewPage {...commonProps} />;
             case 2:
