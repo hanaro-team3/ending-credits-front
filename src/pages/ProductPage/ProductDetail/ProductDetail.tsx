@@ -19,7 +19,7 @@ const moneyWingImg = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Anima
 const moneyBagImg = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Money%20Bag.png"
 interface ProductInfoProps {
 	activeType: string;
-	productDetail?: dto.PensionSavingDetail | dto.AnnuityDetail;
+	productDetail: dto.PensionSavingDetail | dto.AnnuityDetail;
 }
 
 const ProductInfo = ({ activeType, productDetail }: ProductInfoProps) => (
@@ -28,13 +28,13 @@ const ProductInfo = ({ activeType, productDetail }: ProductInfoProps) => (
 			src={activeType === '연금저축' ? moneyBagImg : moneyWingImg} 
 			alt="Money" 
 		/>
-		{activeType === '연금저축' && (
+		{activeType === '연금저축' && 'productType' in productDetail && (
 			<styled.ProductCompanyInfo>
-				{productDetail?.productArea} / {productDetail?.company}
+				{productDetail.productArea} / {productDetail.company}
 			</styled.ProductCompanyInfo>
 		)}
 		<styled.ProductName>
-			{productDetail?.productName || productDetail?.company}
+			{'productType' in productDetail ? productDetail.productName : productDetail.company}
 		</styled.ProductName>
 	</styled.ProductInfoWrapper>
 );
@@ -90,9 +90,9 @@ function ProductDetail() {
 	return (
 		<styled.Container>
 			<Header title="상품 상세" />
-			<ProductInfo activeType={activeType} productDetail={productDetail} />
+			{productDetail && <ProductInfo activeType={activeType} productDetail={productDetail} />}
 			
-			{activeType === '연금저축' && (
+			{activeType === '연금저축' && productDetail && (
 				<PensionSavingDetails productDetail={productDetail as dto.PensionSavingDetail} />
 			)}
 
