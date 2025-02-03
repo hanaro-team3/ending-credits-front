@@ -1,42 +1,83 @@
 import * as styled from "./styles";
 import { PageProps } from "../types";
 import { Link } from "react-router-dom";
-import closeicon from "../../../images/close-icon.png";
 import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import plusbtn from "../../../images/will-plus-btn.png";
 import { useState } from "react";
 
-//pages
-import InitialPage from "./InitialPage"; // 초기 페이지
-import ProfileViewPage from "../pages/ProfileViewPage"; //페이지 1 - 인적 정보 조회
-import UploadOrCameraPage from "../pages/UploadOrCameraPage"; //페이지 2 - 앨범 or 촬영
-import WillSamplePage from "../pages/WillSamplePage"; //페이지 3 - 유언장 예시
-import UploadPage from "../pages/UploadPage"; //페이지 4 - 사진 업로드
-import PhotoIntoTextPage from "../pages/PhotoIntoTextPage"; //페이지 5 - 로딩페이지
-import SetPersonPage from "../pages/SetPersonPage"; //페이지 6 - 유언 집행자 지정
-import ShareTimePage from "../pages/ShareTimePage"; // 페이지 7 - 내용 공유 시점 설정
-import WillPage from "../pages/WillPage"; // 페이지 8 - 유언장 완성
-// import CameraPage from "../pages/CameraPage"; // 페이지 10 - 사진 촬영
+import InitialPage from "./InitialPage";
+import ProfileViewPage from "../pages/ProfileViewPage";
+import UploadOrCameraPage from "../pages/UploadOrCameraPage";
+import WillSamplePage from "../pages/WillSamplePage";
+import UploadPage from "../pages/UploadPage";
+import PhotoIntoTextPage from "../pages/PhotoIntoTextPage";
+import ShareTimePage from "../pages/ShareTimePage";
+import WillPhotoPage from "../pages/WillPhotoPage";
 import Header from "../components/Header";
 
 interface FormData {
-	// Page 1 data
 	personalInfo: {
 		name: string;
 		birthDate: string;
 		address: string;
 	};
-	// Page 2 data
 	uploadType: "album" | "camera" | null;
-	// Page 4 data
-	uploadedPhotos: string[];
-	// Page 6 data
-	executor: {
+	photoUrls: string[];
+	uploadedFiles: File[];
+	bankData: Array<{
+		type: string;
+		subType: string;
+		financialInstitution: string;
+		asset: string;
+		amount: number;
+		ancestors: Array<{
+			name: string;
+			relation: string;
+			ratio: number;
+		}>;
+	}>;
+	realEstateData: Array<{
+		type: string;
+		subType: string;
+		financialInstitution: null;
+		asset: string;
+		amount: number;
+		ancestors: Array<{
+			name: string;
+			relation: string;
+			ratio: number;
+		}>;
+	}>;
+	etcData: Array<{
+		type: string;
+		subType: string;
+		financialInstitution: string | null;
+		asset: string;
+		amount: number;
+		ancestors: Array<{
+			name: string;
+			relation: string;
+			ratio: number;
+		}>;
+	}>;
+	assets: any;
+	inheritanceInfo: any;
+	executors: Array<{
+		name: string;
+		relation: string;
+		priority: number;
+	}>;
+	messages: Array<{
 		name: string;
 		relationship: string;
-	};
-	// Page 7 data
+		content: string;
+	}>;
+	finalMessages: Array<{
+		name: string;
+		relation: string;
+		message: string;
+	}>;
 	shareTimingChoice: "anytime" | "sickness" | "death" | null;
 }
 
@@ -90,20 +131,17 @@ const CameraPage: React.FC<CameraPageProps> = ({
 		const file = event.target.files?.[0];
 		if (!file) return;
 
-		// 이미지 파일 타입 검사
 		const allowedTypes = ["image/jpeg", "image/png"];
 		if (!allowedTypes.includes(file.type)) {
 			alert("카메라로 촬영한 사진만 업로드할 수 있습니다.");
 			return;
 		}
 
-		// 파일이 최근에 생성되었는지 확인 (최근 1분 이내)
 		const currentTime = Date.now();
 		const fileTime = file.lastModified;
 		const timeDiff = currentTime - fileTime;
 
 		if (timeDiff > 60000) {
-			// 1분 = 60000 밀리초
 			alert("촬영한 사진만 업로드할 수 있습니다.");
 			return;
 		}
@@ -113,7 +151,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 			const imageUrl = reader.result as string;
 			setFormData((prev) => ({
 				...prev,
-				uploadedPhotos: [...(prev.uploadedPhotos || []), imageUrl],
+				photoUrls: [...(prev.photoUrls || []), imageUrl],
 			}));
 		};
 		reader.readAsDataURL(file);
@@ -126,7 +164,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 	const handleDeleteImage = (indexToDelete: number) => {
 		setFormData((prev) => ({
 			...prev,
-			uploadedPhotos: (prev.uploadedPhotos || []).filter(
+			photoUrls: (prev.photoUrls || []).filter(
 				(_, index) => index !== indexToDelete
 			),
 		}));
@@ -135,12 +173,12 @@ const CameraPage: React.FC<CameraPageProps> = ({
 	return (
 		<styled.UploadPageContainer>
 			<styled.Title>
-				{formData?.uploadedPhotos?.length > 0
+				{formData?.photoUrls?.length > 0
 					? "촬영한 사진을 확인해 주세요."
 					: "사진을 촬영해주세요."}
 			</styled.Title>
 			<styled.SubTitle>
-				{formData?.uploadedPhotos?.length > 0
+				{formData?.photoUrls?.length > 0
 					? "사진을 다시 촬영할 수 있어요."
 					: "아래 + 버튼을 눌러 유언장을 촬영해주세요."}
 			</styled.SubTitle>
@@ -163,7 +201,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 					width: "296px",
 					height: "434px",
 					border:
-						formData?.uploadedPhotos?.length === 0
+						formData?.photoUrls?.length === 0
 							? "1px solid #2b2b2b"
 							: "none",
 					marginTop: "20px",
@@ -172,7 +210,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 					overflow: "hidden",
 				}}
 			>
-				{formData?.uploadedPhotos?.length > 0 ? (
+				{formData?.photoUrls?.length > 0 ? (
 					<div
 						style={{
 							width: "100%",
@@ -187,7 +225,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 							},
 						}}
 					>
-						{formData.uploadedPhotos.map((photo, index) => (
+						{formData.photoUrls.map((photo, index) => (
 							<div
 								key={index}
 								style={{
@@ -198,8 +236,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 									justifyContent: "center",
 									flexShrink: 0,
 									marginBottom:
-										index !==
-										formData.uploadedPhotos.length - 1
+										index !== formData.photoUrls.length - 1
 											? "20px"
 											: 0,
 									position: "relative",
@@ -239,7 +276,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 				)}
 			</div>
 
-			{formData?.uploadedPhotos?.length > 0 && (
+			{formData?.photoUrls?.length > 0 && (
 				<div
 					style={{
 						textAlign: "center",
@@ -248,7 +285,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 						fontSize: "12px",
 					}}
 				>
-					{formData.uploadedPhotos.length}장의 사진
+					{formData.photoUrls.length}장의 사진
 				</div>
 			)}
 
@@ -279,7 +316,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
 				<BlueButton
 					variant="medium"
 					onClick={() => setCurrentPage(5)}
-					disabled={!formData?.uploadedPhotos?.length}
+					disabled={!formData?.photoUrls?.length}
 				>
 					다음으로
 				</BlueButton>
@@ -297,11 +334,16 @@ function UploadPhotoPage() {
 			address: "서울특별시 OO구 OO동 OO아파트 O동 O호",
 		},
 		uploadType: null,
-		uploadedPhotos: [],
-		executor: {
-			name: "",
-			relationship: "",
-		},
+		photoUrls: [],
+		uploadedFiles: [],
+		bankData: [],
+		realEstateData: [],
+		etcData: [],
+		assets: {},
+		inheritanceInfo: {},
+		executors: [],
+		messages: [],
+		finalMessages: [],
 		shareTimingChoice: null,
 	});
 
@@ -322,16 +364,14 @@ function UploadPhotoPage() {
 			...prev,
 			uploadType: type,
 		}));
-		// 앨범이든 카메라든 무조건 page3(WillSamplePage)로 먼저 이동
 		setCurrentPage(3);
 	};
 
 	const handleWillSampleNext = () => {
-		// WillSamplePage에서 다음으로 갈 때 uploadType에 따라 분기
 		if (formData.uploadType === "camera") {
-			setCurrentPage(10); // CameraPage로 이동
+			setCurrentPage(10);
 		} else {
-			setCurrentPage(4); // UploadPage로 이동
+			setCurrentPage(4);
 		}
 	};
 
@@ -387,7 +427,7 @@ function UploadPhotoPage() {
 				);
 			case 6:
 				return (
-					<SetPersonPage
+					<ShareTimePage
 						onNext={handleNext}
 						onPrev={handlePrev}
 						formData={formData}
@@ -396,16 +436,7 @@ function UploadPhotoPage() {
 				);
 			case 7:
 				return (
-					<ShareTimePage
-						onNext={handleNext}
-						onPrev={handlePrev}
-						formData={formData}
-						setFormData={setFormData}
-					/>
-				);
-			case 8:
-				return (
-					<WillPage
+					<WillPhotoPage
 						onNext={handleNext}
 						onPrev={handlePrev}
 						formData={formData}
