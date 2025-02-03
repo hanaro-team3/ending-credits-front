@@ -13,8 +13,8 @@ const SetPersonPage: React.FC<PageProps> = ({
     setFormData,
 }): JSX.Element => {
     const [executors, setExecutors] = useState<Executor[]>(
-        formData.executors != null
-            ? formData.executors
+        formData.executors == null ? [{ name: "", relationship: "", priority: 1 }]
+        : formData.executors.length > 0 ? formData.executors
             : [{ name: "", relationship: "", priority: 1 }]
     );
 
@@ -103,7 +103,7 @@ const SetPersonPage: React.FC<PageProps> = ({
                 </styled.SubTitle>
 
                 <styled.InheritorPageContainer>
-                    {executors.map((executor, index) => (
+                    {executors != null && executors.map((executor, index) => (
                         <styled.InheritorPageSection key={index}>
                             <styled.Page6InputDiv
                                 style={{
