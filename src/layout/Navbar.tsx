@@ -27,7 +27,7 @@ const Navbar = () => {
 				<styled.CategoryImageDiv>
 					<styled.CategoryImage src={assets} />
 				</styled.CategoryImageDiv>
-				<styled.CategoryName>연금</styled.CategoryName>
+				<styled.CategoryName>자산</styled.CategoryName>
 			</styled.Category>
 			<styled.Category onClick={() => navigate("/profile")}>
 				<styled.CategoryImageDiv>
