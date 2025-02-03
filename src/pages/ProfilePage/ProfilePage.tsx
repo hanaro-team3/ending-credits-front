@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // navigate import 추가
 import Header from "../../layout/Header";
 import Navbar from "../../layout/Navbar";
-import Modal, { ModalOverlay } from "./components/Modal";
+import Modal, { ModalOverlay } from "../../ui/Modal";
 import * as styled from "./styles";
 // import { userService } from "../../services/api/SignUp";
 import { memberService } from "../../services/api/Member";

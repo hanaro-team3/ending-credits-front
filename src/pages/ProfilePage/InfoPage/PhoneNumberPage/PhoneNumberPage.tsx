@@ -4,7 +4,7 @@ import { userService } from "../../../../services/api/SignUp";
 import Header from "../../../../layout/Header";
 import * as styled from "../../styles";
 import PhoneNumberInput from "./PhoneNumberInput";
-import Modal, { ModalOverlay } from "../../components/Modal";
+import Modal, { ModalOverlay } from "../../../../ui/Modal";
 
 export default function PhoneNumberPage() {
 	// 상수
