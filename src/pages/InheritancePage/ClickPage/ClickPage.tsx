@@ -175,7 +175,7 @@ const ClickPage: React.FC = () => {
         }
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
         console.log("Current form data:", formData);
         setCurrentPage((prev) => prev + 1);
