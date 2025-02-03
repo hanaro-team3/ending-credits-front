@@ -6,7 +6,7 @@ import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import willdeco from "../../../images/will-decoration.png";
 import { willService } from "../../../services/api/Will";
-import { WillData } from "../../../services/dto/Will";
+import { WillData, WillFileData } from "../../../services/dto/Will";
 import { message } from "antd";
 
 interface WillPageProps extends PageProps {
@@ -154,7 +154,18 @@ const WillPage: React.FC<WillPageProps> = ({
                 console.log(response);
                 console.log(response.data.result.willId + " 유언장 생성 성공");
                 message.success("유언장 생성 성공!");
-                onNext();
+               
+				const willFileData: WillFileData = {
+					willCodeId: response.data.result.willId,
+					createdType: "SPEECH",
+					files: [],
+					shareAt: willData.shareAt
+				}
+
+				const res = await willService.postWillFile(willFileData);
+					if(res.data.code === "COMMON200") {
+					onNext();
+				}
             } 
             else {
               message.error(

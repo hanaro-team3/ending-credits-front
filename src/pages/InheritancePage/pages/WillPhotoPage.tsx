@@ -6,7 +6,7 @@ import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import willdeco from "../../../images/will-decoration.png";
 import { willService } from "../../../services/api/Will";
-import { WillData } from "../../../services/dto/Will";
+import { WillData, WillFileData } from "../../../services/dto/Will";
 import { message } from "antd";
 
 interface Page8Props extends PageProps {
@@ -123,7 +123,18 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 			const response = await willService.postWill(willData);
 			if (response.data.result.willId) {
 				message.success("유언장 생성 성공!");
-				onNext();
+				const willFileData: WillFileData = {
+					willCodeId: response.data.result.willId,
+					createdType: "OCR",
+					files: [],
+					shareAt: willData.shareAt
+				}
+
+				const res = await willService.postWillFile(willFileData);
+					if(res.data.code === "COMMON200") {
+					onNext();
+				}
+
 			} else {
 				message.error(
 					"유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."

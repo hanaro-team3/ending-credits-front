@@ -57,12 +57,6 @@ function RecordPage() {
 		shareTimingChoice: null,
 	});
 
-	// const [bankData, setBankData] = useState(null);
-	// const [realEstateData, setRealEstateData] = useState(null);
-	// const [etcData, setEtcData] = useState(null);
-	// const [lastWordsData, setLastWordsData] = useState(null);
-	// const [confirmData, setConfirmData] = useState(null);
-
 	const [bankData, setBankData] = useState([
 		{
 			type: "은행",

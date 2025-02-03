@@ -18,7 +18,7 @@ import AssetChart from "../AssetPage/components/AssetChart";
 
 
 //services
-import { willBeService } from "../../services/api/WillFromBE";
+import { willService } from "../../services/api/Will";
 import { memberService } from "../../services/api/Member";
 
 const StatusSection = () => {
@@ -26,7 +26,7 @@ const StatusSection = () => {
 	const navigate = useNavigate();
 
     useEffect(() => {
-        willBeService.getWill().then((response) => {
+        willService.getWill().then((response) => {
 			if(response?.data?.code){
 				setHasWill(response.data.code == "COMMON200")
 			}

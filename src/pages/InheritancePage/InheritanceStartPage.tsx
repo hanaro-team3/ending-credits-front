@@ -10,7 +10,7 @@ import backbutton from "../../images/back-icon2.png";
 import { useState, useEffect } from "react";
 
 //service
-import { willBeService } from "../../services/api/WillFromBE";
+import { willService } from "../../services/api/Will";
 
 const Header = () => (
 	<styled.HeaderContainer>
@@ -153,7 +153,7 @@ function InheritancePage() {
 	const [hasWill, setHasWill] = useState(false);
 
     useEffect(() => {
-        willBeService.getWill().then((response) => {
+        willService.getWill().then((response) => {
 			if(response?.data?.code){
 				setHasWill(response.data.code == "COMMON200") // 유언장 작성 완료 상태
 			}

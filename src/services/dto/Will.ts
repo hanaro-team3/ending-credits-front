@@ -86,3 +86,16 @@ export interface WillData {
     finalMessages: FinalMessage[];
     shareAt: number | null;
 }
+
+export interface WillFileData {
+    willCodeId: string;
+    createdType: string | null;
+    files: string[];
+    shareAt: number | null;
+}
+
+export interface WillFileDataResponseDTO {
+    code: string;
+    message: string;
+    result: WillFileData;
+}

@@ -6,8 +6,25 @@ import * as assetDto from "../dto/Asset";
 const BASE_URL = config.apiUrl;
 const BLOCK_BASE_URL = config.blockapiUrl;
 
-export const willService = {    
+export const willService = {
+    // 유언장 조회
+    getWill: () => {
+        return request<dto.WillFileDataResponseDTO>({
+            method: 'GET',
+            url: `${BASE_URL}/will`,
+        });
+    },
+
     // 유언장 생성
+    postWillFile: (data: dto.WillFileData) => {
+        return request<dto.BasicResponseDTO>({
+            method: 'POST',
+            url: `${BASE_URL}/will`,
+            data
+        })
+    },
+
+    // 유언장 블록체인 생성
     postWill: (data: dto.WillRequestDTO) => {
         return request<dto.WillPostResponseDTO>({
             method: 'POST',
