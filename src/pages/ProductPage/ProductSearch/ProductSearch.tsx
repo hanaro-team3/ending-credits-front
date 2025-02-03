@@ -1,7 +1,8 @@
 import * as styled from "../styles";
-import { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState, ChangeEvent, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { TAB_DATA } from "../constants";
+import { useDebounce } from "../../../hooks/useDebounce";
 
 // components
 import Header from "../../../layout/Header";
@@ -29,12 +30,9 @@ function ProductSearch() {
 	const [dataNone, setDataNone] = useState<boolean>(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [productList, setProductList] = useState<PensionSaving[]|Annuity[]>();
+	const debouncedSearchKeyword = useDebounce(searchKeyword, 500);
 
-	useEffect(() => {
-		loadProducts();
-	}, [activeTab, activeAreaCode]);
-
-	const loadProducts = async () => {
+	const loadProducts = useCallback(async () => {
 		try {
 			let response;
 			if (activeTab === '퇴직연금') {
@@ -54,34 +52,24 @@ function ProductSearch() {
 			console.error(error);
 			message.error('상품 목록 조회 실패');
 		}
-	};
+	}, [activeTab, activeAreaCode]);
 
-	const handleSearchChange = async (e: ChangeEvent<HTMLInputElement>) => {
+	useEffect(() => {
+		loadProducts();
+	}, [loadProducts]);
+
+	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const keyword = e.target.value;
 		setSearchKeyword(keyword);
-		
-		if (keyword.trim() === '') {
-			loadProducts();  // 검색어가 비어있으면 전체 목록 로드
+	};
+
+	useEffect(() => {
+		if (debouncedSearchKeyword.trim() === '') {
+			loadProducts();
 			return;
 		}
-
-		try {
-			let response;
-			if (activeTab === '연금저축') {
-				response = await productService.getPensionSavingsSearch(keyword, activeAreaCode);
-			} else {
-				response = await productService.getProductAnnuitySearch(keyword);
-			}
-			
-			if (response?.data?.result) {
-				setProductList(response.data.result);
-				setDataNone(response.data.result.length === 0);
-			}
-		} catch (error) {
-			console.error(error);
-			message.error('상품 검색 실패');
-		}
-	};
+		handleSearch();
+	}, [debouncedSearchKeyword]);
 
 	const handleSearch = async () => {
 		try {
