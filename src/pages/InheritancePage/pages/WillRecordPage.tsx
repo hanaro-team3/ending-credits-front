@@ -9,15 +9,23 @@ import { willService } from "../../../services/api/Will";
 import { WillData } from "../../../services/dto/Will";
 import { message } from "antd";
 
-interface Page8Props extends PageProps {
-    setCurrentPage: (page: number) => void;
+interface WillPageProps extends PageProps {
+	setCurrentPage: (page: number) => void;
+	bankData: any[];
+	realEstateData: any[];
+	etcData: any[];
+	lastWordsData: any[];
 }
 
-const WillPage: React.FC<Page8Props> = ({
-    onNext,
-    formData,
-    setFormData,
-    setCurrentPage,
+const WillPage: React.FC<WillPageProps> = ({
+	onNext,
+	formData,
+	setFormData,
+	setCurrentPage,
+	bankData = [],
+	realEstateData = [],
+	etcData = [],
+	lastWordsData = [],
 }) => {
 	const [willData, setWillData] = useState<WillData>({
 		inheritances: [],
@@ -27,105 +35,98 @@ const WillPage: React.FC<Page8Props> = ({
 	});
 
 	useEffect(() => {
-		const {
-            assets,
-            inheritanceInfo,
-            executors,
-            messages,
-            shareTimingChoice,
-        } = formData;
+		// Process and combine all inheritance data
+		const processedInheritances = [
+			...realEstateData.map((item) => ({
+				type: "부동산",
+				subType: item.subType,
+				financialInstitution: null,
+				asset: item.asset,
+				amount: item.amount.toString(),
+				ancestors: item.ancestors.map((ancestor) => ({
+					name: ancestor.name,
+					relation: ancestor.relation,
+					ratio: ancestor.ratio,
+				})),
+			})),
+			...bankData.map((item) => ({
+				type: "금융",
+				subType: item.subType,
+				financialInstitution: item.financialInstitution,
+				asset: item.asset,
+				amount: item.amount.toString(),
+				ancestors: item.ancestors.map((ancestor) => ({
+					name: ancestor.name,
+					relation: ancestor.relation,
+					ratio: ancestor.ratio,
+				})),
+			})),
+			...etcData.map((item) => ({
+				type: "기타",
+				subType: item.subType,
+				financialInstitution: null,
+				asset: item.asset,
+				amount: item.amount.toString(),
+				ancestors: item.ancestors.map((ancestor) => ({
+					name: ancestor.name,
+					relation: ancestor.relation,
+					ratio: ancestor.ratio,
+				})),
+			})),
+		];
 
-        // 자산 정보
-        const getFinancialInstitution = (
-            assetCategory: string,
-            asset: any
-        ): string | null => {
-            if (assetCategory === "finance") {
-                return asset.detail?.split(" - ")[0] || null;
-            }
-            return null; // 기본값
-        };
+		// Process executor data
+		const processedExecutors = willData.executors.map((exec) => ({
+            name: exec.name,
+            relation: exec.relation,
+            priority: exec.priority,
+        }));
 
-        const getType = (assetCategory: string): string => {
-            switch (assetCategory) {
-                case "realEstate":
-                    return "부동산";
-                case "finance":
-                    return "금융";
-                default:
-                    return "기타";
-            }
-        };
+		// Process final messages
+		const processedMessages = lastWordsData.map((item) => ({
+			name: item.name,
+			relation: item.relation,
+			message: item.message,
+		}));
 
-		const inheritances = Object.entries(assets).flatMap(
-			([assetCategory, assetList]) => {
-				return assetList.flatMap((asset) => {
-					const inheritanceInfoForAsset = inheritanceInfo[asset.id]; // inheritanceInfo에서 id로 상속자 정보 가져오기
-
-					if (inheritanceInfoForAsset) {
-						const detailParts = asset.detail?.split(" - ") || [];
-						return {
-							type: getType(assetCategory),
-							subType: asset.type,
-							financialInstitution: getFinancialInstitution(
-								assetCategory,
-								asset
-							),
-							asset: asset.address || detailParts[1] || asset.detail || null, 
-							amount: formatAmount(asset.value),
-							ancestors: inheritanceInfoForAsset.inheritors.map(
-								(inheritor) => ({
-									name: inheritor.name,
-									relation: inheritor.relation,
-									ratio: inheritor.ratio,
-								})
-							),
-						};
-					}
-
-					return []; // 상속자 정보가 없는 경우 빈 배열 반환
-				});
+		// Process share timing
+		const shareAt = (() => {
+			switch (formData.shareTimingChoice) {
+				case "anytime":
+					return 0;
+				case "sickness":
+					return 1;
+				case "death":
+					return 2;
+				default:
+					return 0;
 			}
+		})();
+
+		// Set all processed data
+		setWillData({
+			inheritances: processedInheritances,
+			executors: processedExecutors,
+			finalMessages: processedMessages,
+			shareAt,
+		});
+	}, [bankData, realEstateData, etcData, lastWordsData, formData]);
+
+	console.log(willData);
+
+	const formatAmount = (amount: number) => {
+		return new Intl.NumberFormat("ko-KR").format(amount);
+	};
+
+	const calculateTotalAmount = () => {
+		const total = [...bankData, ...realEstateData, ...etcData].reduce(
+			(sum, item) => sum + item.amount,
+			0
 		);
+		return formatAmount(total);
+	};
 
-
-      // 유언 집행자
-      const transformedExecutors = executors.map((exec) => ({
-          name: exec.name,
-          relation: exec.relationship,
-          priority: exec.priority,
-      }));
-
-      // 마지막 메시지
-      const finalMessages = messages.map((msg) => ({
-          name: msg.name,
-          relation: msg.relationship,
-          message: msg.content,
-      }));
-
-      // 공유 시점
-      const shareAt = (() => {
-          switch (shareTimingChoice) {
-              case "anytime":
-                  return 0; // 0: 일상
-              case "sickness":
-                  return 1; // 1: 병환 중
-              case "death":
-                  return 2; // 2: 사망 후
-              default:
-                  return null;
-          }
-      })();
-
-	  setWillData({
-		inheritances: inheritances,
-		executors: transformedExecutors,
-		finalMessages: finalMessages,
-		shareAt: shareAt,
-	  });
-	}, [formData]);
-
-    const handleReset = () => {
+	const handleReset = () => {
         // formData를 초기 상태로 리셋
         const resetData = {
             uploadType: null,
@@ -141,47 +142,31 @@ const WillPage: React.FC<Page8Props> = ({
             ...resetData,
         }));
 
-        // 첫 페이지(0)로 이동
-        setCurrentPage(0);
-    };
-
- 	const formatAmount = (amount: number) => {
-		return new Intl.NumberFormat("ko-KR").format(amount);
+		setCurrentPage(0);
 	};
 
-	const parseFormattedAmount = (formattedAmount: string) => {
-		return Number(formattedAmount.replace(/,/g, ""));
-	};
-	
-	const calculateTotalAmount = () => {
-		const total = willData.inheritances
-			.map((item) => parseFormattedAmount(item.amount)) // 숫자로 변환
-			.reduce((sum, amount) => sum + amount, 0);
-	
-		return formatAmount(total);
-	};
 
-  const handleSubmit = async () => {
-      try {
-		// const requestBody = transformFormDataToRequestBody(formData);
-
-          const response = await willService.postWill(willData);
-
-          if (response.data.result.willId) {
-              console.log(response);
-              console.log(response.data.result.willId + " 유언장 생성 성공");
-			  message.success("유언장 생성 성공!");
-              onNext();
-          } else {
+	const handleSubmit = async () => {
+        try {
+			const response = await willService.postWill(willData);
+            
+            if (response.data.result.willId) {
+                console.log(response);
+                console.log(response.data.result.willId + " 유언장 생성 성공");
+                message.success("유언장 생성 성공!");
+                onNext();
+            } 
+            else {
               message.error(
                   "유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."
               );
-          }
-      } catch (error) {
-          console.error("Failed to fetch: ", error);
-          message.error("오류가 발생했습니다. 다시 시도해 주세요.");
-      }
-  };
+            }
+
+		} catch (error) {
+			console.error("Error saving will data:", error);
+            message.error("오류가 발생했습니다. 다시 시도해 주세요.");
+		}
+	};
 
 	return (
 		<styled.UploadPageContainer>
@@ -290,7 +275,8 @@ const WillPage: React.FC<Page8Props> = ({
 									</div>
 								</div>
 
-								{formData.executors != null && (
+								{/* 유언집행자 정보 */}
+                                {formData.executors != null && (
 									<div
 										style={{
 											width: "100%",
@@ -325,7 +311,7 @@ const WillPage: React.FC<Page8Props> = ({
 									</div>
 								)}
 
-								{willData.inheritances.length > 0 && (
+								{realEstateData.length > 0 && (
 									<div
 										style={{
 											width: "100%",
@@ -342,9 +328,7 @@ const WillPage: React.FC<Page8Props> = ({
 										>
 											부동산 자산
 										</h3>
-										{willData.inheritances
-										.filter((item, index) => item.type === "부동산")
-										.map((item, index) => (
+										{realEstateData.map((item, index) => (
 											<div
 												key={`real-estate-${index}`}
 												style={{
@@ -358,7 +342,7 @@ const WillPage: React.FC<Page8Props> = ({
 												<p>주소: {item.asset}</p>
 												<p>
 													현재가:{" "}
-													{item.amount}
+													{formatAmount(item.amount)}
 													원
 												</p>
 												<p>상속인:</p>
@@ -378,7 +362,7 @@ const WillPage: React.FC<Page8Props> = ({
 									</div>
 								)}
 
-								{willData.inheritances.length > 0 && (
+								{bankData.length > 0 && (
 									<div
 										style={{
 											width: "100%",
@@ -395,9 +379,7 @@ const WillPage: React.FC<Page8Props> = ({
 										>
 											금융 자산
 										</h3>
-										{willData.inheritances
-										.filter((item, index) => item.type === "금융")
-										.map((item, index) => (
+										{bankData.map((item, index) => (
 											<div
 												key={`bank-${index}`}
 												style={{
@@ -414,7 +396,7 @@ const WillPage: React.FC<Page8Props> = ({
 												</p>
 												<p>
 													금액:{" "}
-													{item.amount}
+													{formatAmount(item.amount)}
 													원
 												</p>
 												<p>상속인:</p>
@@ -434,7 +416,7 @@ const WillPage: React.FC<Page8Props> = ({
 									</div>
 								)}
 
-								{willData.inheritances.length > 0 && (
+								{etcData.length > 0 && (
 									<div
 										style={{
 											width: "100%",
@@ -451,9 +433,7 @@ const WillPage: React.FC<Page8Props> = ({
 										>
 											기타 자산
 										</h3>
-										{willData.inheritances
-											.filter((item, index) => item.type === "기타")
-											.map((item, index) => (
+										{etcData.map((item, index) => (
 											<div
 												key={`etc-${index}`}
 												style={{
@@ -470,7 +450,7 @@ const WillPage: React.FC<Page8Props> = ({
 												</p>
 												<p>
 													금액:{" "}
-													{item.amount}
+													{formatAmount(item.amount)}
 													원
 												</p>
 												<p>상속인:</p>
@@ -510,8 +490,7 @@ const WillPage: React.FC<Page8Props> = ({
 									</h3>
 								</div>
 
-
-								{formData.messages.length > 0 && (
+								{lastWordsData.length > 0 && (
 									<div
 										style={{
 											width: "100%",
@@ -528,7 +507,7 @@ const WillPage: React.FC<Page8Props> = ({
 										>
 											마지막 말씀
 										</h3>
-										{formData.messages.map((item, index) => (
+										{lastWordsData.map((item, index) => (
 											<div
 												key={`message-${index}`}
 												style={{
@@ -541,16 +520,15 @@ const WillPage: React.FC<Page8Props> = ({
 											>
 												<p>
 													To. {item.name}(
-													{item.relationship})
+													{item.relation})
 												</p>
 												<p style={{ marginTop: "4px" }}>
-													{item.content}
+													{item.message}
 												</p>
 											</div>
 										))}
 									</div>
 								)}
-
 								<div
 									style={{
 										width: "100%",
@@ -604,7 +582,6 @@ const WillPage: React.FC<Page8Props> = ({
 					<BlueButton
 						variant="medium"
 						onClick={() => {
-							console.log("Page 8 - 제출하기:", formData);
 							handleSubmit();
 							onNext();
 						}}

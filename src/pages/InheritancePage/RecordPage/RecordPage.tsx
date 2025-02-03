@@ -9,7 +9,7 @@ import InitialPage from "./InitialPage";
 import ProfileViewPage from "../pages/ProfileViewPage";
 import SetPersonPage from "../pages/SetPersonPage";
 import ShareTimePage from "../pages/ShareTimePage";
-import WillPage from "../pages/WillPage";
+import WillRecordPage from "../pages/WillRecordPage";
 import { AudioPreviewPage } from "./components/AudioPreviewPage";
 import { audioService } from "../../../services/api/Recording";
 import {
@@ -324,7 +324,7 @@ function RecordPage() {
 				return <ShareTimePage {...commonProps} />;
 			case 15:
 				return (
-					<WillPage
+					<WillRecordPage
 						{...commonProps}
 						setCurrentPage={setCurrentPage}
 						bankData={bankData}

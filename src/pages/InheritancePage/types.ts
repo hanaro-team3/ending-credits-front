@@ -21,6 +21,7 @@ export interface FormData {
         [key: string]: Array<{
             id: string;
             type: string;
+            detail?: string;
             address: string;
             value: number;
         }>;

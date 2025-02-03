@@ -13,7 +13,7 @@ const SetPersonPage: React.FC<PageProps> = ({
     setFormData,
 }): JSX.Element => {
     const [executors, setExecutors] = useState<Executor[]>(
-        formData.executors.length > 0
+        formData.executors != null
             ? formData.executors
             : [{ name: "", relationship: "", priority: 1 }]
     );
