@@ -21,7 +21,7 @@ const WillPage: React.FC<WillPageProps> = ({
 	onNext,
 	formData,
 	setFormData,
-	setCurrentPage,
+	// setCurrentPage,
 	bankData = [],
 	realEstateData = [],
 	etcData = [],
@@ -77,10 +77,10 @@ const WillPage: React.FC<WillPageProps> = ({
 
 		// Process executor data
 		const processedExecutors = willData.executors.map((exec) => ({
-            name: exec.name,
-            relation: exec.relation,
-            priority: exec.priority,
-        }));
+			name: exec.name,
+			relation: exec.relation,
+			priority: exec.priority,
+		}));
 
 		// Process final messages
 		const processedMessages = lastWordsData.map((item) => ({
@@ -127,55 +127,52 @@ const WillPage: React.FC<WillPageProps> = ({
 	};
 
 	const handleReset = () => {
-        // formData를 초기 상태로 리셋
-        const resetData = {
-            uploadType: null,
-            uploadedPhotos: [],
-            inheritanceInfo: {},
-            executors: [],
-            messages: [],
-            shareTimingChoice: null,
-        };
+		// formData를 초기 상태로 리셋
+		const resetData = {
+			uploadType: null,
+			uploadedPhotos: [],
+			inheritanceInfo: {},
+			executors: [],
+			messages: [],
+			shareTimingChoice: null,
+		};
 
-        setFormData((prevState) => ({
-            ...prevState,
-            ...resetData,
-        }));
+		setFormData((prevState) => ({
+			...prevState,
+			...resetData,
+		}));
 
-		setCurrentPage(0);
+		// setCurrentPage(0);
 	};
 
-
 	const handleSubmit = async () => {
-        try {
+		try {
 			const response = await willService.postWill(willData);
-            
-            if (response.data.result.willId) {
-                console.log(response);
-                console.log(response.data.result.willId + " 유언장 생성 성공");
-                message.success("유언장 생성 성공!");
-               
+
+			if (response.data.result.willId) {
+				console.log(response);
+				console.log(response.data.result.willId + " 유언장 생성 성공");
+				message.success("유언장 생성 성공!");
+
 				const willFileData: WillFileData = {
 					willCodeId: response.data.result.willId,
 					createdType: "SPEECH",
 					files: [],
-					shareAt: willData.shareAt
-				}
+					shareAt: willData.shareAt,
+				};
 
 				const res = await willService.postWillFile(willFileData);
-					if(res.data.code === "COMMON200") {
+				if (res.data.code === "COMMON200") {
 					onNext();
 				}
-            } 
-            else {
-              message.error(
-                  "유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."
-              );
-            }
-
+			} else {
+				message.error(
+					"유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."
+				);
+			}
 		} catch (error) {
 			console.error("Error saving will data:", error);
-            message.error("오류가 발생했습니다. 다시 시도해 주세요.");
+			message.error("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -287,7 +284,7 @@ const WillPage: React.FC<WillPageProps> = ({
 								</div>
 
 								{/* 유언집행자 정보 */}
-                                {formData.executors != null && (
+								{formData.executors != null && (
 									<div
 										style={{
 											width: "100%",
@@ -303,22 +300,25 @@ const WillPage: React.FC<WillPageProps> = ({
 										>
 											유언집행자
 										</h3>
-										{formData.executors.map((item, index) => (
-											<div
-												style={{
-													padding: "8px",
-													backgroundColor: "#f8f9fa",
-													borderRadius: "8px",
-													fontSize: "13px",
-												}}
-											>
-												<p>성명: {item.name}</p>
-												<p>
-													관계:{" "}
-													{item.relationship}
-												</p>
-											</div>
-										))}
+										{formData.executors.map(
+											(item, index) => (
+												<div
+													style={{
+														padding: "8px",
+														backgroundColor:
+															"#f8f9fa",
+														borderRadius: "8px",
+														fontSize: "13px",
+													}}
+												>
+													<p>성명: {item.name}</p>
+													<p>
+														관계:{" "}
+														{item.relationship}
+													</p>
+												</div>
+											)
+										)}
 									</div>
 								)}
 
@@ -589,17 +589,16 @@ const WillPage: React.FC<WillPageProps> = ({
 				>
 					다시하기
 				</WhiteButton>
-				<Link to="/inheritance" style={{ textDecoration: "none" }}>
-					<BlueButton
-						variant="medium"
-						onClick={() => {
-							handleSubmit();
-							onNext();
-						}}
-					>
-						제출하기
-					</BlueButton>
-				</Link>
+
+				<BlueButton
+					variant="medium"
+					onClick={() => {
+						handleSubmit();
+						onNext();
+					}}
+				>
+					제출하기
+				</BlueButton>
 			</styled.ButtonBottomDiv>
 		</styled.UploadPageContainer>
 	);

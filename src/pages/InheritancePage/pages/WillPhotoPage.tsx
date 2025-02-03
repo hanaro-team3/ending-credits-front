@@ -17,7 +17,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 	onNext,
 	formData,
 	setFormData,
-	setCurrentPage,
+	// setCurrentPage,
 }) => {
 	const [willData, setWillData] = useState<WillData>({
 		inheritances: [],
@@ -115,7 +115,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 			finalMessages: [],
 			shareTimingChoice: null,
 		}));
-		setCurrentPage(0);
+		// setCurrentPage(0);
 	};
 
 	const handleSubmit = async () => {
@@ -127,14 +127,13 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 					willCodeId: response.data.result.willId,
 					createdType: "OCR",
 					files: [],
-					shareAt: willData.shareAt
-				}
+					shareAt: willData.shareAt,
+				};
 
 				const res = await willService.postWillFile(willFileData);
-					if(res.data.code === "COMMON200") {
+				if (res.data.code === "COMMON200") {
 					onNext();
 				}
-
 			} else {
 				message.error(
 					"유언을 생성하는 데 실패했습니다. 다시 시도해 주세요."
@@ -611,17 +610,16 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 				>
 					다시하기
 				</WhiteButton>
-				<Link to="/inheritance" style={{ textDecoration: "none" }}>
-					<BlueButton
-						variant="medium"
-						onClick={() => {
-							handleSubmit();
-							onNext();
-						}}
-					>
-						제출하기
-					</BlueButton>
-				</Link>
+
+				<BlueButton
+					variant="medium"
+					onClick={() => {
+						handleSubmit();
+						onNext();
+					}}
+				>
+					제출하기
+				</BlueButton>
 			</styled.ButtonBottomDiv>
 		</styled.UploadPageContainer>
 	);

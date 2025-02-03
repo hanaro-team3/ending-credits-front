@@ -24,6 +24,7 @@ import { VerificationStep1 } from "./components/verificationSteps/verificationSt
 import { VerificationStep2 } from "./components/verificationSteps/verificationStep2";
 import { VerificationStep3 } from "./components/verificationSteps/verificationStep3";
 import { VerificationStep4 } from "./components/verificationSteps/verificationStep4";
+import BlockChainPage from "../pages/BlockChainPage";
 
 const Header = () => (
 	<styled.HeaderContainer>
@@ -320,13 +321,15 @@ function RecordPage() {
 				return (
 					<WillRecordPage
 						{...commonProps}
-						setCurrentPage={setCurrentPage}
+						// setCurrentPage={setCurrentPage}
 						bankData={bankData}
 						realEstateData={realEstateData}
 						etcData={etcData}
 						lastWordsData={lastWordsData}
 					/>
 				);
+			case 16:
+				return <BlockChainPage />;
 			default:
 				return null;
 		}

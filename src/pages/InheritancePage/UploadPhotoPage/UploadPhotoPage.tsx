@@ -14,6 +14,7 @@ import UploadPage from "../pages/UploadPage";
 import PhotoIntoTextPage from "../pages/PhotoIntoTextPage";
 import ShareTimePage from "../pages/ShareTimePage";
 import WillPhotoPage from "../pages/WillPhotoPage";
+import BlockChainPage from "../pages/BlockChainPage";
 import Header from "../components/Header";
 
 interface FormData {
@@ -444,6 +445,8 @@ function UploadPhotoPage() {
 						setCurrentPage={setCurrentPage}
 					/>
 				);
+			case 8:
+				return <BlockChainPage />;
 			case 10:
 				return (
 					<CameraPage
