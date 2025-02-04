@@ -3,7 +3,7 @@ import { PageProps } from "../types";
 import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
-import { Executor } from "../ClickPage/types";
+import { Executor } from "../../../services/dto/Will";
 import { message } from "antd";
 
 const SetPersonPage: React.FC<PageProps> = ({
@@ -12,10 +12,10 @@ const SetPersonPage: React.FC<PageProps> = ({
     formData,
     setFormData,
 }): JSX.Element => {
-    const [executors, setExecutors] = useState<Executor[]>(
-        formData.executors == null ? [{ name: "", relationship: "", priority: 1 }]
+    const [executors, setExecutors] = useState<Executor[]|[]>(
+        formData.executors == null ? [{ name: "", relation: "", phoneNumber: "", priority: 1 }]
         : formData.executors.length > 0 ? formData.executors
-            : [{ name: "", relationship: "", priority: 1 }]
+            : [{ name: "", relation: "", phoneNumber: "", priority: 1 }]
     );
 
     const updateFormData = (newExecutors: Executor[]) => {
@@ -34,7 +34,30 @@ const SetPersonPage: React.FC<PageProps> = ({
 
     const handleRelationshipChange = (index: number, value: string) => {
         const newExecutors = [...executors];
-        newExecutors[index].relationship = value;
+        newExecutors[index].relation = value;
+        setExecutors(newExecutors);
+        updateFormData(newExecutors);
+    };
+
+    const handlePhoneNumberChange = (index: number, value: string) => {
+        // 숫자만 추출
+        const numbers = value.replace(/[^0-9]/g, '');
+        
+        // 11자리로 제한
+        const limitedNumbers = numbers.slice(0, 11);
+        
+        // 000-0000-0000 형식으로 포맷팅
+        let formattedNumber = '';
+        if (limitedNumbers.length <= 3) {
+            formattedNumber = limitedNumbers;
+        } else if (limitedNumbers.length <= 7) {
+            formattedNumber = `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3)}`;
+        } else {
+            formattedNumber = `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7)}`;
+        }
+        
+        const newExecutors = [...executors];
+        newExecutors[index].phoneNumber = formattedNumber;
         setExecutors(newExecutors);
         updateFormData(newExecutors);
     };
@@ -74,7 +97,7 @@ const SetPersonPage: React.FC<PageProps> = ({
     const handleAddExecutor = (prevPriority: number) => {
         const newExecutors = [
             ...executors,
-            { name: "", relationship: "", priority: prevPriority + 1 },
+            { name: "", relation: "", phoneNumber: "", priority: prevPriority + 1 },
         ];
         setExecutors(newExecutors);
         updateFormData(newExecutors);
@@ -105,6 +128,7 @@ const SetPersonPage: React.FC<PageProps> = ({
                 <styled.InheritorPageContainer>
                     {executors != null && executors.map((executor, index) => (
                         <styled.InheritorPageSection key={index}>
+                            {/* 성함 */}
                             <styled.Page6InputDiv
                                 style={{
                                     marginTop: index === 0 ? "0" : "50px",
@@ -124,12 +148,13 @@ const SetPersonPage: React.FC<PageProps> = ({
                                     }}
                                 />
                             </styled.Page6InputDiv>
+                            {/* 관계 */}
                             <styled.Page6InputDiv style={{ marginTop: "10px" }}>
                                 <styled.Page6InputDivText>
                                     관계 :{" "}
                                 </styled.Page6InputDivText>
                                 <styled.Page6Select
-                                    value={executor.relationship}
+                                    value={executor.relation}
                                     onChange={(e) =>
                                         handleRelationshipChange(
                                             index,
@@ -151,7 +176,20 @@ const SetPersonPage: React.FC<PageProps> = ({
                                     </option>
                                 </styled.Page6Select>
                             </styled.Page6InputDiv>
-
+                            {/* 전화번호 */}
+                            <styled.Page6InputDiv style={{ marginTop: "10px" }}>
+                                <styled.Page6InputDivText>
+                                    전화번호 :{" "}
+                                </styled.Page6InputDivText>
+                                <styled.Page6Input
+                                    value={executor.phoneNumber}
+                                    onChange={(e) =>
+                                        handlePhoneNumberChange(index, e.target.value)
+                                    }
+                                    placeholder="숫자만 입력하세요"
+                                />
+                            </styled.Page6InputDiv>
+                            {/* 우선순위 */}
                             <styled.Page6InputDiv style={{ marginTop: "10px" }}>
                                 <styled.Page6InputDivText>
                                     우선순위: {index + 1}
@@ -232,10 +270,7 @@ const SetPersonPage: React.FC<PageProps> = ({
                 <BlueButton
                     variant="medium"
                     onClick={() => {
-                        console.log(
-                            "Page 6 - Moving forward:",
-                            formData.executors
-                        );
+                        console.log("Page 6 - Moving forward:", formData.executors);
                         onNext();
                     }}
                 >

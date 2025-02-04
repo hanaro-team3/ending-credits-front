@@ -57,6 +57,7 @@ function RecordPage() {
         executor: {
             name: "",
             relationship: "",
+            phoneNumber: "",
         },
         shareTimingChoice: null,
     });

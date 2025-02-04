@@ -1,3 +1,5 @@
+import { Executor } from "../../services/dto/Will";
+
 export interface PageProps {
 	onNext: () => void;
 	onPrev: () => void;
@@ -42,11 +44,7 @@ export interface FormData {
 		};
 	};
 	// Page 6 - 유언 집행자
-	executors: Array<{
-		name: string;
-		relationship: string;
-		priority: number;
-	}>;
+	executors: Executor[];
 	// Page 7 - 메시지
 	messages: Array<{
 		name: string;

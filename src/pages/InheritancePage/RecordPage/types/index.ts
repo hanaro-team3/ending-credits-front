@@ -1,3 +1,5 @@
+import { Executor } from "../../../../services/dto/Will";
+
 export interface FormData {
 	personalInfo: {
 		name: string;
@@ -12,10 +14,7 @@ export interface FormData {
 		optional: Blob | null;
 		finish: Blob | null;
 	};
-	executor: {
-		name: string;
-		relationship: string;
-	};
+	executors: Executor[];
 	shareTimingChoice: "anytime" | "sickness" | "death" | null;
 }
 

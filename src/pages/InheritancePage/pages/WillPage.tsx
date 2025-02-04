@@ -95,7 +95,7 @@ const WillPage: React.FC<Page8Props> = ({
 		// 유언 집행자
 		const transformedExecutors = executors.map((exec) => ({
 			name: exec.name,
-			relation: exec.relationship,
+			relation: exec.relation,
 			priority: exec.priority,
 		}));
 
@@ -332,7 +332,7 @@ const WillPage: React.FC<Page8Props> = ({
 													<p>성명: {item.name}</p>
 													<p>
 														관계:{" "}
-														{item.relationship}
+														{item.relation}
 													</p>
 												</div>
 											)

@@ -314,7 +314,7 @@ const WillPage: React.FC<WillPageProps> = ({
 													<p>성명: {item.name}</p>
 													<p>
 														관계:{" "}
-														{item.relationship}
+														{item.relation}
 													</p>
 												</div>
 											)

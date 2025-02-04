@@ -1,3 +1,4 @@
+import { Executor } from "../../../../services/dto/Will";
 // Page props interface
 export interface PageProps {
     onNext: () => void;
@@ -44,11 +45,7 @@ export interface FormData {
             }>;
         };
     };
-    executors: Array<{
-        name: string;
-        relationship: string;
-        priority: number;
-    }>;
+    executors: Executor[];
     messages: Array<{
         name: string;
         relationship: string;
@@ -69,10 +66,4 @@ export interface Message {
     name: string;
     relationship: string;
     content: string;
-}
-
-export interface Executor {
-    name: string;
-    relationship: string;
-    priority: number;
 }

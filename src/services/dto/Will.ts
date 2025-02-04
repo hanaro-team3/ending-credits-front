@@ -44,6 +44,7 @@ export interface Inheritance {
 export interface Executor {
     name: string;
     relation: string;
+    phoneNumber: string;
     priority: number;
 }
 
