@@ -41,8 +41,8 @@ const StatusSection = () => {
 
     useEffect(() => {
         willService.getWillFile().then((response) => {
-			if(response?.data?.code){
-				setHasWill(response.data.code == "COMMON200")
+			if(response?.data?.code == "COMMON200"){
+				setHasWill(true)
 				setShareAt(getShareAt(response?.data.result.shareAt) || "");
 			}
         });
