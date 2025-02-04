@@ -6,13 +6,15 @@ import kakaologo from "../../images/kakao-logo.png";
 import EndingCreditLogin from "./EndingCreditLogin";
 import SimpleLoginPage from "./SimpleLoginPage";
 import LoginButton from "../../ui/BlueBtn";
+import { config } from '../../config/config';
+
 
 const LoginPage = (): JSX.Element => {
 	const [showEndingCredit, setShowEndingCredit] = useState<boolean>(false);
 	const [showSimpleLogin, setShowSimpleLogin] = useState<boolean>(false);
 
 	const KakaoLogin = () => {
-		window.location.href = "https://localhost/auth/klogin";
+		window.location.href = `${config.apiUrl}/auth/klogin`;
 	};
 
 	const checkRecentLogin = (): boolean => {
