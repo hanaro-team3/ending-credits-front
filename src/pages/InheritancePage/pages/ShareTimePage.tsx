@@ -50,7 +50,7 @@ const ShareTimePage: React.FC<PageProps> = ({
 				>
 					<styled.Page7TextDiv>
 						<styled.Page2SelectBoxText>
-							일상시
+							일상 시
 						</styled.Page2SelectBoxText>
 						<styled.Page7TextDivSub>
 							언제든지 공유대상자가 <br />
@@ -70,7 +70,7 @@ const ShareTimePage: React.FC<PageProps> = ({
 				>
 					<styled.Page7TextDiv>
 						<styled.Page2SelectBoxText>
-							병환중
+							병환 중
 						</styled.Page2SelectBoxText>
 						<styled.Page7TextDivSub>
 							질병으로 의사결정이 어려울 때 <br />

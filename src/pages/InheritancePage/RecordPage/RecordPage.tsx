@@ -352,7 +352,7 @@ function RecordPage() {
                 return (
                     <WillRecordPage
                         {...commonProps}
-                        // setCurrentPage={setCurrentPage}
+                        setCurrentPage={setCurrentPage}
                         bankData={bankData}
                         realEstateData={realEstateData}
                         etcData={etcData}

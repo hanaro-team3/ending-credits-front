@@ -174,7 +174,7 @@ function InheritancePage() {
 	const getShareAt = ((shareAt: number | null) => {
 		switch (shareAt) {
 			case 0:
-				return "일상";
+				return "일상 시";
 			case 1:
 				return "병환 중";
 			case 2:

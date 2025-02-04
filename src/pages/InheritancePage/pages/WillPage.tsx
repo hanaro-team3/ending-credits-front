@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { PageProps } from "../types";
 import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
@@ -17,7 +16,7 @@ const WillPage: React.FC<Page8Props> = ({
 	onNext,
 	formData,
 	setFormData,
-	// setCurrentPage,
+	setCurrentPage,
 }) => {
 	const [willData, setWillData] = useState<WillData>({
 		inheritances: [],
@@ -145,7 +144,7 @@ const WillPage: React.FC<Page8Props> = ({
 		}));
 
 		// 첫 페이지(0)로 이동
-		// setCurrentPage(0);
+		setCurrentPage(0);
 	};
 
 	const formatAmount = (amount: number) => {
@@ -615,8 +614,8 @@ const WillPage: React.FC<Page8Props> = ({
 												? "사망 시"
 												: formData.shareTimingChoice ===
 												  "sickness"
-												? "병환중"
-												: "일상시"}
+												? "병환 중"
+												: "일상 시"}
 										</p>
 									</div>
 								</div>
@@ -639,7 +638,6 @@ const WillPage: React.FC<Page8Props> = ({
 					onClick={() => {
 						console.log("Page 8 - 제출하기:", formData);
 						handleSubmit();
-						onNext();
 					}}
 				>
 					제출하기
