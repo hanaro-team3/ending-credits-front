@@ -165,13 +165,13 @@ const SetPersonPage: React.FC<PageProps> = ({
                                     <option value="" disabled>
                                         관계를 선택해 주세요.
                                     </option>
-                                    <option value="spouse">배우자</option>
-                                    <option value="parents">부모</option>
-                                    <option value="children">자녀</option>
-                                    <option value="legalHeirs">
+                                    <option value="배우자">배우자</option>
+                                    <option value="부모">부모</option>
+                                    <option value="자녀">자녀</option>
+                                    <option value="법정상속인">
                                         법정상속인
                                     </option>
-                                    <option value="donation">
+                                    <option value="국가 등에 기부(유증)">
                                         국가 등에 기부(유증)
                                     </option>
                                 </styled.Page6Select>

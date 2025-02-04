@@ -8,6 +8,7 @@ import law from "../../images/law-icon.png";
 import book from "../../images/book-icon.png";
 import backbutton from "../../images/back-icon2.png";
 import { useState, useEffect } from "react";
+import WillConfirmPage from "./pages/WillConfirmPage";
 
 //service
 import { willService } from "../../services/api/Will";
@@ -20,25 +21,36 @@ const Header = () => (
 
 const FinishInheritancePage = ({
 	onRewriteClick,
+	onWillClick,
+	name,
+	willData,
 }: {
 	onRewriteClick: () => void;
+	onWillClick: () => void;
+	name: string | null;
+	willData: {
+		shareAt: string
+		createdAt: string
+	};
 }) => (
 	<styled.Container>
-		<styled.Title style={{ width: "330px" }}>
-			홍길동님이 작성하신 유언장
-		</styled.Title>
-		<styled.SelectDiv style={{ marginTop: "10px" }}>
-			<styled.SelectDivLeft>
-				<styled.SelectDivTitle>홍길동님의 유언</styled.SelectDivTitle>
-				<styled.SelectDivSub>
-					작성일 : 2025.01.21
-					<br /> 유언 집행자 : 홍OO (아들)
-				</styled.SelectDivSub>
-			</styled.SelectDivLeft>
-			<styled.PercentDiv>
-				<span>100%</span>
-			</styled.PercentDiv>
-		</styled.SelectDiv>
+		<div onClick={onWillClick}>
+			<styled.Title style={{ width: "330px" }}>
+				{name}님이 작성하신 유언장
+			</styled.Title>
+			<styled.SelectDiv style={{ marginTop: "10px" }}>
+				<styled.SelectDivLeft>
+					<styled.SelectDivTitle>{name}님의 유언</styled.SelectDivTitle>
+					<styled.SelectDivSub>
+						작성일 : {willData.createdAt}
+						<br /> 공유 시점 : {willData.shareAt}
+					</styled.SelectDivSub>
+				</styled.SelectDivLeft>
+				<styled.PercentDiv>
+					<span>100%</span>
+				</styled.PercentDiv>
+			</styled.SelectDiv>
+		</div>
 		<styled.ContactDiv
 			onClick={() =>
 				window.open(
@@ -151,12 +163,38 @@ const SelectSection = () => (
 function InheritancePage() {
 	const [showSelectSection, setShowSelectSection] = useState(false);
 	const [hasWill, setHasWill] = useState(false);
+	const [willData, setWillData] = useState({
+		shareAt: "",
+		createdAt: ""
+	});
+	const [willId, setWillId] = useState("");
+	const [showWillConfirmPage, setShowWillConfirmPage] = useState(false); // WillConfirmPage 보일지 여부 상태 추가
+	const name = localStorage.getItem("name");
+
+	const getShareAt = ((shareAt: number | null) => {
+		switch (shareAt) {
+			case 0:
+				return "일상 시";
+			case 1:
+				return "병환 중";
+			case 2:
+				return "사망 후";
+			default:
+				return null;
+		}
+	});
 
     useEffect(() => {
-        willService.getWill().then((response) => {
-			if(response?.data?.code){
-				setHasWill(response.data.code == "COMMON200") // 유언장 작성 완료 상태
-			}
+        willService.getWillFile().then((response) => {
+            if (response?.data?.code) {
+                setHasWill(response.data.code === "COMMON200"); // 유언장 작성 완료 상태
+				const result = response.data.result;
+				setWillData({
+					shareAt: getShareAt(result.shareAt) || "",
+					createdAt: result.createdAt
+				});
+				setWillId(result.willCodeId); // willId 저장
+            }
         });
     }, []);
 
@@ -164,17 +202,45 @@ function InheritancePage() {
 		setShowSelectSection(true);
 	};
 
-	return (
-		<styled.Container>
-			<Header />
+    const handleWillClick = () => {
+        if (willId) {
+            setWillId(willId);
+			setShowWillConfirmPage(true);
+        }
+    };
 
-			{ !hasWill || showSelectSection ? (
+	const handleCloseWillConfirmPage = () => {
+		setShowWillConfirmPage(false); // WillConfirmPage 숨기고 FinishInheritancePage 보이도록
+	};
+
+	return (
+		showWillConfirmPage ? (
+		  <WillConfirmPage
+			willId={willId}
+			onClose={handleCloseWillConfirmPage} // 닫기 처리
+		  />
+		) : (
+		  <styled.Container>
+			<Header />
+	  
+			{showSelectSection ? (
+				<SelectSection />
+			) : willId ? (
+				<FinishInheritancePage
+					onRewriteClick={handleRewriteClick}
+					name={name}
+					willData={willData}
+					onWillClick={handleWillClick}
+				/>
+			) : !hasWill || showSelectSection ? (
 				<SelectSection />
 			) : (
-				<FinishInheritancePage onRewriteClick={handleRewriteClick} />
+				<SelectSection />
 			)}
+	  
 			<Navbar />
-		</styled.Container>
+		  </styled.Container>
+		)
 	);
 }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { PageProps } from "../types";
 import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
@@ -17,7 +16,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 	onNext,
 	formData,
 	setFormData,
-	// setCurrentPage,
+	setCurrentPage,
 }) => {
 	const [willData, setWillData] = useState<WillData>({
 		inheritances: [],
@@ -115,7 +114,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 			finalMessages: [],
 			shareTimingChoice: null,
 		}));
-		// setCurrentPage(0);
+		setCurrentPage(0);
 	};
 
 	const handleSubmit = async () => {
@@ -213,11 +212,6 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 								>
 									유언장
 								</h2>
-
-								<styled.Page8WillDate>
-									2025.01.16
-								</styled.Page8WillDate>
-
 								<div
 									style={{
 										width: "100%",
@@ -591,8 +585,8 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 												? "사망 시"
 												: formData.shareTimingChoice ===
 												  "sickness"
-												? "병환중"
-												: "일상시"}
+												? "병환 중"
+												: "일상 시"}
 										</p>
 									</div>
 								</div>

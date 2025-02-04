@@ -73,12 +73,17 @@ export interface WillPostResponseDTO {
     };
 }
 
+export interface WilllResponseDTO {
+    result: Will
+}
+
 export interface Will {
     willId: string;
     inheritances: Inheritance[];
     executors: Executor[];
     finalMessages: FinalMessage[];
     shareAt: number;
+    createdAt: string;
 }
 
 export interface WillData {
@@ -93,6 +98,7 @@ export interface WillFileData {
     createdType: string | null;
     files: string[];
     shareAt: number | null;
+    createdAt: string;
 }
 
 export interface WillFileDataResponseDTO {

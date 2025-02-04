@@ -23,12 +23,27 @@ import { memberService } from "../../services/api/Member";
 
 const StatusSection = () => {
 	const [hasWill, setHasWill] = useState(false);
+	const [shareAt, setShareAt] = useState("");
 	const navigate = useNavigate();
 
+	const getShareAt = ((shareAt: number | null) => {
+		switch (shareAt) {
+			case 0:
+				return "일상 시";
+			case 1:
+				return "병환 중";
+			case 2:
+				return "사망 후";
+			default:
+				return null;
+		}
+	});
+
     useEffect(() => {
-        willService.getWill().then((response) => {
+        willService.getWillFile().then((response) => {
 			if(response?.data?.code){
 				setHasWill(response.data.code == "COMMON200")
+				setShareAt(getShareAt(response?.data.result.shareAt) || "");
 			}
         });
     }, []);
@@ -42,7 +57,7 @@ const StatusSection = () => {
 				<styled.StatusContent>
 				<styled.StatusTitle>작성완료</styled.StatusTitle>
 				<styled.StatusDescription>
-					<span className="highlight">사망 후</span>유언집행자에 의해
+					<span className="highlight">{shareAt}</span>유언집행자에 의해
 					<br />
 					해당 유언장이 공유됩니다.
 				</styled.StatusDescription>

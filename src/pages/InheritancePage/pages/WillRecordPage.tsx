@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { PageProps } from "../types";
 import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
@@ -21,7 +20,7 @@ const WillPage: React.FC<WillPageProps> = ({
 	onNext,
 	formData,
 	setFormData,
-	// setCurrentPage,
+	setCurrentPage,
 	bankData = [],
 	realEstateData = [],
 	etcData = [],
@@ -142,7 +141,7 @@ const WillPage: React.FC<WillPageProps> = ({
 			...resetData,
 		}));
 
-		// setCurrentPage(0);
+		setCurrentPage(0);
 	};
 
 	const handleSubmit = async () => {
@@ -243,9 +242,6 @@ const WillPage: React.FC<WillPageProps> = ({
 								>
 									유언장
 								</h2>
-								<styled.Page8WillDate>
-									2025.01.16
-								</styled.Page8WillDate>
 								<div
 									style={{
 										width: "100%",
@@ -570,8 +566,8 @@ const WillPage: React.FC<WillPageProps> = ({
 												? "사망 시"
 												: formData.shareTimingChoice ===
 												  "sickness"
-												? "병환중"
-												: "일상시"}
+												? "병환 중"
+												: "일상 시"}
 										</p>
 									</div>
 								</div>
@@ -594,7 +590,6 @@ const WillPage: React.FC<WillPageProps> = ({
 					variant="medium"
 					onClick={() => {
 						handleSubmit();
-						onNext();
 					}}
 				>
 					제출하기
