@@ -9,7 +9,8 @@ import idcard from "../../images/id-card.png";
 import plusbutton from "../../images/plus-button-blue.png";
 import { userService } from "../../services/api/SignUp";
 import { CheckDuplicateIdDTO, SignupDTO } from "../../services/dto/Auth";
-
+import { IdCardResponse } from "../../services/dto/Auth"; // 이 줄 추가
+import {message} from "antd"
 interface FormData {
 	phoneNumber: string;
 	carrier: string;
@@ -115,10 +116,9 @@ const StepForm = () => {
 
 	const handleDupCheck = async () => {
 		if (!formData.userid.trim()) {
-			alert("아이디를 입력해주세요.");
+			message.error("아이디를 입력해주세요.");
 			return;
 		}
-
 		try {
 			const checkData: CheckDuplicateIdDTO = {
 				identifier: formData.userid,
@@ -128,15 +128,15 @@ const StepForm = () => {
 
 			if (response.data?.code === "MEMBER4001") {
 				setIsUserIdChecked(false);
-				alert("이미 사용중인 아이디입니다.");
+				message.error("이미 사용중인 아이디입니다.");
 			} else {
 				setIsUserIdChecked(true);
-				alert("사용 가능한 아이디입니다.");
+				message.success("사용 가능한 아이디입니다.");
 			}
 		} catch (error) {
 			console.error("ID check failed:", error);
 			setIsUserIdChecked(false);
-			alert("이미 사용중인 아이디입니다.");
+			message.error("이미 사용중인 아이디입니다.");
 		}
 	};
 
@@ -177,24 +177,44 @@ const StepForm = () => {
 		);
 	}, [checkboxes]);
 
+	const formatBirthDate = (idNumber: string | undefined): string => {
+		if (!idNumber) return '';
+		
+		// 주민번호 앞 6자리 추출
+		const birthDate = idNumber.split('-')[0];
+		if (birthDate.length !== 6) return '';
+		
+		const year = birthDate.substring(0, 2);
+		const month = birthDate.substring(2, 4);
+		const day = birthDate.substring(4, 6);
+		
+		// 현재 연도의 끝 두 자리
+		const currentYearLast2 = 25;  // 2025년
+		
+		// 연도 처리 (00~25 -> 2000~2025, 26~99 -> 1926~1999)
+		const fullYear = parseInt(year) <= currentYearLast2 ? `20${year}` : `19${year}`;
+		
+		return `${fullYear}-${month}-${day}`;
+	};
+	
 	const handleSignup = async () => {
 		try {
 			const signupData: SignupDTO = {
 				identifier: formData.userid,
 				password: formData.password,
 				loginType: "NORMAL",
-				birthDate: "1999-07-28",
+				birthDate: formatBirthDate(ocrData?.idNumber),  // 형식 변환 적용
 				phoneNumber: formData.phoneNumber,
-				address: "서울시 성동구 성수동",
-				name: "홍소희",
+				address: ocrData?.address || '',
+				name: ocrData?.name || '',
 				email: formData.email,
 			};
-
-			console.log("Sending signup data:", signupData);
-
-			const response = await userService.registerUser(signupData);
-			console.log("Signup successful:", response); // 성공 응답 로깅
-
+	
+			console.log("OCR Data:", ocrData);
+			console.log("Form Data:", formData);
+			console.log("Signup Data to be sent:", signupData);
+	
+			await userService.registerUser(signupData);
 			navigate("/simplelogin", { state: { userid: formData.userid } });
 		} catch (error) {
 			console.error("Signup failed:", error);
@@ -204,29 +224,47 @@ const StepForm = () => {
 	const [isIdCardUploaded, setIsIdCardUploaded] = useState<boolean>(false);
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
+	// StepForm 컴포넌트 내부에 상태 추가
+	const [ocrData, setOcrData] = useState<IdCardResponse['result'] | null>(null);
+
+	// handleIdCardUpload 함수 수정
 	const handleIdCardUpload = async () => {
 		try {
 			const input = document.createElement("input");
 			input.type = "file";
 			input.accept = "image/*";
-
-			input.onchange = (e) => {
+	
+			input.onchange = async (e) => {
 				const file = (e.target as HTMLInputElement).files?.[0];
 				if (file) {
-					const reader = new FileReader();
-					reader.onload = () => {
-						setUploadedImage(reader.result as string);
-						setIsIdCardUploaded(true);
-					};
-					reader.readAsDataURL(file);
+					// 먼저 이미지 미리보기 설정
+					setUploadedImage(URL.createObjectURL(file));
+					setIsIdCardUploaded(true);
+	
+					try {
+						// OCR API 호출
+						const response = await userService.uploadIdCard({ file });
+						if (response.data?.result) {
+							// OCR 데이터 즉시 저장
+							setOcrData(response.data.result);
+							setFormData(prev => ({
+								...prev,
+								birthDate: response.data.result.idNumber.split('-')[0],
+							}));
+						}
+					} catch (error) {
+						console.error("OCR processing failed:", error);
+						message.error("신분증 정보를 읽어들이는데 실패했습니다. 다시 시도해주세요.");
+					}
 				}
 			};
-
+	
 			input.click();
 		} catch (error) {
 			console.error("ID card upload failed:", error);
 		}
 	};
+
 
 	// 신분증 촬영 화면 렌더링
 	const renderCameraStep = () => (
@@ -271,7 +309,7 @@ const StepForm = () => {
 		</styled.Container>
 	);
 
-	// 회원가입 첫번째 화면 - 전화번호 입력
+	// renderStep0 함수 수정 (개인정보 표시 부분)
 	const renderStep0 = () => (
 		<styled.Container>
 			<div>
@@ -284,6 +322,7 @@ const StepForm = () => {
 						: "전화번호를 입력해 주세요."}
 				</styled.Title>
 				<styled.Form onSubmit={handleSubmit}>
+					{/* 전화번호 입력 */}
 					<styled.Input
 						type="tel"
 						name="phoneNumber"
@@ -291,17 +330,13 @@ const StepForm = () => {
 						onChange={handleInputChange}
 						placeholder="01011111111"
 					/>
+					{/* 통신사 선택 */}
 					<styled.Select
 						name="carrier"
 						value={formData.carrier}
 						onChange={handleInputChange}
 					>
-						<option
-							value=""
-							disabled
-							selected
-							style={{ color: "#dadada" }}
-						>
+						<option value="" disabled selected>
 							통신사를 선택해주세요
 						</option>
 						<option value="SKT">SKT</option>
@@ -311,23 +346,27 @@ const StepForm = () => {
 						<option value="KT 알뜰폰">KT 알뜰폰</option>
 						<option value="LGU+ 알뜰폰">LGU+ 알뜰폰</option>
 					</styled.Select>
+					{/* OCR로 추출된 정보 표시 */}
 					<styled.IdNumberDiv>
-						<styled.IdNumberFront>990728</styled.IdNumberFront>
+						<styled.IdNumberFront>
+							{formData.birthDate || ''}
+						</styled.IdNumberFront>
 						<styled.IdNumberBackDiv>
 							<styled.IdNumberBackDivFront>
-								2
+								{ocrData?.idNumber?.split('-')[1]?.charAt(0) || ''}
 							</styled.IdNumberBackDivFront>
 							<styled.IdNumberBackDivBack>
 								******
 							</styled.IdNumberBackDivBack>
 						</styled.IdNumberBackDiv>
 					</styled.IdNumberDiv>
-					<styled.NameDiv>홍소희</styled.NameDiv>
+					<styled.NameDiv>{ocrData?.name || ''}</styled.NameDiv>
 					<styled.NameDiv style={{ marginTop: "18px" }}>
-						서울시 성동구 성수동
+						{ocrData?.address || ''}
 					</styled.NameDiv>
 				</styled.Form>
 			</div>
+			{/* 다음 단계로 넘어가는 버튼 */}
 			<div>
 				<BlueButton
 					variant="large"

@@ -1,12 +1,13 @@
 import React from "react";
-import { RecordingProps } from "../../types/index";
+import { RecordingProps2 } from "../../types/index";
 import { RecordingStep } from "../RecordingStep";
 
-export const RecordingStep1: React.FC<RecordingProps> = ({
+export const RecordingStep1: React.FC<RecordingProps2> = ({
 	onNext,
 	onPrev,
 	formData,
 	setFormData,
+	apiService,
 }) => {
 	const handleRecordingComplete = (blob: Blob) => {
 		setFormData({
@@ -22,6 +23,7 @@ export const RecordingStep1: React.FC<RecordingProps> = ({
 		<RecordingStep
 			onNext={onNext}
 			onPrev={onPrev}
+			apiService={apiService}
 			title={
 				<>
 					2. <span style={{ color: "#4792dc" }}>녹음 버튼</span>을

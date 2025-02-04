@@ -12,7 +12,7 @@ const LoginPage = (): JSX.Element => {
 	const [showSimpleLogin, setShowSimpleLogin] = useState<boolean>(false);
 
 	const KakaoLogin = () => {
-		window.location.href = "http://localhost:8080/auth/klogin";
+		window.location.href = "https://localhost/auth/klogin";
 	};
 
 	const checkRecentLogin = (): boolean => {

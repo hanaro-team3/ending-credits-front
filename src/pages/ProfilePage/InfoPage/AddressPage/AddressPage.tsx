@@ -1,107 +1,117 @@
-import React, { useState } from "react";
-import * as styled from "../../styles";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userService } from "../../../../services/api/SignUp";
 import Header from "../../../../layout/Header";
+import * as styled from "../../styles";
+import Modal, { ModalOverlay } from "../../components/Modal";
 
 export default function AddressPage() {
+  // State
   const navigate = useNavigate();
-  const [newAddress, setNewAddress] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [isAddressValid, setIsAddressValid] = useState<boolean>(false);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewAddress(event.target.value);
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  // 입력값 처리
+  const handleAddressChange = (newAddress: string) => {
+    setAddress(newAddress);
+    setIsAddressValid(newAddress.trim().length > 0); // 입력값 유효성 검사
   };
 
-  const clickHandler = () => {
-    setNewAddress("");
-    navigate(-1);
+  const handleAddressSave = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      // if (!accessToken) {
+      //   alert("토큰이 없습니다. 다시 로그인해주세요.");
+      //   navigate("/login");
+      //   return;
+      // }
+
+      // console.log("API 요청 시작");
+      console.log("보낼 주소:", address);
+      // console.log("토큰:", accessToken);
+      
+      // API 호출
+      await userService.changeAddress(
+        { address },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      alert("주소가 성공적으로 변경되었습니다.");
+      navigate(-1);
+    } catch (error) {
+      console.error("주소 변경 실패:", error);
+            console.log(userService);
+
+      alert("주소 변경 중 오류가 발생했습니다.");
+    }
   };
 
   return (
     <styled.Container $color="white">
-      <Header title=""></Header>
-      <styled.BaseText
+      <Header title="주소 변경"></Header>
+      <styled.BaseContainer
         style={{
-          fontSize: "24px",
-          fontWeight: "bold",
-        }}
-      >
-        {"주소를 입력해 주세요"}
-      </styled.BaseText>
-      <input
-        type="text"
-        style={{
-          width: "100%",
-          border: "2px solid #4792DC",
-          borderRadius: "12px",
-          height: "47px",
-          padding: "5%",
-          backgroundColor: "white",
-        }}
-        placeholder="도로명+건물번호, 건물명, 지번 입력"
-        value={newAddress}
-        onChange={changeHandler}
-      />
-      <styled.FlexContainer
-        $column={true}
-        style={{
-          paddingLeft: "2%",
           alignItems: "start",
         }}
       >
-        <styled.FlexContainer
-          $column={true}
+        <styled.BaseText
           style={{
-            alignItems: "start",
-            gap: "0px",
+            fontSize: "24px",
+            fontWeight: "bold",
           }}
         >
-          <styled.BaseText
-            style={{
-              color: "#4792DC",
-            }}
-          >
-            {"도로명 + 건물번호"}
-          </styled.BaseText>
-          <styled.BaseText>{"예) 서울시 강남구 테헤란로 231"}</styled.BaseText>
-        </styled.FlexContainer>
-        <styled.FlexContainer
-          $column={true}
+          {"주소를 입력해 주세요"}
+        </styled.BaseText>
+
+        <input
+          type="text"
           style={{
-            alignItems: "start",
-            gap: "0px",
+            width: "100%",
+            border: "2px solid #4792DC",
+            borderRadius: "12px",
+            height: "55px",
+            padding: "1rem",
+            backgroundColor: "white",
+            color: "black",
           }}
-        >
-          {" "}
-          <styled.BaseText
-            style={{
-              color: "#4792DC",
-            }}
-          >
-            {"지역명(동/리) + 번지"}
-          </styled.BaseText>
-          <styled.BaseText>{"예) 역삼동 676"}</styled.BaseText>
-        </styled.FlexContainer>
-        <styled.FlexContainer
-          $column={true}
-          style={{
-            alignItems: "start",
-            gap: "0px",
-          }}
-        >
-          {" "}
-          <styled.BaseText
-            style={{
-              color: "#4792DC",
-            }}
-          >
-            {"지역명(동/리) + 건물명(아파트명)"}
-          </styled.BaseText>
-          <styled.BaseText>{"예) 역삼동 센터필드"}</styled.BaseText>
-        </styled.FlexContainer>
-      </styled.FlexContainer>
+          placeholder="주소 입력"
+          value={address}
+          onChange={(e) => handleAddressChange(e.target.value)}
+        />
+      </styled.BaseContainer>
+
       <styled.LargeButtonContainer>
-        <styled.LargeButton onClick={clickHandler}>저장하기</styled.LargeButton>
+        <styled.LargeButton
+          onClick={openModal}
+          disabled={!isAddressValid}
+          style={{
+            backgroundColor: isAddressValid ? "#4792DC" : "#D9D9D9",
+          }}
+        >
+          주소 수정하기
+        </styled.LargeButton>
       </styled.LargeButtonContainer>
+
+      {isModalOpen && (
+        <>
+          <Modal
+            mainText="주소를 수정하시겠습니까?"
+            onConfirm={handleAddressSave}
+            
+            onCancel={closeModal}
+          />
+          <ModalOverlay onClick={closeModal}></ModalOverlay>
+        </>
+      )}
     </styled.Container>
   );
 }

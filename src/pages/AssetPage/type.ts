@@ -13,5 +13,7 @@ export interface AssetItemType {
     icon: string;
     alt: string;
     label: string;
-    amount: string;
+    amount: number;
+    bankName?: string;
+    expiryRemainDay?: string;
 }

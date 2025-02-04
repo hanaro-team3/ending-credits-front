@@ -1,10 +1,12 @@
-// import React from "react";
+// import React, { useState } from "react";
 // import * as styled from "../styles";
 // import { useRecording } from "../hooks/useRecording";
+// import { audioService } from "../../../../services/api/Recording";
 // import BlueButton from "../../../../ui/BlueBtn";
 // import WhiteButton from "../../../../ui/WhiteBtn";
 // import recordbtn from "../../../../images/record-button.png";
 // import pausebtn from "../../../../images/pause-button.png";
+// import { convertWebMToMP4 } from "../utils/audioConverter";
 
 // interface RecordingStepProps {
 // 	onNext: () => void;
@@ -23,10 +25,49 @@
 // 	scriptContent,
 // 	onRecordingComplete,
 // }) => {
-// 	const { isRecording, showNav, error, canvasRef, handleRecordClick } =
-// 		useRecording({
-// 			onRecordingComplete,
-// 		});
+// 	const [isUploading, setIsUploading] = useState(false);
+// 	const [uploadError, setUploadError] = useState("");
+
+// 	const handleRecordingFinished = async (blob: Blob) => {
+// 		try {
+// 			setIsUploading(true);
+// 			setUploadError("");
+
+// 			// Convert WebM to MP4
+// 			const mp4Blob = await convertWebMToMP4(blob);
+
+// 			const formData = new FormData();
+// 			formData.append(
+// 				"file",
+// 				new File([mp4Blob], "recording.mp4", { type: "audio/mp4" })
+// 			);
+
+// 			const response = await audioService.uploadRecording(formData);
+// 			console.log("Upload Response:", {
+// 				code: response.data.code,
+// 				message: response.data.message,
+// 				result: response.data.result,
+// 			});
+
+// 			onRecordingComplete(mp4Blob);
+// 		} catch (error) {
+// 			console.error("Upload failed:", error);
+// 			setUploadError("업로드에 실패했습니다. 다시 시도해 주세요.");
+// 		} finally {
+// 			setIsUploading(false);
+// 		}
+// 	};
+
+// 	const {
+// 		isRecording,
+// 		showNav,
+// 		error,
+// 		canvasRef,
+// 		handleRecordClick,
+// 		permissionGranted,
+// 	} = useRecording({
+// 		onRecordingComplete: handleRecordingFinished,
+// 	});
 
 // 	return (
 // 		<styled.UploadPageContainer>
@@ -51,7 +92,7 @@
 // 				</styled.WaveformContainer>
 // 			)}
 
-// 			{error && (
+// 			{(error || uploadError) && (
 // 				<div
 // 					style={{
 // 						color: "red",
@@ -59,7 +100,7 @@
 // 						marginTop: "10px",
 // 					}}
 // 				>
-// 					{error}
+// 					{error || uploadError}
 // 				</div>
 // 			)}
 
@@ -68,11 +109,16 @@
 // 					<WhiteButton
 // 						variant="medium"
 // 						onClick={onPrev}
+// 						disabled={isUploading}
 // 						style={{ marginRight: "8px" }}
 // 					>
 // 						이전으로
 // 					</WhiteButton>
-// 					<BlueButton variant="medium" onClick={onNext}>
+// 					<BlueButton
+// 						variant="medium"
+// 						onClick={onNext}
+// 						disabled={isUploading}
+// 					>
 // 						다음으로
 // 					</BlueButton>
 // 				</styled.ButtonBottomDiv>
@@ -81,24 +127,29 @@
 // 					<styled.RecordButton
 // 						src={isRecording ? pausebtn : recordbtn}
 // 						onClick={handleRecordClick}
+// 						disabled={isUploading}
 // 						style={{
 // 							transform: isRecording ? "scale(0.9)" : "scale(1)",
 // 							transition: "transform 0.2s",
+// 							opacity: isUploading ? 0.5 : 1,
 // 						}}
 // 					/>
+// 					{isUploading && <div>업로드 중...</div>}
 // 				</styled.RecordBottomDiv>
 // 			)}
 // 		</styled.UploadPageContainer>
 // 	);
 // };
 
-import React from "react";
+import React, { useState } from "react";
 import * as styled from "../styles";
 import { useRecording } from "../hooks/useRecording";
+import { audioService } from "../../../../services/api/Recording";
 import BlueButton from "../../../../ui/BlueBtn";
 import WhiteButton from "../../../../ui/WhiteBtn";
 import recordbtn from "../../../../images/record-button.png";
 import pausebtn from "../../../../images/pause-button.png";
+import { convertWebMToMP4 } from "../utils/audioConverter";
 
 interface RecordingStepProps {
 	onNext: () => void;
@@ -107,6 +158,7 @@ interface RecordingStepProps {
 	subtitle: string;
 	scriptContent: React.ReactNode;
 	onRecordingComplete: (blob: Blob) => void;
+	apiService: (fileUrl: string) => Promise<any>;
 }
 
 export const RecordingStep: React.FC<RecordingStepProps> = ({
@@ -116,7 +168,55 @@ export const RecordingStep: React.FC<RecordingStepProps> = ({
 	subtitle,
 	scriptContent,
 	onRecordingComplete,
+	apiService,
 }) => {
+	const [isUploading, setIsUploading] = useState(false);
+	const [uploadError, setUploadError] = useState("");
+
+	const handleRecordingFinished = async (blob: Blob) => {
+		try {
+			setIsUploading(true);
+			setUploadError("");
+
+			// Convert WebM to MP4
+			const mp4Blob = await convertWebMToMP4(blob);
+
+			const formData = new FormData();
+			formData.append(
+				"file",
+				new File([mp4Blob], "recording.mp4", { type: "audio/mp4" })
+			);
+
+			const response = await audioService.uploadRecording(formData);
+			console.log("Upload Response:", {
+				code: response.data.code,
+				message: response.data.message,
+				result: response.data.result,
+			});
+
+			// const response2 = await audioService.setPurpose(
+			// 	response.data.result
+			// );
+			// console.log("API Response:", response2.data);
+
+			console.log(response.data.result);
+
+			if (!apiService) {
+				throw new Error("apiService is undefined");
+			}
+
+			const apiResponse = await apiService(response.data.result);
+			console.log("API Response2:", apiResponse.data.result);
+
+			onRecordingComplete(mp4Blob);
+		} catch (error) {
+			console.error("Upload failed:", error);
+			setUploadError(`업로드에 실패했습니다: ${error.message}`);
+		} finally {
+			setIsUploading(false);
+		}
+	};
+
 	const {
 		isRecording,
 		showNav,
@@ -125,7 +225,7 @@ export const RecordingStep: React.FC<RecordingStepProps> = ({
 		handleRecordClick,
 		permissionGranted,
 	} = useRecording({
-		onRecordingComplete,
+		onRecordingComplete: handleRecordingFinished,
 	});
 
 	return (
@@ -151,7 +251,7 @@ export const RecordingStep: React.FC<RecordingStepProps> = ({
 				</styled.WaveformContainer>
 			)}
 
-			{error && (
+			{(error || uploadError) && (
 				<div
 					style={{
 						color: "red",
@@ -159,7 +259,7 @@ export const RecordingStep: React.FC<RecordingStepProps> = ({
 						marginTop: "10px",
 					}}
 				>
-					{error}
+					{error || uploadError}
 				</div>
 			)}
 
@@ -168,11 +268,16 @@ export const RecordingStep: React.FC<RecordingStepProps> = ({
 					<WhiteButton
 						variant="medium"
 						onClick={onPrev}
+						disabled={isUploading}
 						style={{ marginRight: "8px" }}
 					>
 						이전으로
 					</WhiteButton>
-					<BlueButton variant="medium" onClick={onNext}>
+					<BlueButton
+						variant="medium"
+						onClick={onNext}
+						disabled={isUploading}
+					>
 						다음으로
 					</BlueButton>
 				</styled.ButtonBottomDiv>
@@ -181,11 +286,14 @@ export const RecordingStep: React.FC<RecordingStepProps> = ({
 					<styled.RecordButton
 						src={isRecording ? pausebtn : recordbtn}
 						onClick={handleRecordClick}
+						disabled={isUploading}
 						style={{
 							transform: isRecording ? "scale(0.9)" : "scale(1)",
 							transition: "transform 0.2s",
+							opacity: isUploading ? 0.5 : 1,
 						}}
 					/>
+					{isUploading && <div>업로드 중...</div>}
 				</styled.RecordBottomDiv>
 			)}
 		</styled.UploadPageContainer>

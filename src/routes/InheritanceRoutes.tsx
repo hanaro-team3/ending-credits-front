@@ -3,6 +3,7 @@ import InheritancePage from "../pages/InheritancePage/InheritanceStartPage";
 import UploadPhotoPage from "../pages/InheritancePage/UploadPhotoPage/UploadPhotoPage";
 import RecordPage from "../pages/InheritancePage/RecordPage/RecordPage";
 import ClickPage from "../pages/InheritancePage/ClickPage/ClickPage";
+import BlockChainPage from "../pages/InheritancePage/pages/BlockChainPage";
 
 const InheritanceRoutes: RouteObject[] = [
 	{
@@ -20,6 +21,10 @@ const InheritanceRoutes: RouteObject[] = [
 	{
 		path: "/inheritance/click",
 		element: <ClickPage />,
+	},
+	{
+		path: "/inheritance/blockchain",
+		element: <BlockChainPage />,
 	},
 ];
 

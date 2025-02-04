@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import search from "../assets/icon/search.png";
+import { ChangeEvent } from "react";
 
 const SearchBarWrapper = styled.div`
 	position: relative;
@@ -28,14 +29,30 @@ const SearchIcon = styled.img`
 	cursor: pointer;
 `;
 
+interface SearchBarProps {
+	placeholder?: string;
+	value?: string;
+	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+	onSearch?: () => void;
+}
 
-const SearchBar = ({ placeholder='궁금한 내용을 검색해 보세요!' }: { placeholder?: string }) => (
+const SearchBar = ({ 
+	placeholder='궁금한 내용을 검색해 보세요!',
+	value,
+	onChange,
+	onSearch 
+}: SearchBarProps) => (
 	<SearchBarWrapper>
-		<SearchInput name="search" placeholder={placeholder} />
+		<SearchInput 
+			name="search" 
+			placeholder={placeholder} 
+			value={value}
+			onChange={onChange} 
+		/>
 		<SearchIcon
 			src={search}
 			alt="검색"
-			onClick={() => console.log("검색 실행")}
+			onClick={onSearch}
 		/>
 	</SearchBarWrapper>
 );

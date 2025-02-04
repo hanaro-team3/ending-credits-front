@@ -1,3 +1,5 @@
+import { Executor } from "../../services/dto/Will";
+
 export interface PageProps {
 	onNext: () => void;
 	onPrev: () => void;
@@ -18,21 +20,18 @@ export interface FormData {
 	uploadType: "album" | "camera" | null;
 	// Page 3 - 재산 정보
 	assets: {
-		realEstate: Array<{
+		[key: string]: Array<{
 			id: string;
 			type: string;
+			detail?: string;
 			address: string;
-			value: number;
-		}>;
-		stocks: Array<{
-			id: string;
-			type: string;
-			details: string;
 			value: number;
 		}>;
 	};
 	// Page 4 - 업로드된 사진
-	uploadedPhotos: string[];
+	// uploadedPhotos: string[];
+	uploadedFiles: File[];
+	photoUrls: string[];
 	// Page 5 - 상속 정보
 	inheritanceInfo: {
 		[key: string]: {
@@ -45,12 +44,10 @@ export interface FormData {
 		};
 	};
 	// Page 6 - 유언 집행자
-	executor: {
-		name: string;
-		relationship: string;
-	};
+	executors: Executor[];
 	// Page 7 - 메시지
 	messages: Array<{
+		name: string;
 		relationship: string;
 		content: string;
 	}>;
@@ -67,6 +64,7 @@ export interface InheritorModalProps {
 
 // Message interface
 export interface Message {
+	name: string;
 	relationship: string;
 	content: string;
 }

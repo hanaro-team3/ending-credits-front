@@ -5,7 +5,7 @@ import styled from "styled-components";
 const SelectContainer = styled.div`
 	display: flex;
 	gap: 8px;
-
+	flex-shrink:0;
     width: 100%;
     overflow-x: scroll;
 	

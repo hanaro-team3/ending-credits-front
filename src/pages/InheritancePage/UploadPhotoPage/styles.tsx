@@ -317,14 +317,33 @@ export const Page2SelectBoxImage = styled.img`
 
 // page3 ---------------------------------------
 
+export const WillExampleContainer = styled.div`
+	height: 480px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow-y: scroll;
+	margin-top: 20px;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`;
+
 export const WillExample = styled.img`
 	width: 296px;
 	height: auto;
 
 	border: 0.5px solid #2b2b2b;
+`;
 
-	margin-top: 20px;
-	margin-bottom: 70px;
+export const WillExampleText = styled.div`
+	font-family: "Pretendard";
+	font-weight: 500;
+	font-size: 14px;
+	color: #2b2b2b;
+	margin-top: 10px;
+	margin-bottom: 20px;
 `;
 
 // page4 -----------------------------------------
@@ -365,10 +384,13 @@ export const Page6InputDiv = styled.div`
 	width: 330px;
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: space-between;
+	padding: 0 10px;
 `;
 
 export const Page6InputDivText = styled.div`
+	min-width: 80px;
+	text-align: left;
 	font-family: "Pretendard";
 	font-weight: 600;
 	font-size: 20px;
@@ -381,11 +403,7 @@ export const Page6Input = styled.input`
 
 	background: #ffffff;
 	border: 1px solid #c4c4c4;
-	border-radius: 12px;
-
-	color: black;
-
-	margin-left: 12px;
+	border-radius: 8px;
 `;
 
 export const Page6Select = styled.select`
@@ -394,14 +412,13 @@ export const Page6Select = styled.select`
 
 	background: #ffffff;
 	border: 1px solid #c4c4c4;
-	border-radius: 12px;
-
+	border-radius: 8px;
+	
 	font-family: "Pretendard";
 	font-weight: 500;
 	font-size: 14px;
 	color: #2b2b2b;
 
-	margin-left: 12px;
 `;
 
 // page7 -------------------------------------------
@@ -577,3 +594,97 @@ export const EditInfoPageInput = styled.input`
 
 	padding: 18px 20px;
 `;
+
+//-------------------------
+export const InheritorPageContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	height: 500px;
+	overflow-y: scroll;
+	margin-top: 28px;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`;
+
+export const InheritorPageSection = styled.div`
+	background-color: white;
+	width: 330px;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-bottom: 16px;
+	background: white;
+	padding: 12px 24px 24px 24px;
+	border-radius: 12px;
+`;
+
+export const ButtonSection = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 15px;
+`;
+
+// ------------------------------------
+
+export const WillContent = styled.div`
+	padding: 20px;
+	text-align: left;
+
+	h2 {
+		text-align: center;
+		margin-bottom: 10px;
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+	h3 {
+		color: #4792dc;
+		margin-top: 20px;
+		margin-bottom: 10px;
+		font-size: 18px;
+	}
+`;
+
+export const WillSection = styled.div`
+	margin: 20px 0;
+	padding: 15px;
+	border-bottom: 1px solid #eee;
+
+	div {
+		margin-bottom: 15px;
+		padding: 10px;
+		background-color: #f8f9fa;
+		border-radius: 8px;
+	}
+
+	p {
+		margin: 5px 0;
+		font-size: 14px;
+		line-height: 1.5;
+	}
+`;
+
+export const DragHandle = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: grab;
+    margin-right: 10px;
+
+    &:active {
+        cursor: grabbing;
+    }
+`;
+
+

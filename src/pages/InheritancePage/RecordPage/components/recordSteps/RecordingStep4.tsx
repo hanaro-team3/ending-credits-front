@@ -1,12 +1,13 @@
 import React from "react";
-import { RecordingProps } from "../../types/index";
+import { RecordingProps2 } from "../../types/index";
 import { RecordingStep } from "../RecordingStep";
 
-export const RecordingStep4: React.FC<RecordingProps> = ({
+export const RecordingStep4: React.FC<RecordingProps2> = ({
 	onNext,
 	onPrev,
 	formData,
 	setFormData,
+	apiService,
 }) => {
 	const handleRecordingComplete = (blob: Blob) => {
 		setFormData({
@@ -22,6 +23,7 @@ export const RecordingStep4: React.FC<RecordingProps> = ({
 		<RecordingStep
 			onNext={onNext}
 			onPrev={onPrev}
+			apiService={apiService}
 			title={
 				<>
 					가지고 계신{" "}

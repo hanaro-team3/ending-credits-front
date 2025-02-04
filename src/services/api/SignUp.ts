@@ -10,7 +10,10 @@ import {
 	VerifySMSDTO,
 	ChangePasswordDTO,
 	ChangePhoneNumberDTO,
+	ChangeAddressDTO,
 	GetMemberInfoDTO,
+	IdCardUploadDTO,
+	IdCardResponse
 } from "../dto/Auth";
 
 const BASE_URL = config.apiUrl;
@@ -101,6 +104,16 @@ export const userService = {
 			headers: config?.headers,
 		});
 	},
+	changeAddress:(
+		data: ChangeAddressDTO,
+		config?: { headers: { Authorization: string } }
+	)=>{
+		return request<void>({
+			method: "PATCH",
+			url: `member/me?address=${data.address}`,
+			headers: config?.headers,
+		});
+	},
 	getMemberInfo: (
 		data: GetMemberInfoDTO,
 		config?: { headers: { Authorization: string } }
@@ -109,6 +122,20 @@ export const userService = {
 			method: "GET",
 			url: `member/me`,
 			headers: config?.headers,
+		});
+	},
+	// 기존 userService 객체에 추가
+	uploadIdCard: (data: IdCardUploadDTO) => {
+    	const formData = new FormData();
+    	formData.append('file', data.file);
+
+		return request<IdCardResponse>({
+			method: 'POST',
+			url: '/auth/id-card',
+			data: formData,
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
 		});
 	},
 };

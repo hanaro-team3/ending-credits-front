@@ -182,3 +182,38 @@ export const BookImg = styled.img`
 	height: auto;
 	margin-left: 30px;
 `;
+
+//------------------------------------------
+
+export const BlockChainPageContainer = styled.div`
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+export const TopContainer = styled.div`
+	width: 330px;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+`;
+
+export const BlockChainIcon = styled.img`
+	width: 150px;
+	height: auto;
+	margin-top: 100px;
+`;
+
+export const ButtonBottomDiv = styled.div`
+	width: 100%;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 80px;
+`;

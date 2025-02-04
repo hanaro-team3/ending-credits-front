@@ -198,6 +198,7 @@ export const AssetItemRight = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 10px;
+	text-align: right;
 `;
 
 export const AssetContainer = styled.div`

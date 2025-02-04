@@ -9,51 +9,54 @@ import BlueButton from "../../../ui/BlueBtn";
 import { AssetCard } from "../components/AssetCard";
 
 //services
-import { assetService } from "../../../services/api/AssetView";
-import { CarsResponseDTO, PensionsResponseDTO, RealEstatesResponseDTO } from "../../../services/dto/AssetView";
-
-
-
+import { assetService } from "../../../services/api/Asset";
+import * as dto from "../../../services/dto/Asset";
 
 function Bank() {
+    const [deposits, setDeposits] = useState<dto.Banks[]>();
+    const [funds, setFunds] = useState<dto.Banks[]>();
+
+    useEffect(() => {
+        async function getBanks() {
+            const response = await assetService.getBanks();
+            if (response?.data) {
+                setDeposits(response.data.result.filter(item => item.assetType === "예금"));
+                setFunds(response.data.result.filter(item => item.assetType === "펀드"));
+            }
+        }
+        getBanks();
+    }, []);
     return(
         <>
             <styled.AccountSection>
                 <styled.AccountTitle>예금/신탁</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank>하나은행</styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>달달하나</styled.AccountName>
-                            <p>50,000,000원</p>
+                    {deposits?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.bankName}</styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.accountName}</styled.AccountName>
+                            <p>{item.amount.toLocaleString()}원</p>
                         </styled.AccountRow>
-                        <styled.AccountNumber>자유입출금 • 123-456-7890</styled.AccountNumber>
+                        <styled.AccountNumber>{item.accountNumber}</styled.AccountNumber>
                     </styled.AccountItem>
-                    <styled.AccountItem>
-                        <styled.AccountBank>하나은행</styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>달달하나</styled.AccountName>
-                            <p>50,000,000원</p>
-                        </styled.AccountRow>
-                        <styled.AccountNumber>자유입출금 • 123-456-7890</styled.AccountNumber>
-                    </styled.AccountItem>
+                    ))}
                 </styled.AccountList>
             </styled.AccountSection>
 
             <styled.AccountSection>
                 <styled.AccountTitle>펀드</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank>하나은행</styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>달달하나</styled.AccountName>
-                            <p>50,000,000원</p>
+                    {funds?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.bankName}</styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.accountName}</styled.AccountName>
+                            <p>{item.amount.toLocaleString()}원</p>
                         </styled.AccountRow>
-                        <styled.AccountRow>
-                            <styled.AccountNumber>자유입출금 • 123-456-7890</styled.AccountNumber>
-                            <styled.AccountReturn>+15.0%</styled.AccountReturn>
-                        </styled.AccountRow>
+                        <styled.AccountNumber>{item.accountNumber}</styled.AccountNumber>
                     </styled.AccountItem>
+                    ))}
                 </styled.AccountList>
             </styled.AccountSection>
         </>
@@ -61,38 +64,55 @@ function Bank() {
 }
 
 function Stock() {
+    const [domestic, setDomestic] = useState<dto.Securities[]>();
+    const [foreign, setForeign] = useState<dto.Securities[]>();
+
+    useEffect(() => {
+        async function getSecurities() {
+            const response = await assetService.getSecurities();
+            if (response?.data) {
+                setDomestic(response.data.result.filter(item => item.currencyCode === "KRW"));
+                setForeign(response.data.result.filter(item => item.currencyCode !== "KRW"));
+            }
+        }
+        getSecurities();
+    }, []);
     return(
         <>
             <styled.AccountSection>
                 <styled.AccountTitle>국내</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank>하나증권</styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>달달전자</styled.AccountName>
-                            <p>50,000,000원</p>
+                    {domestic?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.securitiesCompanyName}</styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.stockName}</styled.AccountName>
+                            <p>{item.amount.toLocaleString()}원</p>
                         </styled.AccountRow>
                         <styled.AccountRow>
-                            <styled.AccountNumber>123-456-7890</styled.AccountNumber>
-                            <styled.AccountReturn>+15.0%</styled.AccountReturn>
+                            <styled.AccountNumber>{item.accountNumber}</styled.AccountNumber>
+                            <styled.AccountReturn>+{item.profitRate}%</styled.AccountReturn>
                         </styled.AccountRow>
                     </styled.AccountItem>
+                    ))}
                 </styled.AccountList>
             </styled.AccountSection>
             <styled.AccountSection>
                 <styled.AccountTitle>해외</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank>하나증권</styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>달달전자</styled.AccountName>
-                            <p>50,000,000원</p>
-                        </styled.AccountRow>
-                        <styled.AccountRow>
-                            <styled.AccountNumber>123-456-7890</styled.AccountNumber>
-                            <styled.AccountReturn>+15.0%</styled.AccountReturn>
-                        </styled.AccountRow>
-                    </styled.AccountItem>
+                    {foreign?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.securitiesCompanyName}</styled.AccountBank>
+                            <styled.AccountRow>
+                                <styled.AccountName>{item.stockName}</styled.AccountName>
+                                <p>${item.amount.toLocaleString()}</p>
+                            </styled.AccountRow>
+                            <styled.AccountRow>
+                                <styled.AccountNumber>{item.accountNumber}</styled.AccountNumber>
+                                <styled.AccountReturn>+{item.profitRate}%</styled.AccountReturn>
+                            </styled.AccountRow>
+                        </styled.AccountItem>
+                    ))}
                 </styled.AccountList>
             </styled.AccountSection>
         </>
@@ -100,29 +120,73 @@ function Stock() {
 }
 
 function Coin() {
+    const [domestic, setDomestic] = useState<dto.Virtual[]>();
+    const [foreign, setForeign] = useState<dto.Virtual[]>();
+
+    useEffect(() => {
+        async function getVirtuals() {
+            const response = await assetService.getVirtual();
+            if(response.data) {
+                setDomestic(response.data.result.filter(item => item.currencyCode === "KRW"));
+                setForeign(response.data.result.filter(item => item.currencyCode !== "KRW"));
+            }
+        }
+        getVirtuals();
+    }, []);
     return(
         <>
-          <styled.AccountSection>
-                <styled.AccountTitle>보유한 가상자산</styled.AccountTitle>
+            <styled.AccountSection>
+                <styled.AccountTitle>원화</styled.AccountTitle>
                 <styled.AccountList>
-                    <styled.AccountItem>
-                        <styled.AccountBank>업비트</styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName>비트코인</styled.AccountName>
-                            <p>50,000,000원</p>
+                    {domestic?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.exchangeName}</styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.virtualAssetName}</styled.AccountName>
+                            <p>{item.totalValue.toLocaleString()}원</p>
                         </styled.AccountRow>
                         <styled.AccountRow>
                             <styled.AccountNumber></styled.AccountNumber>
-                            <styled.AccountReturn>+15.0%</styled.AccountReturn>
+                            <styled.AccountReturn>+{item.profitRatio}%</styled.AccountReturn>
                         </styled.AccountRow>
                     </styled.AccountItem>
+                    ))} 
+                </styled.AccountList>
+                <styled.AccountTitle>외화</styled.AccountTitle>
+                <styled.AccountList>
+                    {foreign?.map((item, index) => (
+                        <styled.AccountItem key={index}>
+                            <styled.AccountBank>{item.exchangeName}</styled.AccountBank>
+                            <styled.AccountRow>
+                            <styled.AccountName>{item.virtualAssetName}</styled.AccountName>
+                            <p>${item.totalValue.toLocaleString()}</p>
+                        </styled.AccountRow>
+                        <styled.AccountRow>
+                            <styled.AccountNumber></styled.AccountNumber>
+                            <styled.AccountReturn>+{item.profitRatio}%</styled.AccountReturn>
+                        </styled.AccountRow>
+                    </styled.AccountItem>
+                    ))} 
                 </styled.AccountList>
             </styled.AccountSection>
         </>
     )
 }
 
-function Cash() {    
+function Cash() {   
+    const [cash, setCash] = useState<number>();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function getCash() {
+            const response = await assetService.getCash();
+            if (response?.data) {
+                setCash(response.data.result.amount);
+            }
+        }
+        getCash();
+    }, []);
+
     return(
         <>
             <styled.AccountSection>
@@ -130,22 +194,10 @@ function Cash() {
                 <styled.AccountList>
                     <styled.AccountItem>
                         <styled.AccountRow>
-                            <p>50,000,000원</p>
-                            <button>수정</button>
+                            <p>{cash?.toLocaleString()}원</p>
+                            <button onClick={() => navigate(`/asset/modify/현금`)}>수정</button>
                         </styled.AccountRow>
                     </styled.AccountItem>
-
-                    {/* <styled.AccountItem>
-                        <styled.AccountBank></styled.AccountBank>
-                        <styled.AccountRow>
-                            <styled.AccountName></styled.AccountName>
-                            <p>50,000,000원</p>
-                        </styled.AccountRow>
-                        <styled.AccountRow>
-                            <styled.AccountNumber></styled.AccountNumber>
-                            <styled.AccountReturn></styled.AccountReturn>
-                        </styled.AccountRow>
-                    </styled.AccountItem> */}
                 </styled.AccountList>
             </styled.AccountSection>
         </>
@@ -153,7 +205,7 @@ function Cash() {
 }
 
 function RealEstate() {
-    const [realEstates, setRealEstates] = useState<RealEstatesResponseDTO>();
+    const [realEstates, setRealEstates] = useState<dto.RealEstate[]>([]);
 
     useEffect(() => {
         async function getRealEstates() {
@@ -195,13 +247,12 @@ function RealEstate() {
 }
 
 function Car() {
-    const [cars, setCars] = useState<CarsResponseDTO>();
+    const [cars, setCars] = useState<dto.Car[]>([]);
 
     useEffect(() => {
         async function getCars() {
             const response = await assetService.getCars();
             if (response?.data) {
-                console.log(response.data);
                 setCars(response.data.result);
             }
         }
@@ -233,13 +284,12 @@ function Car() {
 
 function Pension() {
     const navigate = useNavigate(); 
-    const [pensions, setPensions] = useState<PensionsResponseDTO>();
+    const [pensions, setPensions] = useState<dto.Pension[]>([]);
 
     useEffect(() => {
         async function getPensions() {
             const response = await assetService.getPensions();
             if (response?.data) {
-                console.log(response.data);
                 setPensions(response.data.result);
             }
         }
@@ -274,9 +324,11 @@ function Pension() {
 
 function AssetDetailPage() {
     const { label } = useParams();
+    const navigate = useNavigate();
+    
     return (
         <styled.Container>
-            <Header title={label || ""} showClose={true} />
+            <Header title={label || ""} showClose={true} onClose={()=>navigate("/asset/list")} />
             <styled.IconWrapper>
                 <img 
                     src={ASSET_DATA.find(item => item.label === label)?.icon} 

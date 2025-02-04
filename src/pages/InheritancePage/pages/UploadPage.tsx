@@ -4,6 +4,7 @@ import * as styled from "../UploadPhotoPage/styles";
 import BlueButton from "../../../ui/BlueBtn";
 import WhiteButton from "../../../ui/WhiteBtn";
 import plusbtn from "../../../images/will-plus-btn.png";
+import { photoService } from "../../../services/api/Photo";
 
 const DeleteButton = ({ onClick }: { onClick: () => void }) => (
 	<button
@@ -49,29 +50,39 @@ const UploadPage: React.FC<PageProps> = ({
 	setFormData,
 }) => {
 	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
+		const files = event.target.files;
 		const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
-		if (file) {
-			if (!allowedTypes.includes(file.type)) {
-				alert("JPG, PNG, GIF 형식의 이미지 파일만 업로드 가능합니다.");
-				return;
-			}
+		if (files) {
+			Array.from(files).forEach((file) => {
+				if (!allowedTypes.includes(file.type)) {
+					alert(
+						"JPG, PNG, GIF 형식의 이미지 파일만 업로드 가능합니다."
+					);
+					return;
+				}
 
-			if (file.lastModified && Date.now() - file.lastModified < 60000) {
-				alert("갤러리에서 기존 사진을 선택해주세요.");
-				return;
-			}
+				if (
+					file.lastModified &&
+					Date.now() - file.lastModified < 60000
+				) {
+					alert("갤러리에서 기존 사진을 선택해주세요.");
+					return;
+				}
 
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				const imageUrl = reader.result as string;
-				setFormData((prev) => ({
-					...prev,
-					uploadedPhotos: [...prev.uploadedPhotos, imageUrl],
-				}));
-			};
-			reader.readAsDataURL(file);
+				const reader = new FileReader();
+				reader.onloadend = () => {
+					setFormData((prev) => ({
+						...prev,
+						uploadedFiles: [...(prev.uploadedFiles || []), file],
+						photoUrls: [
+							...(prev.photoUrls || []),
+							reader.result as string,
+						],
+					}));
+				};
+				reader.readAsDataURL(file);
+			});
 		}
 	};
 
@@ -79,24 +90,55 @@ const UploadPage: React.FC<PageProps> = ({
 		document.getElementById("photo-upload")?.click();
 	};
 
+	// const handleDeleteImage = (indexToDelete: number) => {
+	// 	setFormData((prev) => ({
+	// 		...prev,
+	// 		uploadedPhotos: prev.uploadedPhotos.filter(
+	// 			(_, index) => index !== indexToDelete
+	// 		),
+	// 	}));
+	// };
 	const handleDeleteImage = (indexToDelete: number) => {
 		setFormData((prev) => ({
 			...prev,
-			uploadedPhotos: prev.uploadedPhotos.filter(
+			photoUrls: prev.photoUrls.filter(
+				(_, index) => index !== indexToDelete
+			),
+			uploadedFiles: prev.uploadedFiles.filter(
 				(_, index) => index !== indexToDelete
 			),
 		}));
 	};
 
+	const handleNext = async () => {
+		try {
+			const formDataToSend = new FormData();
+			formData.uploadedFiles?.forEach((file, index) => {
+				formDataToSend.append("files", file);
+			});
+
+			const response = await photoService.uploadPhoto(formDataToSend);
+			console.log("Upload response:", response.data.result);
+			setFormData((prev) => ({
+				...prev,
+				photoUrls: response.data.result,
+			}));
+			onNext();
+		} catch (error) {
+			console.error("Failed to upload photos:", error);
+			alert("사진 업로드에 실패했습니다. 다시 시도해주세요.");
+		}
+	};
+
 	return (
 		<styled.UploadPageContainer>
 			<styled.Title>
-				{formData.uploadedPhotos.length > 0
+				{formData.photoUrls.length > 0
 					? "올리신 사진을 확인해 주세요."
 					: "사진을 업로드 해주세요."}
 			</styled.Title>
 			<styled.SubTitle>
-				{formData.uploadedPhotos.length > 0
+				{formData.photoUrls.length > 0
 					? "사진을 다시 올리거나 추가할 수 있어요."
 					: "아래 + 버튼을 눌러 유언장을 업로드 해주세요."}
 			</styled.SubTitle>
@@ -107,6 +149,7 @@ const UploadPage: React.FC<PageProps> = ({
 				accept=".jpg,.jpeg,.png,.gif"
 				onChange={handleImageUpload}
 				style={{ display: "none" }}
+				multiple
 				onClick={(event) => {
 					const target = event.target as HTMLInputElement;
 					target.value = "";
@@ -118,7 +161,7 @@ const UploadPage: React.FC<PageProps> = ({
 					width: "296px",
 					height: "434px",
 					border:
-						formData.uploadedPhotos.length === 0
+						formData.photoUrls.length === 0
 							? "1px solid #2b2b2b"
 							: "none",
 					marginTop: "20px",
@@ -127,7 +170,7 @@ const UploadPage: React.FC<PageProps> = ({
 					overflow: "hidden",
 				}}
 			>
-				{formData.uploadedPhotos.length > 0 ? (
+				{formData.photoUrls.length > 0 ? (
 					<div
 						style={{
 							width: "100%",
@@ -142,7 +185,7 @@ const UploadPage: React.FC<PageProps> = ({
 							},
 						}}
 					>
-						{formData.uploadedPhotos.map((photo, index) => (
+						{formData.photoUrls.map((photo, index) => (
 							<div
 								key={index}
 								style={{
@@ -153,8 +196,7 @@ const UploadPage: React.FC<PageProps> = ({
 									justifyContent: "center",
 									flexShrink: 0,
 									marginBottom:
-										index !==
-										formData.uploadedPhotos.length - 1
+										index !== formData.photoUrls.length - 1
 											? "20px"
 											: 0,
 									position: "relative",
@@ -194,7 +236,7 @@ const UploadPage: React.FC<PageProps> = ({
 				)}
 			</div>
 
-			{formData.uploadedPhotos.length > 0 && (
+			{formData.photoUrls.length > 0 && (
 				<div
 					style={{
 						textAlign: "center",
@@ -203,8 +245,8 @@ const UploadPage: React.FC<PageProps> = ({
 						fontSize: "12px",
 					}}
 				>
-					{formData.uploadedPhotos.length}장의 사진 (위아래로
-					스크롤하여 확인)
+					{formData.photoUrls.length}장의 사진 (위아래로 스크롤하여
+					확인)
 				</div>
 			)}
 
@@ -234,8 +276,8 @@ const UploadPage: React.FC<PageProps> = ({
 				</WhiteButton>
 				<BlueButton
 					variant="medium"
-					onClick={onNext}
-					disabled={formData.uploadedPhotos.length === 0}
+					onClick={handleNext}
+					disabled={formData.photoUrls.length === 0}
 				>
 					다음으로
 				</BlueButton>

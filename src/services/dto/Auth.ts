@@ -18,12 +18,17 @@ export interface CheckDuplicateIdDTO {
 	identifier: string;
 }
 
+export interface TokenPairResponseDto{
+	accessToken: string;
+	refreshToken: string;
+}
+
 export interface LoginResponse {
 	code: string;
 	message: string;
 	result: {
-		accessToken: string;
-		refreshToken: string;
+		name: string;
+		tokenPair: TokenPairResponseDto;
 	};
 }
 
@@ -53,8 +58,33 @@ export interface ChangePhoneNumberDTO {
 	};
 }
 
+export interface ChangeAddressDTO{
+	address: string;
+	headers?:{
+		Authorization: string;
+	}
+}
+export interface UploadResponse {
+	url: string;
+	message: string;
+}
+
 export interface GetMemberInfoDTO {
 	headers?: {
 		Authorization: string;
 	};
 }
+
+export interface IdCardResponse {
+	code: string;
+	message: string;
+	result: {
+	  name: string;
+	  address: string;
+	  idNumber: string;  // 주민번호 형식 (예: 000111-3)
+	};
+  }
+  
+  export interface IdCardUploadDTO {
+	file: File;
+  }
