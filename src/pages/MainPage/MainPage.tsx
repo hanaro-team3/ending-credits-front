@@ -40,7 +40,7 @@ const StatusSection = () => {
 			{hasWill ? (
 			<>
 				<styled.StatusContent>
-				<styled.StatusTitle>"작성완료"</styled.StatusTitle>
+				<styled.StatusTitle>작성완료</styled.StatusTitle>
 				<styled.StatusDescription>
 					<span className="highlight">사망 후</span>유언집행자에 의해
 					<br />
