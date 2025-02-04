@@ -305,6 +305,7 @@ const WillPage: React.FC<WillPageProps> = ({
 															"#f8f9fa",
 														borderRadius: "8px",
 														fontSize: "13px",
+														marginBottom: "10px",
 													}}
 												>
 													<p>성명: {item.name}</p>

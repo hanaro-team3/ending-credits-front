@@ -275,6 +275,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 															"#f8f9fa",
 														borderRadius: "8px",
 														fontSize: "13px",
+														marginBottom: "10px",
 													}}
 												>
 													<p>성명: {executor.name}</p>
