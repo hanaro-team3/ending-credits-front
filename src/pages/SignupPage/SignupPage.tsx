@@ -10,7 +10,7 @@ import plusbutton from "../../images/plus-button-blue.png";
 import { userService } from "../../services/api/SignUp";
 import { CheckDuplicateIdDTO, SignupDTO } from "../../services/dto/Auth";
 import { IdCardResponse } from "../../services/dto/Auth"; // 이 줄 추가
-
+import {message} from "antd"
 interface FormData {
 	phoneNumber: string;
 	carrier: string;
@@ -116,7 +116,7 @@ const StepForm = () => {
 
 	const handleDupCheck = async () => {
 		if (!formData.userid.trim()) {
-			alert("아이디를 입력해주세요.");
+			message.error("아이디를 입력해주세요.");
 			return;
 		}
 		try {
@@ -128,15 +128,15 @@ const StepForm = () => {
 
 			if (response.data?.code === "MEMBER4001") {
 				setIsUserIdChecked(false);
-				alert("이미 사용중인 아이디입니다.");
+				message.error("이미 사용중인 아이디입니다.");
 			} else {
 				setIsUserIdChecked(true);
-				alert("사용 가능한 아이디입니다.");
+				message.success("사용 가능한 아이디입니다.");
 			}
 		} catch (error) {
 			console.error("ID check failed:", error);
 			setIsUserIdChecked(false);
-			alert("이미 사용중인 아이디입니다.");
+			message.error("이미 사용중인 아이디입니다.");
 		}
 	};
 
@@ -254,7 +254,7 @@ const StepForm = () => {
 						}
 					} catch (error) {
 						console.error("OCR processing failed:", error);
-						alert("신분증 정보를 읽어들이는데 실패했습니다. 다시 시도해주세요.");
+						message.error("신분증 정보를 읽어들이는데 실패했습니다. 다시 시도해주세요.");
 					}
 				}
 			};
