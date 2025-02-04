@@ -384,10 +384,13 @@ export const Page6InputDiv = styled.div`
 	width: 330px;
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: space-between;
+	padding: 0 10px;
 `;
 
 export const Page6InputDivText = styled.div`
+	min-width: 80px;
+	text-align: left;
 	font-family: "Pretendard";
 	font-weight: 600;
 	font-size: 20px;
@@ -400,11 +403,7 @@ export const Page6Input = styled.input`
 
 	background: #ffffff;
 	border: 1px solid #c4c4c4;
-	border-radius: 12px;
-
-	color: black;
-
-	margin-left: 12px;
+	border-radius: 8px;
 `;
 
 export const Page6Select = styled.select`
@@ -413,14 +412,13 @@ export const Page6Select = styled.select`
 
 	background: #ffffff;
 	border: 1px solid #c4c4c4;
-	border-radius: 12px;
-
+	border-radius: 8px;
+	
 	font-family: "Pretendard";
 	font-weight: 500;
 	font-size: 14px;
 	color: #2b2b2b;
 
-	margin-left: 12px;
 `;
 
 // page7 -------------------------------------------
@@ -606,7 +604,6 @@ export const InheritorPageContainer = styled.div`
 	height: 500px;
 	overflow-y: scroll;
 	margin-top: 28px;
-	padding-top: 30px;
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -614,12 +611,18 @@ export const InheritorPageContainer = styled.div`
 `;
 
 export const InheritorPageSection = styled.div`
+	background-color: white;
 	width: 330px;
 	height: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
+	gap: 12px;
+	margin-bottom: 16px;
+	background: white;
+	padding: 12px 24px 24px 24px;
+	border-radius: 12px;
 `;
 
 export const ButtonSection = styled.div`
@@ -668,3 +671,20 @@ export const WillSection = styled.div`
 		line-height: 1.5;
 	}
 `;
+
+export const DragHandle = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: grab;
+    margin-right: 10px;
+
+    &:active {
+        cursor: grabbing;
+    }
+`;
+
+
