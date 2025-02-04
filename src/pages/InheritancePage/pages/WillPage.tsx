@@ -326,9 +326,10 @@ const WillPage: React.FC<Page8Props> = ({
 													}}
 												>
 													<p>성명: {item.name}</p>
+													<p>관계: {item.relation}</p>
 													<p>
-														관계:{" "}
-														{item.relation}
+														전화번호:{" "}
+														{item.phoneNumber}
 													</p>
 												</div>
 											)

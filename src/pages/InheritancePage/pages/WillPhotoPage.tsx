@@ -282,6 +282,10 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 														관계:{" "}
 														{executor.relation}
 													</p>
+													<p>
+														전화번호:{" "}
+														{item.phoneNumber}
+													</p>
 												</div>
 											)
 										)}
