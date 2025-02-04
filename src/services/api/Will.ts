@@ -8,7 +8,7 @@ const BLOCK_BASE_URL = config.blockapiUrl;
 
 export const willService = {
     // 유언장 조회
-    getWill: () => {
+    getWillFile: () => {
         return request<dto.WillFileDataResponseDTO>({
             method: 'GET',
             url: `${BASE_URL}/will`,
@@ -21,6 +21,14 @@ export const willService = {
             method: 'POST',
             url: `${BASE_URL}/will`,
             data
+        })
+    },
+
+    // 유언장 블록체인 조회
+    getWill: (willCodeId: string) => {
+        return request<dto.WilllResponseDTO>({
+            method: 'GET',
+            url: `${BLOCK_BASE_URL}/wills/${willCodeId}`, 
         })
     },
 

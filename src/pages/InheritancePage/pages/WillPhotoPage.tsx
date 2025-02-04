@@ -213,11 +213,6 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 								>
 									유언장
 								</h2>
-
-								<styled.Page8WillDate>
-									2025.01.16
-								</styled.Page8WillDate>
-
 								<div
 									style={{
 										width: "100%",
