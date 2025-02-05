@@ -182,7 +182,12 @@ export default function OnboardingPage(): JSX.Element {
 						다음
 					</Button>
 				) : (
-					<Button onClick={startButtonHandler}>시작하기</Button>
+					<Button
+						onClick={startButtonHandler}
+						style={{ backgroundColor: "#E4E4E4", color: "#2B2B2B" }}
+					>
+						시작하기
+					</Button>
 				)}
 			</div>
 		</div>
