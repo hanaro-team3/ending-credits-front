@@ -117,7 +117,9 @@ function ProductDetail() {
 			/>
 
 			<styled.ButtonContainer>
-				<BlueButton onClick={() => setIsModalOpen(true)} style={{ marginBottom: "100px" }}>
+				<BlueButton onClick={() => {
+					message.success('상품 가입 신청 완료!');
+				}} style={{ marginBottom: "100px" }}>
 					상품 가입하기
 				</BlueButton>
 			</styled.ButtonContainer>
