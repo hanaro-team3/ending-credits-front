@@ -10,7 +10,7 @@ import ProductSearch from "../pages/ProductPage/ProductSearch/ProductSearch";
 import ProductDetail from "../pages/ProductPage/ProductDetail/ProductDetail";
 import ProductSearchForCompare from "../pages/ProductPage/ProductSearch/ProductSearchForCompare";
 import AssetModifyPage from "../pages/AssetPage/AssetModifyPage/AssetModifyPage";
-
+import AssetAddPage from "../pages/AssetPage/AssetAddPage/AssetAddPage";
 const AssetRoutes: RouteObject[] = [
   {
     path: "/asset",
@@ -34,6 +34,10 @@ const AssetRoutes: RouteObject[] = [
   {
     path: "/asset/modify/:label",
     element: <AssetModifyPage />,
+  },
+  {
+    path: "/asset/add/:label",
+    element: <AssetAddPage />,
   },
   {
     path: "/product",

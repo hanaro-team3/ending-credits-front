@@ -42,15 +42,15 @@ export const assetService = {
       data,
     });
   },
-  postCar: (data: dto.CarRequestDTO) => {
-    return request<dto.CarResponseDTO>({
+  postCar: (data: dto.PostCarRequestDTO) => {
+    return request<dto.PostCarResponseDTO>({
       method: 'POST',
       url: `${BASE_URL}/asset/car`,
       data,
     });
   },
-  postRealEstate: (data: dto.RealEstateRequestDTO) => {
-    return request<dto.RealEstateResponseDTO>({
+  postRealEstate: (data: dto.PostRealEstateRequestDTO) => {
+    return request<dto.PostRealEstateResponseDTO>({
       method: 'POST',
       url: `${BASE_URL}/asset/real-estate`,
       data,

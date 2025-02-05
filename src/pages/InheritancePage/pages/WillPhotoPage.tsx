@@ -60,6 +60,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 				name: exec.name,
 				relation: exec.relation,
 				priority: exec.priority,
+				phoneNumber: "010-1234-5678",
 			})) || [];
 
 		const processedMessages =
@@ -265,7 +266,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 										>
 											유언집행자
 										</h3>
-										{formData.executors.map(
+										{willData.executors.map(
 											(executor, index) => (
 												<div
 													key={index}
@@ -285,7 +286,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 													</p>
 													<p>
 														전화번호:{" "}
-														{item.phoneNumber}
+														{executor.phoneNumber}
 													</p>
 												</div>
 											)
@@ -513,7 +514,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 									</h3>
 								</div>
 
-								{formData.finalMessages?.length > 0 && (
+								{willData.finalMessages?.length > 0 && (
 									<div
 										style={{
 											width: "100%",
@@ -530,7 +531,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 										>
 											마지막 말씀
 										</h3>
-										{formData.finalMessages.map(
+										{willData.finalMessages.map(
 											(message, index) => (
 												<div
 													key={`message-${index}`}

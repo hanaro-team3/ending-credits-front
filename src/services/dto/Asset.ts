@@ -180,3 +180,30 @@ export interface PatchCashResponstDTO{
 export interface PatchCashRequestDTO {
     amount: number;
 }
+
+export interface PostCarRequestDTO {
+    model: string;
+    carNumber: string;
+    purchasePrice: number;
+    currentPurchasePrice?: number;
+    mileage?: number;
+    year?: number;
+}
+
+export interface PostCarResponseDTO {
+    code: string;
+    message: string;
+}
+
+export interface PostRealEstateRequestDTO {
+    name: string;
+    address: string;
+    purchasePrice: number;
+    currentPrice?: number;
+    realEstateType: string;
+}
+
+export interface PostRealEstateResponseDTO {
+    code: string;
+    message: string;
+}
