@@ -22,26 +22,26 @@ const PhoneNumberPage = ({
 
 	const handleSendVerification = async () => {
 		// API 호출 주석처리
-		// try {
-		//     await userService.sendSMS({ phoneNumber });
-		// } catch (error) {
-		//     console.error("Failed to send verification code:", error);
-		// }
+		try {
+			await userService.sendSMS({ phoneNumber });
+		} catch (error) {
+			console.error("Failed to send verification code:", error);
+		}
 		setIsVerificationSent(true);
 	};
 
 	const handleVerify = async (e) => {
 		e.preventDefault();
 		// API 호출 주석처리
-		// try {
-		//     const response = await userService.verifySMS({
-		//         phoneNumber,
-		//         certificationCode: verificationCode
-		//     });
-		//     console.log('Verification Response:', response);
-		// } catch (error) {
-		//     console.error("Failed to verify code:", error);
-		// }
+		try {
+			const response = await userService.verifySMS({
+				phoneNumber,
+				certificationCode: verificationCode,
+			});
+			console.log("Verification Response:", response);
+		} catch (error) {
+			console.error("Failed to verify code:", error);
+		}
 		setIsVerified(true);
 	};
 

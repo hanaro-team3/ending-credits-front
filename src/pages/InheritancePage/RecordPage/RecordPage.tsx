@@ -336,7 +336,7 @@ function RecordPage() {
 							console.log("Response data:", response.data);
 							console.log("Result:", response.data.result);
 							console.log("저장된 lastWordsData:", lastWordsData);
-							setConfirmData(response.data.result);
+							// setConfirmData(response.data.result);
 							return response;
 						}}
 						// apiService={audioService.setWillInheritanceConfirm}
