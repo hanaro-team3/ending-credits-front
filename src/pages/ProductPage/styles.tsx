@@ -198,6 +198,7 @@ export const ProductList = styled.div`
 	border-radius: 12px;
 	max-height: 500px;
 	overflow-y: scroll;
+	margin-bottom: 100px;
 `;
 
 export const ProductItem = styled.div`
@@ -230,6 +231,7 @@ export const CompareItemContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	margin-bottom: 100px;
 `;
 
 export const CompareItemText = styled.p`
