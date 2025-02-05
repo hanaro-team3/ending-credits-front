@@ -34,7 +34,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 				subType: item.subType,
 				financialInstitution: item.financialInstitution,
 				asset: item.asset,
-				amount: item.amount,
+				amount: item.amount.toString(),
 				ancestors: item.ancestors,
 			})),
 			...(formData.realEstateData || []).map((item) => ({
@@ -42,7 +42,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 				subType: item.subType,
 				financialInstitution: null,
 				asset: item.asset,
-				amount: item.amount,
+				amount: item.amount.toString(),
 				ancestors: item.ancestors,
 			})),
 			...(formData.etcData || []).map((item) => ({
@@ -50,7 +50,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 				subType: item.subType,
 				financialInstitution: item.financialInstitution,
 				asset: item.asset,
-				amount: item.amount,
+				amount: item.amount.toString(),
 				ancestors: item.ancestors,
 			})),
 		];
@@ -97,7 +97,7 @@ const WillPhotoPage: React.FC<Page8Props> = ({
 
 	const calculateTotalAmount = () => {
 		const total = willData.inheritances.reduce(
-			(sum, item) => sum + item.amount,
+			(sum, item) => sum + Number(item.amount),
 			0
 		);
 		return formatAmount(total);
