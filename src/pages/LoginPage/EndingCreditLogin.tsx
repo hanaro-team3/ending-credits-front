@@ -82,7 +82,7 @@ const EndingCreditLogin = ({ onBack }: EndingCreditLoginProps): JSX.Element => {
             navigate("/");
         } catch (error) {
             message.error(
-                "로그인에 실패했습니다. 다시 로그인을 진행해 주세요."
+                "로그인에 실패했습니다. 다시 진행해주세요."
             );
             console.error("Login error:", error);
         } finally {

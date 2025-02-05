@@ -119,7 +119,6 @@ export const LargeButton = styled.button`
 
 export const LargeButtonContainer = styled.div`
   width: 100%;
-  height: 140px;
 
   position: absolute;
   bottom: 0;
@@ -132,5 +131,5 @@ export const LargeButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  padding: 0 22.5px;
+  padding: 100px 22.5px;
 `;
