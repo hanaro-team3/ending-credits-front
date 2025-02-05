@@ -25,7 +25,7 @@ function AssetAddPage() {
 
     useEffect(() => {
         if(label === "자동차") {  
-            setCar({model:info, carNumber:name, purchasePrice: purchasePrice || 0});
+            setCar({model:info, carNumber:name, purchasePrice: purchasePrice || 0, currentPurchasePrice: purchasePrice || 0, mileage: 0, year: 0 });
         }else if(label === "부동산") {
             setRealEstate({name:info, address:name, purchasePrice: purchasePrice || 0, currentPrice: purchasePrice || 0, realEstateType: "기타"});
         }
