@@ -206,7 +206,7 @@ function Cash() {
 
 function RealEstate() {
     const [realEstates, setRealEstates] = useState<dto.RealEstate[]>([]);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     useEffect(() => {
         async function getRealEstates() {
             try {
@@ -240,7 +240,7 @@ function RealEstate() {
                     </styled.AccountItem>
                     ))}
                 </styled.AccountList>
-                <BlueButton variant="large" onClick={() => {navigate("/asset/add/부동산")}}>부동산 자산 추가하기</BlueButton>
+                {/* <BlueButton variant="large" onClick={() => {navigate("/asset/add/부동산")}}>부동산 자산 추가하기</BlueButton> */}
             </styled.AccountSection>
         </>
     )
@@ -248,7 +248,7 @@ function RealEstate() {
 
 function Car() {
     const [cars, setCars] = useState<dto.Car[]>([]);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         async function getCars() {
@@ -277,7 +277,7 @@ function Car() {
                         </styled.AccountItem>
                     ))}
                 </styled.AccountList>
-                <BlueButton variant="large" onClick={() => {navigate("/asset/add/자동차")}}>자동차 자산 추가하기</BlueButton>
+                {/* <BlueButton variant="large" onClick={() => {navigate("/asset/add/자동차")}}>자동차 자산 추가하기</BlueButton> */}
             </styled.AccountSection>
         </>   
     )
