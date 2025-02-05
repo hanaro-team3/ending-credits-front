@@ -42,10 +42,6 @@ const AuthHandler = (): JSX.Element | null => {
 
 		transferValues();
 
-		if(!localStorage.getItem("accessToken")) {
-			navigate("/onboarding");
-		}
-
 	}, [navigate]);
 
 	return null;
