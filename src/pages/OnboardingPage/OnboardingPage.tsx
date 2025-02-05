@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Button,
@@ -17,6 +17,29 @@ export default function OnboardingPage(): JSX.Element {
 	const [translateX, setTranslateX] = useState<number>(0); // 슬라이드 이동 거리
 	const navigate = useNavigate();
 	const startXRef = useRef<number | null>(null); // 터치 시작 위치 저장
+
+	// 컴포넌트가 마운트될 때 상태 표시줄 색상 설정
+	useEffect(() => {
+		// 기존 meta 태그가 있다면 제거
+		const existingMetaColor = document.querySelector('meta[name="theme-color"]');
+		if (existingMetaColor) {
+			existingMetaColor.remove();
+		}
+
+		const colors =["#265638", "#73736B", "#858B8C", "#838383"];
+
+		// 새로운 meta 태그 추가
+		const metaColor = document.createElement('meta');
+		metaColor.name = 'theme-color';
+		metaColor.content = colors[currentIndex]; // 원하는 색상으로 변경
+
+		document.head.appendChild(metaColor);
+
+		// 컴포넌트가 언마운트될 때 정리
+		return () => {
+			metaColor.remove();
+		};
+	}, [currentIndex]);
 
 	const nextButtonHandler = () => {
 		if (currentIndex < copyData.length - 1) {

@@ -5,7 +5,7 @@ const AuthHandler = (): JSX.Element | null => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const transferValuess = (): void => {
+		const transferValues = (): void => {
 			const getValues = (name: string): string | null => {
 				const cookieValue = document.cookie
 					.split("; ")
@@ -40,7 +40,12 @@ const AuthHandler = (): JSX.Element | null => {
 			}
 		};
 
-		transferValuess();
+		transferValues();
+
+		if(!localStorage.getItem("accessToken")) {
+			navigate("/onboarding");
+		}
+
 	}, [navigate]);
 
 	return null;

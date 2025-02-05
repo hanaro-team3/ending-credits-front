@@ -40,10 +40,6 @@ const StatusSection = () => {
 	};
 
 	useEffect(() => {
-		if(!localStorage.getItem("accessToken")) {
-			navigate("/onboarding");
-		}
-		
 		const storedName = localStorage.getItem("name");
 		if (storedName) {
 			setName(storedName);
