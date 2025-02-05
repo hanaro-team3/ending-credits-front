@@ -35,7 +35,7 @@ export const RecordingStep1: React.FC<RecordingProps2> = ({
 			scriptContent={
 				<>
 					<div>
-						나 <span>[이름]</span>은/는 2025년 1월 7일 <br />
+						나 <span>[이름]</span>은/는 2025년 2월 5일 <br />
 					</div>
 					재산 상속을 위한 유언을 남기며,
 					<br /> <br />이 모든 내용은 <br /> 자의로 하는 것임을
