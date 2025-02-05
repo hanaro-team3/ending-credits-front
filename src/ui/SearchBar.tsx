@@ -17,6 +17,7 @@ const SearchInput = styled.input`
 	padding-right: 30px;
 	font-family: "Pretendard";
 	background-color: white;
+	color: black;
 `;
 
 const SearchIcon = styled.img`
@@ -36,24 +37,20 @@ interface SearchBarProps {
 	onSearch?: () => void;
 }
 
-const SearchBar = ({ 
-	placeholder='궁금한 내용을 검색해 보세요!',
+const SearchBar = ({
+	placeholder = "궁금한 내용을 검색해 보세요!",
 	value,
 	onChange,
-	onSearch 
+	onSearch,
 }: SearchBarProps) => (
 	<SearchBarWrapper>
-		<SearchInput 
-			name="search" 
-			placeholder={placeholder} 
+		<SearchInput
+			name="search"
+			placeholder={placeholder}
 			value={value}
-			onChange={onChange} 
+			onChange={onChange}
 		/>
-		<SearchIcon
-			src={search}
-			alt="검색"
-			onClick={onSearch}
-		/>
+		<SearchIcon src={search} alt="검색" onClick={onSearch} />
 	</SearchBarWrapper>
 );
 
