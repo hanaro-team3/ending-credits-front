@@ -185,9 +185,9 @@ export interface PostCarRequestDTO {
     model: string;
     carNumber: string;
     purchasePrice: number;
-    currentPurchasePrice?: number;
-    mileage?: number;
-    year?: number;
+    currentPurchasePrice: number;
+    mileage: number;
+    year: number;
 }
 
 export interface PostCarResponseDTO {
