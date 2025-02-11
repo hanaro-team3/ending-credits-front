@@ -43,7 +43,7 @@
 ## 💁‍♂️ 프로젝트 팀원
 |Backend, Infra|Frontend|Backend|Frontend|Backend, Infra|Backend|Frontend|Backend|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| ![](https://github.com/kiminyoung0628.png?size=500) | ![](https://github.com/heon-kim.png?size=500) | ![](https://github.com/gxxhxx0224.png?size=500) | ![](https://github.com/suminjeff.png?size=500) | ![](https://github.com/insoo00.png?size=500) | ![](https://github.com/suzinlim.png?size=500) | ![](https://github.com/user-attachments/assets/eab63971-bbe4-456b-997a-49ba2bbf67f7?size=500) | ![](https://github.com/soh22h.png?size=500) |
+| ![](https://github.com/kiminyoung0628.png?size=500) | ![](https://github.com/heon-kim.png?size=500) | ![](https://github.com/gxxhxx0224.png?size=500) | ![](https://github.com/suminjeff.png?size=500) | ![](https://github.com/insoo00.png?size=500) | ![](https://github.com/suzinlim.png?size=500) | ![](https://github.com/htchoi1006.png?size=500) | ![](https://github.com/soh22h.png?size=500) |
 |[김인영](https://github.com/kiminyoung0628)|[김해원](https://github.com/heon-kim)|[윤건희](https://github.com/gxxhxx0224)|[이수민](https://github.com/suminjeff)|[이인수](https://github.com/insoo00)|[임수진](https://github.com/suzinlim)|[최혁태](https://github.com/htchoi1006)|[홍소희](https://github.com/soh22h)
 
 ---
@@ -57,9 +57,9 @@
 |:---:|:---:|:---:|:---:|
 |<img src="https://github.com/user-attachments/assets/2c1384b6-cd58-4600-a0b1-fc82a7857d89" width="200"/>|<img src="https://github.com/user-attachments/assets/e055042f-792b-4ae2-80d3-0f6cc7286bcc" width="200"/>|<img src="https://github.com/user-attachments/assets/ee57676c-5fdf-439a-a230-6b35495bd8c8" width="200"/>|<img src="https://github.com/user-attachments/assets/3550b4c9-87a8-4520-b7cd-6a80f238a0bc" width="200"/>|
 
-|Screen #9 메인 페이지|Screen #10 상속 설계 후|Screen #9 상속 설계 전|Screen #10 상속 설계 후|
-|:---:|:---:|:---:|:---:|
-|<img src="https://github.com/user-attachments/assets/043c8857-00dd-40c3-b050-fe767c7deb97" width="200"/>|<img src="https://github.com/user-attachments/assets/f9ea6f6f-68ab-4b7d-a578-0fef14dc6782" width="200"/>|<img src="https://github.com/user-attachments/assets/0451b910-9dda-4c11-ab7e-c32624da2c38" width="200"/>|<img src="https://github.com/user-attachments/assets/f9ea6f6f-68ab-4b7d-a578-0fef14dc6782" width="200"/>|
+|Screen #9 메인 페이지|Screen #10 상속 설계 전|Screen #11 상속 설계 후|
+|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/043c8857-00dd-40c3-b050-fe767c7deb97" width="200"/>|<img src="https://github.com/user-attachments/assets/0451b910-9dda-4c11-ab7e-c32624da2c38" width="200"/>|<img src="https://github.com/user-attachments/assets/f9ea6f6f-68ab-4b7d-a578-0fef14dc6782" width="200"/>|
 
 1. 클릭 설계
 
@@ -72,10 +72,19 @@
 |<img src="https://github.com/user-attachments/assets/4bb8a917-0caf-41f7-89ee-8bc81285bbbe" width="200"/>|<img src="https://github.com/user-attachments/assets/a222c727-e2b0-4c17-86d8-011b52aacb0c" width="200"/>|<img src="https://github.com/user-attachments/assets/978aeafc-9fc3-4f2f-9cd3-183f7a1d682e" width="200"/>|<img src="https://github.com/user-attachments/assets/f7948520-a8bc-49d2-8ec7-e737c04d6010" width="200"/>|
 
 2. 음성 녹음
+
+|Screen #1 가이드 화면|Screen #2 인적정보 조회|Screen #3 유언 녹음|Screen #4 유언 녹음|
+|:---:|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/079e6a46-e742-4c25-a6fc-4f371a5c03e1" width="200"/>|<img src="https://github.com/user-attachments/assets/f368be17-2e0f-444f-a7fb-8c3c1762dd26" width="200"/>|<img src="https://github.com/user-attachments/assets/a224836d-6753-490c-8061-079e3c60fb2e" width="200"/>|<img src="https://github.com/user-attachments/assets/9eb238f8-c398-44c3-8df1-8183fc3c4c61" width="200"/>|
+
 3. 사진 업로드
 
+|Screen #1 가이드 화면|Screen #2 사진 업로드|Screen #3 사진 업로드|Screen #4 사진 업로드|
+|:---:|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/cb157a19-908e-4ac6-8ead-3f5d26402752" width="200"/>|<img src="https://github.com/user-attachments/assets/e94d0fcb-746a-4e5a-a1e8-383701c45062" width="200"/>|<img src="https://github.com/user-attachments/assets/144837d2-66e4-4f43-8e96-f9236baa20fe" width="200"/>|<img src="https://github.com/user-attachments/assets/300d883a-dc15-4edb-8d7a-46744a2a47e2" width="200"/>|
+
 4. 자산 운용
-   
+
 |Screen #1 자산 연결하기|Screen #2 자산 현황 확인|Screen #3 자산상세 보기|Screen #4 맞춤 상품 추천|
 |:---:|:---:|:---:|:---:|
 |<img src="https://github.com/user-attachments/assets/43f43b33-0eb8-4157-9caf-154e1a35927e" width="200"/>|<img src="https://github.com/user-attachments/assets/bfa79805-27de-465d-815a-ffb6b52b5523" width="200"/>|<img src="https://github.com/user-attachments/assets/f784f702-1fd5-46b0-85f6-e0e3ce2b9522" width="200"/>|<img src="https://github.com/user-attachments/assets/11f17c03-5f38-4bc2-9c2b-e39e868bc2c8" width="200"/>|
@@ -176,41 +185,4 @@
 
 ---
 
-### ✅ 커밋 규칙
 
-| 깃모지 | 태그 이름  | 설명                                                              |
-| ------ | ---------- | ----------------------------------------------------------------- |
-| 🩹     | [chore]    | 코드 수정, 내부 파일 수정                                         |
-| ✨     | [feat]     | 새로운 기능 구현                                                  |
-| 👔     | [add]      | FEAT 이외의 부수적인 코드 추가, 라이브러리 추가, 새로운 파일 생성 |
-| 🚑     | [hotfix]   | issue나 QA에서 급한 버그 수정에 사용                              |
-| 🐛     | [fix]      | 버그, 오류 해결                                                   |
-| ⚰️     | [del]      | 쓸모 없는 코드 삭제                                               |
-| 📝     | [docs]     | README나 WIKI 등의 문서 개정                                      |
-| 🏷️     | [correct]  | 주로 문법의 오류나 타입의 변경, 이름 변경에 사용                  |
-| 🚚     | [move]     | 프로젝트 내 파일이나 코드의 이동                                  |
-| 🚚     | [rename]   | 파일 이름 변경이 있을 때 사용                                     |
-| ⚡️    | [improve]  | 향상이 있을 때 사용                                               |
-| ♻️     | [refactor] | 전면 수정이 있을 때 사용                                          |
-| ✅     | [test]     | 테스트 코드 추가 시 사용                                          |
-
----
-
-### 👀 팀 프로젝트 진행 방법
-
-1. git flow 도구 사용해서 init (초기화) 해줌
-    - `git flow init`
-2. 폭풍 엔터로 브랜치 명명규칙은 기본값을 따라줌
-3. 모든 팀원 로컬 환경에서 처음에 main 브랜치 뿐만 있었는데 develop 브랜치가 로컬에 생겨남
-4. 각자 맡은 작업을 시작 하기 위해 git flow 도구 사용해서 feature 브랜치 생성
-    - `git flow feature start <feature-name>`
-    - (( feature 폭풍 작업 ))
-5. 작업 완료 후 feature 브랜치를 push 해서 PR 올림
-    - `git push origin feature/<feature-name>`
-6. PR 타이틀, 설명 등 작성 후 리뷰어 팀원들 등록
-7. PR 승인 되면 Squash and Merge 버튼을 통해 압축 된 하나의 커밋으로 develop에 머지한다.
-    - `git flow feature finish <feature-name>`
-8. 또 다른 feature 작업을 위해 가장 마지막으로 업데이트 된 develop 브랜치를 pull 한다.
-    - `git push origin develop`
-    - `git checkout develop`
-    - `git pull origin develop`
