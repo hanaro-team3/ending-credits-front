@@ -43,8 +43,9 @@
 ## 💁‍♂️ 프로젝트 팀원
 |Backend, Infra|Frontend|Backend|Frontend|Backend, Infra|Backend|Frontend|Backend|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| ![](https://github.com/kiminyoung0628.png?size=500) | ![](https://github.com/heon-kim.png?size=500) | ![](https://github.com/gxxhxx0224.png?size=500) | ![](https://github.com/suminjeff.png?size=500) | ![](https://github.com/insoo00.png?size=500) | ![](https://github.com/suzinlim.png?size=500) | ![](https://github.com/htchoi1006.png?size=500) | ![](https://github.com/soh22h.png?size=500) |
-|[김인영](https://github.com/kiminyoung0628)|[김해원](https://github.com/heon-kim)|[윤건희](https://github.com/gxxhxx0224)|[이수민](https://github.com/suminjeff)|[이인수](https://github.com/insoo00)|[임수진](https://github.com/suzinlim)|[최혁태](https://github.com/htchoi1006)|[홍소희](https://github.com/soh22h)
+| <img src="https://github.com/user-attachments/assets/e64f83d2-711e-4bee-8d97-b969cc3e891b" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/41a7dacc-4060-4c0d-a4cd-319064f69599" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/47ee14cd-1a62-4e43-aacb-c9eba0572626" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/98427347-1a0e-43f6-a0d2-984b27e5d500" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/9bed1740-960e-45eb-a19d-0d5c2ab7ef15" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/a4c22a37-71ac-495c-94b3-b41bebb90d5e" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/1869bcdb-6891-4367-a431-51c7bb325ab3" width="100" height="100"> | <img src="https://github.com/user-attachments/assets/7788456a-14cc-4414-8edf-3a4a2ee4047c" width="100" height="100"> |
+|[김인영](https://github.com/kiminyoung0628) |[김해원](https://github.com/heon-kim) |[윤건희](https://github.com/gxxhxx0224) |[이수민](https://github.com/suminjeff) |[이인수](https://github.com/insoo00) |[임수진](https://github.com/suzinlim) |[최혁태](https://github.com/htchoi1006) |[홍소희](https://github.com/soh22h) |
+
 
 ---
 
