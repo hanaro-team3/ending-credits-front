@@ -43,7 +43,7 @@
 ## 💁‍♂️ 프로젝트 팀원
 |Backend, Infra|Frontend|Backend|Frontend|Backend, Infra|Backend|Frontend|Backend|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| ![](https://github.com/kiminyoung0628.png?size=500) | ![](https://github.com/heon-kim.png?size=500) | ![](https://github.com/gxxhxx0224.png?size=500) | ![](https://github.com/suminjeff.png?size=500) | ![](https://github.com/insoo00.png?size=500) | ![](https://github.com/suzinlim.png?size=500) | ![](<img width="227" alt="Image" src="https://github.com/user-attachments/assets/eab63971-bbe4-456b-997a-49ba2bbf67f7" />) | ![](https://github.com/soh22h.png?size=500) |
+| ![](https://github.com/kiminyoung0628.png?size=500) | ![](https://github.com/heon-kim.png?size=500) | ![](https://github.com/gxxhxx0224.png?size=500) | ![](https://github.com/suminjeff.png?size=500) | ![](https://github.com/insoo00.png?size=500) | ![](https://github.com/suzinlim.png?size=500) | ![](https://github.com/user-attachments/assets/eab63971-bbe4-456b-997a-49ba2bbf67f7?size=500) | ![](https://github.com/soh22h.png?size=500) |
 |[김인영](https://github.com/kiminyoung0628)|[김해원](https://github.com/heon-kim)|[윤건희](https://github.com/gxxhxx0224)|[이수민](https://github.com/suminjeff)|[이인수](https://github.com/insoo00)|[임수진](https://github.com/suzinlim)|[최혁태](https://github.com/htchoi1006)|[홍소희](https://github.com/soh22h)
 
 ---
