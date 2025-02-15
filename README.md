@@ -86,9 +86,13 @@
 
 4. 자산 운용
 
-|Screen #1 자산 연결하기|Screen #2 자산 현황 확인|Screen #3 자산상세 보기|Screen #4 맞춤 상품 추천|
+|Screen #1 자산 연결하기|Screen #2 자산 현황 확인|Screen #3 자산상세 보기|
+|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/43f43b33-0eb8-4157-9caf-154e1a35927e" width="200"/>|<img src="https://github.com/user-attachments/assets/bfa79805-27de-465d-815a-ffb6b52b5523" width="200"/>|<img src="https://github.com/user-attachments/assets/f784f702-1fd5-46b0-85f6-e0e3ce2b9522" width="200"/>|
+
+|Screen #4 맞춤 상품 추천|Screen #5 상품 검색|Screen #6 상품 비교|Screen #7 상품 상세|
 |:---:|:---:|:---:|:---:|
-|<img src="https://github.com/user-attachments/assets/43f43b33-0eb8-4157-9caf-154e1a35927e" width="200"/>|<img src="https://github.com/user-attachments/assets/bfa79805-27de-465d-815a-ffb6b52b5523" width="200"/>|<img src="https://github.com/user-attachments/assets/f784f702-1fd5-46b0-85f6-e0e3ce2b9522" width="200"/>|<img src="https://github.com/user-attachments/assets/11f17c03-5f38-4bc2-9c2b-e39e868bc2c8" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/11f17c03-5f38-4bc2-9c2b-e39e868bc2c8" width="200"/>|<img src="https://github.com/user-attachments/assets/1b9d69b5-0d2b-4403-9c26-b2bc2ba43807" width="200"/>|<img src="https://github.com/user-attachments/assets/b9f20d5c-232c-4f73-906c-f19052c6923b" width="200"/>|<img src="https://github.com/user-attachments/assets/e3133151-263f-4980-9888-6984880ea791" width="200"/>|
 
 <br />
 
@@ -185,5 +189,4 @@
 | **테스트** | `01/31 – 02/05` |
 
 ---
-
 
